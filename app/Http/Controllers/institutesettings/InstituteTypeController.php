@@ -28,9 +28,9 @@ class InstituteTypeController extends Controller
     }
      public function update(Request $request, $id)
     {
-        $aObj=InstituteType::findOrfail($id);
-        $aObj->name=$request->name;
-        $aObj->update();
+        $aBean=InstituteType::findOrfail($id);
+        $aBean->name=$request->name;
+        $aBean->update();
         return redirect('institutetype');
     }
 }

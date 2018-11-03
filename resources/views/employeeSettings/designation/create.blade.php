@@ -5,7 +5,7 @@
  	<div class="row">
  		<div class="col-lg-12">
  			<div class="">
- 				<h4>Create Employee Designation</h4>
+ 				<h4>New Designation</h4>
  				<a href="{{URL::to('/employeedesignation')}}">All</a>
  			</div>
  		</div>
@@ -17,7 +17,7 @@
  				{{csrf_field()}}
  				<div class="row">
  					<div class="form-group col-sm-4">
- 						<label for="name">Employee Type  :</label>
+ 						<label for="name">Designation  :</label>
  						<input type="text" class="form-control" id="name" name="name">
  					</div>
  				</div>

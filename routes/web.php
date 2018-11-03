@@ -4,23 +4,26 @@
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
+|Route::get('/category', function () {
+    return view('category.index');
+});
+Route::get('/demo', function () {
+    return view('demo');
+});
+
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
 */
 
-
 Route::get('/', function () {
     return view('home');
 });
-Route::get('/demo', function () {
-    return view('demo');
-});
-Route::get('/category', function () {
-    return view('category.index');
-});
+
+Auth::routes();
+Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
+
 // Institute Settings
 Route::resource('division', 'institutesettings\DivisionController');
 Route::resource('district', 'institutesettings\DistrictController');
@@ -31,6 +34,7 @@ Route::resource('institutetype', 'institutesettings\InstituteTypeController');
 Route::resource('institutecategory', 'institutesettings\InstituteCategoryController');
 Route::resource('institutesubcategory', 'institutesettings\InstituteSubCategoryController');
 Route::resource('institute', 'institutesettings\InstituteController');
+Route::resource('branch', 'institutesettings\BranchController');
 
 // General Settings
 Route::resource('session', 'settings\SessionController');
@@ -65,3 +69,5 @@ Route::get('/getGroupByLevel/','AjaxController@getGroupByLevel');
 Route::get('/getCourse/','AjaxController@getCourse');
 Route::get('/getdistrict/','AjaxController@getDistbydivision');
 Route::get('/getthana/','AjaxController@getThanabydistrict');
+Route::get('/getpostoffice/','AjaxController@getPostOfficebyThana');
+Route::get('/getunion/','AjaxController@getUnionbyThana');

@@ -24,12 +24,13 @@
            <li><a href="{{URL::to('/institutecategory')}}">Institute Category SetUp</a></li>
            <li><a href="{{URL::to('/institutesubcategory')}}">Sub Cat SetUp</a></li>
            <li><a href="{{URL::to('/institute')}}">Institute SetUp</a></li>
+            <li><a href="{{URL::to('/branch')}}">Code SetUp</a></li>
          </ul>
        </li>
        <li class="sub-menu">
         <a href="javascript:;" class="">
           <i class="icon_document_alt"></i>
-          <span>Settings</span>
+          <span>Basic Settings</span>
           <span class="menu-arrow arrow_carrot-right"></span>
         </a>
         <ul class="sub">

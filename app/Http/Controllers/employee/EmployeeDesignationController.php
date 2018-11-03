@@ -9,10 +9,10 @@ class EmployeeDesignationController extends Controller
 {
     public function index(){
 		$result=EmployeeDesignation::all();
-		 return view('employeeSettings.employeeDesignation.index',['result'=>$result]);
+		 return view('employeesettings.designation.index',['result'=>$result]);
 	}
 	public function create(){
-		return view('employeeSettings.employeeDesignation.create');
+		return view('employeesettings.designation.create');
 	}
 	public function store(Request $request){
 		$aObj=new EmployeeDesignation();
@@ -23,7 +23,7 @@ class EmployeeDesignationController extends Controller
 	public function edit($id)
 	{
 		$aObj=EmployeeDesignation::findOrfail($id);
-		return view('employeeSettings.employeeDesignation.edit',['bean'=>$aObj]);
+		return view('employeesettings.designation.edit',['bean'=>$aObj]);
 	}
 	 public function update(Request $request, $id)
     {

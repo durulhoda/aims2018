@@ -9,27 +9,27 @@ class DepartmentController extends Controller
 {
      public function index(){
 		$result=Department::all();
-		 return view('employeeSettings.department.index',['result'=>$result]);
+		 return view('employeesettings.department.index',['result'=>$result]);
 	}
 	public function create(){
-		return view('employeeSettings.department.create');
+		return view('employeesettings.department.create');
 	}
 	public function store(Request $request){
-		$aObj=new Department();
-		$aObj->name=$request->name;
-		$aObj->save();
+		$aBean=new Department();
+		$aBean->name=$request->name;
+		$aBean->save();
 		return redirect('department');
 	}
 	public function edit($id)
 	{
-		$aObj=Department::findOrfail($id);
-		return view('employeeSettings.department.edit',['bean'=>$aObj]);
+		$aBean=Department::findOrfail($id);
+		return view('employeesettings.department.edit',['bean'=>$aBean]);
 	}
 	 public function update(Request $request, $id)
     {
-    	$aObj=Department::findOrfail($id);
-    	$aObj->name=$request->name;
-		$aObj->update();
+    	$aBean=Department::findOrfail($id);
+    	$aBean->name=$request->name;
+		$aBean->update();
 		return redirect('department');
     }
 }

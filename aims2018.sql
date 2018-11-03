@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2018 at 01:44 PM
+-- Generation Time: Nov 01, 2018 at 12:57 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -36,6 +36,35 @@ CREATE TABLE `applicants` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branches`
+--
+
+CREATE TABLE `branches` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `instituteid` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `branches`
+--
+
+INSERT INTO `branches` (`id`, `name`, `code`, `instituteid`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'School', '23452', 1, 0, '2018-11-01 05:04:10', '2018-11-01 05:28:37'),
+(2, 'College', '4567', 1, 0, '2018-11-01 05:04:27', '2018-11-01 05:27:40'),
+(3, 'School', '5675', 2, 0, '2018-11-01 05:04:43', '2018-11-01 05:28:21'),
+(4, 'School', '6754', 3, 0, '2018-11-01 05:04:58', '2018-11-01 05:28:28'),
+(5, 'School', '9689', 4, 0, '2018-11-01 05:05:37', '2018-11-01 05:28:03'),
+(6, 'College', '124134', 4, 0, '2018-11-01 05:05:49', '2018-11-01 05:27:27'),
+(7, 'College', '1131421', 5, 0, '2018-11-01 05:32:15', '2018-11-01 05:32:42');
 
 -- --------------------------------------------------------
 
@@ -344,20 +373,28 @@ CREATE TABLE `institute` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `institutetypeid` int(11) NOT NULL,
   `institutecategoryid` int(11) NOT NULL,
-  `institutesubcategoryid` int(11) NOT NULL,
-  `divisionid` int(11) NOT NULL,
-  `districtid` int(11) NOT NULL,
+  `institutesubcategoryid` int(11) DEFAULT NULL,
   `thanaid` int(11) NOT NULL,
   `postofficeid` int(11) NOT NULL,
   `localgovid` int(11) NOT NULL,
   `wordno` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cluster` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ein` bigint(20) NOT NULL,
-  `institutecode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `institute`
+--
+
+INSERT INTO `institute` (`id`, `name`, `institutetypeid`, `institutecategoryid`, `institutesubcategoryid`, `thanaid`, `postofficeid`, `localgovid`, `wordno`, `cluster`, `ein`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Mohammadpur Ramendra Model High School', 1, 2, 1, 2, 1, 1, 'wordno1', 'Claster1', 1234132414, 0, '2018-11-01 02:11:37', '2018-11-01 02:11:37'),
+(2, 'Horinagor high school', 3, 1, 4, 2, 1, 1, 'wordno2', 'Claster2', 123413242234, 0, '2018-11-01 02:14:31', '2018-11-01 02:14:31'),
+(3, 'Ranihati high school', 2, 1, 4, 2, 1, 2, 'wordno3', 'Claster3', 123413241421, 0, '2018-11-01 04:22:57', '2018-11-01 04:30:31'),
+(4, 'Gorapahkia Hogh School', 1, 1, 4, 2, 1, 1, 'wordno4', 'Claster4', 123413241424, 0, '2018-11-01 04:26:33', '2018-11-01 04:30:21'),
+(5, 'Shibgonj Govt High School And College', 1, 1, 4, 2, 1, 1, 'wordno5', 'Claster5', 12341324142345, 0, '2018-11-01 05:30:59', '2018-11-01 05:30:59');
 
 -- --------------------------------------------------------
 
@@ -382,7 +419,7 @@ INSERT INTO `institutecategory` (`id`, `name`, `status`, `created_at`, `updated_
 (2, 'Madrasa', 0, '2018-10-30 05:16:59', '2018-10-30 05:16:59'),
 (3, 'Vocational', 0, '2018-10-30 05:17:13', '2018-10-30 05:17:13'),
 (4, 'Polytechnic', 0, '2018-10-30 05:18:41', '2018-10-30 05:18:41'),
-(5, 'kowami', 0, '2018-10-30 06:09:45', '2018-10-30 06:09:45');
+(5, 'Open University', 0, '2018-10-30 06:09:45', '2018-11-01 04:09:12');
 
 -- --------------------------------------------------------
 
@@ -406,7 +443,8 @@ CREATE TABLE `institutesubcategory` (
 INSERT INTO `institutesubcategory` (`id`, `name`, `categoryid`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'kowami  Madrasa', 2, 0, '2018-10-30 06:13:14', '2018-10-30 06:21:20'),
 (2, 'Alia Madrasa', 2, 0, '2018-10-30 06:14:21', '2018-10-30 06:14:21'),
-(3, 'Hafiza Madrasa', 2, 0, '2018-10-30 06:14:38', '2018-10-30 06:14:38');
+(3, 'Hafiza Madrasa', 2, 0, '2018-10-30 06:14:38', '2018-10-30 06:14:38'),
+(4, 'subcat1', 1, 0, '2018-11-01 02:13:20', '2018-11-01 02:13:20');
 
 -- --------------------------------------------------------
 
@@ -428,9 +466,9 @@ CREATE TABLE `institutetype` (
 
 INSERT INTO `institutetype` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Governmental', 0, '2018-10-30 05:03:51', '2018-10-30 05:03:51'),
-(2, 'Alia Madrasa', 0, '2018-10-30 05:04:15', '2018-10-30 06:20:07'),
-(3, 'Semi Governmental', 0, '2018-10-30 05:06:27', '2018-10-30 05:06:27'),
-(4, 'Polytechnic', 0, '2018-10-30 05:07:15', '2018-10-30 05:21:30');
+(2, 'Semi Governmental', 0, '2018-10-30 05:04:15', '2018-11-01 03:59:35'),
+(3, 'Non Governmental', 0, '2018-10-30 05:06:27', '2018-11-01 04:00:12'),
+(4, 'Private', 0, '2018-10-30 05:07:15', '2018-11-01 04:00:19');
 
 -- --------------------------------------------------------
 
@@ -522,7 +560,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (32, '2018_10_17_090328_create_groups_table', 4),
 (33, '2018_10_17_042437_create_programs_table', 5),
 (34, '2018_10_16_094330_create_program_levels_table', 6),
-(36, '2018_10_23_100908_create_subjectcodes_table', 6);
+(36, '2018_10_23_100908_create_subjectcodes_table', 6),
+(38, '2018_11_01_103526_create_branches_create', 7);
 
 -- --------------------------------------------------------
 
@@ -846,6 +885,12 @@ ALTER TABLE `applicants`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `branches`
+--
+ALTER TABLE `branches`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `courseoffer`
 --
 ALTER TABLE `courseoffer`
@@ -1031,6 +1076,12 @@ ALTER TABLE `applicants`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `branches`
+--
+ALTER TABLE `branches`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `courseoffer`
 --
 ALTER TABLE `courseoffer`
@@ -1088,7 +1139,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `institute`
 --
 ALTER TABLE `institute`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `institutecategory`
@@ -1100,13 +1151,13 @@ ALTER TABLE `institutecategory`
 -- AUTO_INCREMENT for table `institutesubcategory`
 --
 ALTER TABLE `institutesubcategory`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `institutetype`
 --
 ALTER TABLE `institutetype`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `localgovs`
@@ -1124,7 +1175,7 @@ ALTER TABLE `mediums`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `postoffices`

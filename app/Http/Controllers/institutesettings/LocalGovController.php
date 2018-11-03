@@ -38,7 +38,7 @@ class LocalGovController extends Controller
         ->select('localgovs.*','divisions.id as divisionid','districts.id as districtid','thanas.id as thanaid')
         ->where('localgovs.id','=',$id)
         ->get();
-        $aBean=$result[0];
+         $aBean=$result[0];
          $divisions=\DB::table('divisions')
          ->select('divisions.*')
          ->get();
@@ -50,7 +50,7 @@ class LocalGovController extends Controller
          ->get();
          return view('institutesettings.localgov.edit',['bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
     }
-     public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
        
         $aBean=LocalGov::findOrfail($id);

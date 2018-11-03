@@ -9,10 +9,10 @@ class EmployeeTypeController extends Controller
 {
     public function index(){
 		$result=EmployeeType::all();
-		 return view('employeeSettings.employeeType.index',['result'=>$result]);
+		 return view('employeesettings.employeeType.index',['result'=>$result]);
 	}
 	public function create(){
-		return view('employeeSettings.employeeType.create');
+		return view('employeesettings.employeeType.create');
 	}
 	public function store(Request $request){
 		$aObj=new EmployeeType();
@@ -23,7 +23,7 @@ class EmployeeTypeController extends Controller
 	public function edit($id)
 	{
 		$aObj=EmployeeType::findOrfail($id);
-		return view('employeeSettings.employeeType.edit',['bean'=>$aObj]);
+		return view('employeesettings.employeeType.edit',['bean'=>$aObj]);
 	}
 	 public function update(Request $request, $id)
     {

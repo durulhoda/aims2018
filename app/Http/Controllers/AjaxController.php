@@ -54,4 +54,24 @@ class AjaxController extends Controller
    }
    echo "<option value=\"\">Select</option>" . $prglvlList;
   }
+    public function getPostOfficebyThana(Request $request){
+     $id = $request->id;
+    $query="SELECT * FROM  postoffices where thanaid=?";
+    $result=\DB::select($query,[$id]);
+    $prglvlList = "";
+    foreach ($result as $key => $value) {
+     $prglvlList .=  "<option value=\"".$value->id."\">".$value->name."</option>";
+   }
+   echo "<option value=\"\">Select</option>" . $prglvlList;
+  }
+   public function getUnionbyThana(Request $request){
+     $id = $request->id;
+    $query="SELECT * FROM  localgovs where thanaid=?";
+    $result=\DB::select($query,[$id]);
+    $prglvlList = "";
+    foreach ($result as $key => $value) {
+     $prglvlList .=  "<option value=\"".$value->id."\">".$value->name."</option>";
+   }
+   echo "<option value=\"\">Select</option>" . $prglvlList;
+  }
 }

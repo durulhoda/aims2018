@@ -21,24 +21,24 @@ class DistrictController extends Controller
     	return view('institutesettings.district.create',['divisions'=>$divisions]);
     }
     public function store(Request $request){
-        $aObj=new District();
-        $aObj->name=$request->name;
-        $aObj->divisionid=$request->divisionid;
-        $aObj->save();
+        $aBean=new District();
+        $aBean->name=$request->name;
+        $aBean->divisionid=$request->divisionid;
+        $aBean->save();
         return redirect('district');
     }
     public function edit($id)
     {
-         $aObj=District::findOrfail($id);
+         $aBean=District::findOrfail($id);
          $divisions=\DB::table('divisions')->get();
-         return view('institutesettings.district.edit',['bean'=>$aObj,'divisions'=>$divisions]);
+         return view('institutesettings.district.edit',['bean'=>$aBean,'divisions'=>$divisions]);
     }
      public function update(Request $request, $id)
     {
-        $aObj=District::findOrfail($id);
-        $aObj->name=$request->name;
-        $aObj->divisionid=$request->divisionid;
-        $aObj->update();
+        $aBean=District::findOrfail($id);
+        $aBean->name=$request->name;
+        $aBean->divisionid=$request->divisionid;
+        $aBean->update();
         return redirect('district');
     }
 }

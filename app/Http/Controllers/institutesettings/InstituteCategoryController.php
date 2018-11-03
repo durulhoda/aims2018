@@ -16,21 +16,21 @@ class InstituteCategoryController extends Controller
         return view('institutesettings.institutecategory.create');
     }
     public function store(Request $request){
-        $aObj=new InstituteCatagory();
-        $aObj->name=$request->name;
-        $aObj->save();
+        $aBean=new InstituteCatagory();
+        $aBean->name=$request->name;
+        $aBean->save();
         return redirect('institutecategory');
     }
     public function edit($id)
     {
-         $aObj=InstituteCatagory::findOrfail($id);
-         return view('institutesettings.institutecategory.edit',['bean'=>$aObj]);
+         $aBean=InstituteCatagory::findOrfail($id);
+         return view('institutesettings.institutecategory.edit',['bean'=>$aBean]);
     }
      public function update(Request $request, $id)
     {
-        $aObj=InstituteCatagory::findOrfail($id);
-        $aObj->name=$request->name;
-        $aObj->update();
+        $aBean=InstituteCatagory::findOrfail($id);
+        $aBean->name=$request->name;
+        $aBean->update();
         return redirect('institutecategory');
     }
 }

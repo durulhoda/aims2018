@@ -8,6 +8,6 @@ use App\employee;;
 class EmployeeController extends Controller
 {
     public function index(){
-    	echo "From Employee";
+    	return view('employeesettings.employee.index');
     }
 }

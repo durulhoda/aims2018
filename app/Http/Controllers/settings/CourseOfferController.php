@@ -79,14 +79,14 @@ public function programofferresult(Request $request){
 public function store(Request $request){
     if(isset($request->check)){
         $check=$request->check;
-        foreach ($check as $k) {
-        $mark=$_POST['marks_'.$k];
-        $subjectcodeid=$_POST['subjectcodeid_'.$k];
-        $aObj=new CourseOffer();
-        $aObj->programofferid=$request->programofferid;
-        $aObj->subjectcodeid=$subjectcodeid;
-        $aObj->marks=$mark;
-        $aObj->save();
+        foreach ($check as $key) {
+        $mark=$_POST['marks_'.$key];
+        $subjectcodeid=$_POST['subjectcodeid_'.$key];
+        $aBean=new CourseOffer();
+        $aBean->programofferid=$request->programofferid;
+        $aBean->subjectcodeid=$subjectcodeid;
+        $aBean->marks=$mark;
+        $aBean->save();
       } 
     }
     return redirect('courseoffer');
@@ -107,21 +107,21 @@ public function edit($id)
     INNER JOIN subjectcodes on courseoffer.subjectcodeid=subjectcodes.id
     INNER JOIN courses on subjectcodes.courseid=courses.id
     where courseoffer.id=?',[$id]);
-   $aObj=CourseOffer::findOrfail($id);
-   return view('settings.courseoffer.edit',['bean'=>$aObj,'result'=>$result,'course'=>$course]);
+   $aBean=CourseOffer::findOrfail($id);
+   return view('settings.courseoffer.edit',['bean'=>$aBean,'result'=>$result,'course'=>$course]);
 }
 public function update(Request $request, $id)
 {
-     $aObj=CourseOffer::findOrfail($id);
-     $aObj->subjectcodeid=$request->subjectcodeid;
-     $aObj->marks=$request->marks;
+     $aBean=CourseOffer::findOrfail($id);
+     $aBean->subjectcodeid=$request->subjectcodeid;
+     $aBean->marks=$request->marks;
      $sql="select * from courseoffer where id=? and subjectcodeid=?";
-    $isSamefield=\DB::select($sql,[$id,$aObj->subjectcodeid]);
+    $isSamefield=\DB::select($sql,[$id,$aBean->subjectcodeid]);
     if($isSamefield){
-        $aObj->update();
+        $aBean->update();
         return redirect('courseoffer');
     }else{
-         $aObj->update();
+         $aBean->update();
          return redirect('courseoffer');
     }
 }

@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="">
-				<h4>All Institute Type</h4>
+				<h4>All Institute Sub Category</h4>
 				<a href="{{URL::to('/institutesubcategory')}}/{{'create'}}">New</a>
 			</div>
 		</div>
