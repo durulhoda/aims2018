@@ -4,28 +4,23 @@
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|Route::get('/category', function () {
-    return view('category.index');
-});
-Route::get('/demo', function () {
-    return view('demo');
-});
-
+|
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('home');
-});
-
+// Route::get('/', function () {
+//     return view('home');
+// })->middleware('auth');
+Route::get('/', 'HomeController@index')->middleware('auth')->name('home');
+// Role Settings
 Auth::routes();
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
-
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::resource('role','RoleController');
 // Institute Settings
-Route::resource('division', 'institutesettings\DivisionController');
+Route::resource('division', 'institutesettings\DivisionController')->middleware('auth');
 Route::resource('district', 'institutesettings\DistrictController');
 Route::resource('thana', 'institutesettings\ThanaController');
 Route::resource('localgov', 'institutesettings\LocalGovController');
@@ -34,7 +29,7 @@ Route::resource('institutetype', 'institutesettings\InstituteTypeController');
 Route::resource('institutecategory', 'institutesettings\InstituteCategoryController');
 Route::resource('institutesubcategory', 'institutesettings\InstituteSubCategoryController');
 Route::resource('institute', 'institutesettings\InstituteController');
-Route::resource('branch', 'institutesettings\BranchController');
+Route::resource('unit', 'institutesettings\BranchController');
 
 // General Settings
 Route::resource('session', 'settings\SessionController');
@@ -60,7 +55,8 @@ Route::resource('department', 'employee\DepartmentController');
 Route::resource('employee', 'employee\EmployeeController');
 
 // For Student related
-Route::resource('applicant', 'studentSettings\ApplicantController');
+Route::resource('applicant', 'studentsettings\ApplicantController');
+Route::resource('student', 'studentsettings\StudentController');
 
 
 // For Ajax 
@@ -71,3 +67,10 @@ Route::get('/getdistrict/','AjaxController@getDistbydivision');
 Route::get('/getthana/','AjaxController@getThanabydistrict');
 Route::get('/getpostoffice/','AjaxController@getPostOfficebyThana');
 Route::get('/getunion/','AjaxController@getUnionbyThana');
+
+
+
+// Menu Settings
+Route::resource('menu', 'menusettings\MenuController');
+Route::get('/asdfasdf','MenuController@getAll')->middleware('auth');
+

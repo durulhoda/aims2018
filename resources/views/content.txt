@@ -13,3 +13,57 @@ public function index(){
     public function update(Request $request, $id){
     	
     }
+
+$hashed = Hash::make($password);  for laravel
+
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateTrigger extends Migration
+{
+    /**
+     * Run the migrations.
+     *$hashed = Hash::make($password); for laravel
+     * @return void
+     */
+    public function up()
+    {
+         DB::unprepared('CREATE TRIGGER bftudentins 
+            BEFORE INSERT ON `students` 
+            FOR EACH ROW
+            BEGIN
+            INSERT INTO `users` SET name=new.name,email="your",password=new.studentid;
+            END');
+        // DB::unprepared('CREATE TRIGGER beforereturn BEFORE UPDATE ON `book_issues` FOR EACH ROW
+        // BEGIN
+        // UPDATE `bookkeepers` SET bookkeepers.status = 0 WHERE bookkeepers.barcode = OLD.barcode;
+        // END');
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+         DB::unprepared('DROP TRIGGER `bftudentins`');
+         // DB::unprepared('DROP TRIGGER `beforereturn`');
+    }
+
+
+$id = \Auth::id();
+        echo $id;
+        exit();
+
+
+
+        bindec() - Binary to decimal
+decoct() - Decimal to octal
+dechex() - Decimal to hexadecimal
+base_convert() - Convert a number between arbitrary bases
+printf() - Output a formatted string, using %b, %032b or %064b as the format
+sprintf(), using %b, %032b or %064b as the format

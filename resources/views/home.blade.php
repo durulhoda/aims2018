@@ -8,7 +8,7 @@
                  <h4>{{ session('status') }}</h4>
             </div>
             @endif
-            <h4>You are logged in!</h4>
+            <h4>Welcome !</h4>
         </div>
     </div>
 </section>

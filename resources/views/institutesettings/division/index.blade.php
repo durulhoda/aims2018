@@ -6,7 +6,9 @@
 		<div class="col-lg-12">
 			<div class="">
 				<h4>All Division</h4>
+			
 				<a href="{{URL::to('/division')}}/{{'create'}}">New</a>
+			
 			</div>
 		</div>
 	</div>
@@ -27,18 +29,23 @@
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
+							
 							<td> 
 								<a href="{{URL::to('/division')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>
 								</a>
+								
+							
 								<a href="" class="tooltip-error" data-rel="tooltip" title="Delete">
 									<span class="red">
 										<i class="ace-icon fa fa-trash-o bigger-120"></i>
 									</span>
 								</a>
+								
 							</td>
+						
 						</tr>
 						@endforeach
 					</tbody>

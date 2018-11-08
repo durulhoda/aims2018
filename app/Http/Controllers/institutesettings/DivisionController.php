@@ -10,6 +10,11 @@ class DivisionController extends Controller
 {
     public function index()
     {
+        // $id = \Auth::id();
+        // $accesspower=\DB::table('users')
+        // ->select('users.*')
+        // ->where('users.id','=',$id)
+        // ->get()[0]->accesspower;
     	$result=Division::all();
         return view('institutesettings.division.index',['result'=>$result]);
     }

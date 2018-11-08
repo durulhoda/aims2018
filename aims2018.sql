@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2018 at 12:57 PM
+-- Generation Time: Nov 08, 2018 at 12:54 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -149,6 +149,21 @@ CREATE TABLE `department` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Bangla', 0, '2018-11-02 23:36:25', '2018-11-02 23:36:25'),
+(2, 'Einglish', 0, '2018-11-02 23:36:41', '2018-11-02 23:36:41'),
+(3, 'Managing Commitee', 0, '2018-11-02 23:38:23', '2018-11-02 23:38:23'),
+(4, 'Math', 0, '2018-11-02 23:38:40', '2018-11-02 23:38:40'),
+(5, 'Religion Studies', 0, '2018-11-02 23:38:58', '2018-11-02 23:38:58'),
+(6, 'Business Studies', 0, '2018-11-02 23:39:22', '2018-11-02 23:39:22'),
+(7, 'Accountant', 0, '2018-11-02 23:39:40', '2018-11-02 23:39:40'),
+(8, 'Librarian', 0, '2018-11-02 23:40:10', '2018-11-02 23:40:10'),
+(9, 'Security', 0, '2018-11-02 23:40:22', '2018-11-02 23:40:22');
+
 -- --------------------------------------------------------
 
 --
@@ -270,36 +285,20 @@ INSERT INTO `divisions` (`id`, `name`, `status`, `created_at`, `updated_at`) VAL
 
 CREATE TABLE `employees` (
   `id` int(10) UNSIGNED NOT NULL,
-  `employeeId` bigint(20) NOT NULL,
-  `firstName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `middleName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gender` int(11) NOT NULL,
-  `photo` varchar(13) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fatherName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `motherName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `maritialStatus` int(11) NOT NULL,
-  `nationalIdentity` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nationality` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dateOfBirth` date NOT NULL,
-  `bloodGroupid` int(11) NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `employmentStatus` int(11) NOT NULL,
-  `employeeStatus` int(11) NOT NULL,
-  `employeeType` int(11) NOT NULL,
-  `embreg` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `joiningdate` date NOT NULL,
-  `retirementDate` date NOT NULL,
-  `departmentId` int(11) NOT NULL,
-  `designationid` bigint(20) NOT NULL,
-  `positionNumber` int(11) NOT NULL,
-  `indexno` int(11) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `employeeid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `employeetypeid` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `employees`
+--
+
+INSERT INTO `employees` (`id`, `name`, `employeeid`, `employeetypeid`, `created_at`, `updated_at`) VALUES
+(1, 'Arshed1', '12341234', 1, '2018-11-05 22:52:06', '2018-11-06 02:31:21'),
+(2, 'Arshad2', '34563345', 1, '2018-11-05 23:01:25', '2018-11-06 02:31:30');
 
 -- --------------------------------------------------------
 
@@ -314,6 +313,14 @@ CREATE TABLE `employeetypes` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `employeetypes`
+--
+
+INSERT INTO `employeetypes` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Teacher', 0, '2018-11-02 22:11:30', '2018-11-02 22:11:30'),
+(2, 'Administrative', 0, '2018-11-02 22:11:42', '2018-11-02 22:11:42');
 
 -- --------------------------------------------------------
 
@@ -444,7 +451,7 @@ INSERT INTO `institutesubcategory` (`id`, `name`, `categoryid`, `status`, `creat
 (1, 'kowami  Madrasa', 2, 0, '2018-10-30 06:13:14', '2018-10-30 06:21:20'),
 (2, 'Alia Madrasa', 2, 0, '2018-10-30 06:14:21', '2018-10-30 06:14:21'),
 (3, 'Hafiza Madrasa', 2, 0, '2018-10-30 06:14:38', '2018-10-30 06:14:38'),
-(4, 'subcat1', 1, 0, '2018-11-01 02:13:20', '2018-11-01 02:13:20');
+(4, 'no', 1, 0, '2018-11-01 02:13:20', '2018-11-02 22:41:04');
 
 -- --------------------------------------------------------
 
@@ -518,6 +525,61 @@ INSERT INTO `mediums` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUE
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `menus`
+--
+
+CREATE TABLE `menus` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parentid` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `menus`
+--
+
+INSERT INTO `menus` (`id`, `name`, `url`, `parentid`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Institute Settings', '#', 0, 0, '2018-11-06 00:13:07', '2018-11-06 00:13:07'),
+(2, 'Division SetUp', 'division', 1, 0, '2018-11-06 00:13:41', '2018-11-06 00:13:41'),
+(3, 'District SetUp', 'district', 1, 0, '2018-11-06 00:21:11', '2018-11-06 00:21:11'),
+(4, 'Thana SetUp', 'thana', 1, 0, '2018-11-06 00:21:55', '2018-11-06 00:21:55'),
+(5, 'Union SetUp', 'localgov', 1, 0, '2018-11-06 00:22:22', '2018-11-06 00:22:22'),
+(6, 'Post Office SetUp', 'postoffice', 1, 0, '2018-11-06 00:22:56', '2018-11-06 00:22:56'),
+(7, 'Institute Type SetUp', 'institutetype', 1, 0, '2018-11-06 00:23:25', '2018-11-06 00:23:25'),
+(8, 'Institute Category SetUp', 'institutecategory', 1, 0, '2018-11-06 00:23:52', '2018-11-06 00:23:52'),
+(9, 'Sub Cat SetUp', 'institutesubcategory', 1, 0, '2018-11-06 00:24:19', '2018-11-06 00:24:19'),
+(10, 'Institute SetUp', 'institute', 1, 0, '2018-11-06 00:24:42', '2018-11-06 00:24:42'),
+(11, 'Code SetUp', 'unit', 1, 0, '2018-11-06 00:25:36', '2018-11-06 00:25:36'),
+(12, 'Basic Settings', '#', 0, 0, '2018-11-06 00:26:17', '2018-11-06 00:26:17'),
+(13, 'Session setup', 'session', 12, 0, '2018-11-06 00:26:51', '2018-11-06 00:26:51'),
+(14, 'Program Level', 'programLevel', 12, 0, '2018-11-06 00:27:34', '2018-11-06 00:27:34'),
+(15, 'Group setup', 'group', 12, 0, '2018-11-06 00:28:13', '2018-11-06 00:28:13'),
+(16, 'Class setup', 'program', 12, 0, '2018-11-06 00:28:45', '2018-11-06 00:28:45'),
+(17, 'Medium setup', 'medium', 12, 0, '2018-11-06 00:29:10', '2018-11-06 00:29:10'),
+(18, 'Shift setup', 'shift', 12, 0, '2018-11-06 00:29:32', '2018-11-06 00:29:32'),
+(19, 'Program Offer setup', 'programoffer', 12, 0, '2018-11-06 00:29:59', '2018-11-06 00:29:59'),
+(20, 'Subject Info', 'course', 12, 0, '2018-11-06 00:30:32', '2018-11-06 00:30:32'),
+(21, 'Subject Code', 'subjectcode', 12, 0, '2018-11-06 00:31:00', '2018-11-06 00:31:00'),
+(22, 'Course Offer setup', 'courseoffer', 12, 0, '2018-11-06 00:31:25', '2018-11-06 00:31:25'),
+(23, 'Employee Settings', '#', 0, 0, '2018-11-06 00:31:51', '2018-11-06 00:33:51'),
+(24, 'Employee Designation', 'employeedesignation', 23, 0, '2018-11-06 00:32:22', '2018-11-06 00:32:22'),
+(25, 'Department', 'department', 23, 0, '2018-11-06 00:32:51', '2018-11-06 00:32:51'),
+(26, 'Employee', 'employee', 23, 0, '2018-11-06 00:34:47', '2018-11-06 00:34:47'),
+(27, 'Student Settings', '#', 0, 0, '2018-11-06 00:35:18', '2018-11-06 00:35:18'),
+(28, 'Student', 'student', 27, 0, '2018-11-06 00:35:46', '2018-11-06 00:35:46'),
+(29, 'User Settings', '#', 0, 0, '2018-11-06 00:36:08', '2018-11-06 00:36:08'),
+(30, 'Role', 'role', 29, 0, '2018-11-06 00:37:15', '2018-11-06 00:37:15'),
+(31, 'User', 'user', 29, 0, '2018-11-06 00:37:36', '2018-11-06 00:37:36'),
+(32, 'Menu Settings', '#', 0, 0, '2018-11-06 00:38:01', '2018-11-06 00:38:01'),
+(33, 'Menu', 'menu', 32, 0, '2018-11-06 00:39:06', '2018-11-06 00:39:06');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -540,7 +602,6 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2018_10_17_103023_create_sections_table', 1),
 (10, '2018_10_17_120643_create_shifts_table', 1),
 (11, '2018_10_18_074310_create_programoffer_table', 1),
-(12, '2018_10_20_092319_create_employees_create', 1),
 (13, '2018_10_20_100252_create_employeetypes_table', 1),
 (14, '2018_10_20_105650_create_emp_designation_table', 1),
 (15, '2018_10_20_112543_create_department_table', 1),
@@ -561,7 +622,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (33, '2018_10_17_042437_create_programs_table', 5),
 (34, '2018_10_16_094330_create_program_levels_table', 6),
 (36, '2018_10_23_100908_create_subjectcodes_table', 6),
-(38, '2018_11_01_103526_create_branches_create', 7);
+(38, '2018_11_01_103526_create_branches_create', 7),
+(39, '2018_11_06_032421_create_roles_table', 8),
+(40, '2018_10_20_092319_create_employees_create', 9),
+(41, '2018_11_06_043612_create_students_table', 9),
+(42, '2018_11_06_053612_create_menus_table', 10),
+(44, '2018_11_06_083215_create_userroles_table', 11),
+(45, '2018_11_08_060054_create_user_role_pivot_table', 12);
 
 -- --------------------------------------------------------
 
@@ -713,6 +780,32 @@ CREATE TABLE `program_levels` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `accesspower` int(20) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `accesspower`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 63, 0, '2018-11-07 05:54:42', '2018-11-08 04:12:14'),
+(2, 'Teacher', 55, 0, '2018-11-07 05:56:01', '2018-11-08 04:17:35'),
+(3, 'Student', 61, 0, '2018-11-07 06:00:14', '2018-11-08 05:04:02'),
+(4, 'Staff', 63, 0, '2018-11-07 06:08:44', '2018-11-08 05:04:14'),
+(5, 'Office Aisstant', 3, 0, '2018-11-07 23:00:16', '2018-11-08 04:13:02');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sectionoffer`
 --
 
@@ -795,6 +888,31 @@ INSERT INTO `shifts` (`id`, `name`, `startTime`, `endTime`, `status`, `created_a
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `students`
+--
+
+CREATE TABLE `students` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `studentid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`id`, `name`, `studentid`, `created_at`, `updated_at`) VALUES
+(1, 'Kalam', '12345', '2018-11-05 22:43:17', '2018-11-06 02:25:28'),
+(2, 'Jamal', '23452435', '2018-11-05 22:43:26', '2018-11-06 02:25:35'),
+(3, 'Rohim', '2354234', '2018-11-05 22:43:36', '2018-11-06 02:25:41'),
+(4, 'duruliu72', '112341', '2018-11-13 18:00:00', NULL),
+(5, 'fjhgfh', '64654', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subjectcodes`
 --
 
@@ -873,6 +991,40 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Rinku', 'rinku@gmail.com', NULL, '$2y$10$aoIgz2t6tzR4aBO2EPzfROLL45DnOLPCS.yFHf37MGnxWXi612OSm', 'DqibxPSfl0A8WR2ITu9U0E7PvClmnkFCYZRQRuENp1WkFq2eklUwx4cSy6W6', '2018-11-06 05:34:12', '2018-11-06 05:34:12'),
+(2, 'Admin', 'admin@gmail.com', NULL, '$2y$10$O76.ADcENaN6SBnHXkPj5O/OQR3mQd77zzQGkRuiCuwHTmbb4BXqC', 'Jpx8I1BUMup9ZOAa70daDAF6FT3O2LFza5ab85EHh3qApvie52idhmaaAI6R', '2018-11-06 21:36:51', '2018-11-06 21:36:51'),
+(3, 'Teacher', 'teacher@gmail.com', NULL, '$2y$10$pDiyK6p9lBZFk5XKDI5OnOG3lVrBudxCP68p2YY6fHirrBnJ05bq2', 'syIxXFuVtZswOBZ1nwrleTwGXHInYw08UBaRgkNkgkHHVYTlNTEEcSpr5swz', '2018-11-06 21:37:36', '2018-11-06 21:37:36'),
+(4, 'Office Assistant', 'assistant@gmail.com', NULL, '$2y$10$zluatAlikAQAxm5RconKFOHzc2eCTIdooO.kHGNiWhro49WUXfEYi', '0QieBqKQfvUF2hqBve3LgmbeBKPA6CvVuBz5QAtnKpyKqwupIPzxyw2CZzgq', '2018-11-06 21:41:42', '2018-11-06 21:41:42'),
+(5, 'cordinator', 'cordinator@gmail.com', NULL, '$2y$10$aojL6UzXscfDd6/slyeCJOYJrEamXKbPM7nvA1jspH3GqK8oB6/Ua', 'FnlNUddCZONNySRmu7CNYNigH7Pnc2eE2FttxsOLOZwvjKeXul9EwyHXXDkV', '2018-11-06 21:42:49', '2018-11-06 21:42:49'),
+(6, 'student', 'student@gmail.com', NULL, '$2y$10$4eKZy0zQbsdaLShw0ppG9uCW0Sw5/E7oOxeTyGxME/or9mzeESktW', 'rg6IWrGaZfpCwZ6It2bbPuYw89G5ee9oezOcYbpgHZAqXyebLjLeurRUy4wn', '2018-11-06 21:45:06', '2018-11-06 21:45:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_role`
+--
+
+CREATE TABLE `user_role` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_role`
+--
+
+INSERT INTO `user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, NULL, NULL),
+(2, 2, 2, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -981,6 +1133,12 @@ ALTER TABLE `mediums`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `menus`
+--
+ALTER TABLE `menus`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -1023,6 +1181,12 @@ ALTER TABLE `program_levels`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sectionoffer`
 --
 ALTER TABLE `sectionoffer`
@@ -1047,6 +1211,12 @@ ALTER TABLE `shifts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `students`
+--
+ALTER TABLE `students`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `subjectcodes`
 --
 ALTER TABLE `subjectcodes`
@@ -1064,6 +1234,12 @@ ALTER TABLE `thanas`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Indexes for table `user_role`
+--
+ALTER TABLE `user_role`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1097,7 +1273,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `districts`
@@ -1115,13 +1291,13 @@ ALTER TABLE `divisions`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `employeetypes`
 --
 ALTER TABLE `employeetypes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `emp_designation`
@@ -1172,10 +1348,16 @@ ALTER TABLE `mediums`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `menus`
+--
+ALTER TABLE `menus`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `postoffices`
@@ -1208,6 +1390,12 @@ ALTER TABLE `program_levels`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `sectionoffer`
 --
 ALTER TABLE `sectionoffer`
@@ -1232,6 +1420,12 @@ ALTER TABLE `shifts`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `students`
+--
+ALTER TABLE `students`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `subjectcodes`
 --
 ALTER TABLE `subjectcodes`
@@ -1247,7 +1441,13 @@ ALTER TABLE `thanas`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `user_role`
+--
+ALTER TABLE `user_role`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

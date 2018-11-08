@@ -5,8 +5,8 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="">
-				<h4>All Employee</h4>
-				<a href="{{URL::to('/employee')}}/{{'create'}}">New</a>
+				<h4>All Role</h4>
+				<a href="{{URL::to('/role')}}/{{'create'}}">New</a>
 			</div>
 		</div>
 	</div>
@@ -18,21 +18,17 @@
 					<thead>
 						<tr>
 							<th>Sl No.</th>
-							<th>Name</th>
-							<th>Employee ID</th>
-							<th>Emplyee Type</th>
+							<th>Role</th>
 							<th>Action</th>
 						</tr>
 					</thead>
-					<tbody id="datalist">
+					 <tbody id="datalist">
 						@foreach($result as $aObj)
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
-							<td>{{$aObj->employeeid}}</td>
-							<td>{{$aObj->employeeType}}</td>
 							<td> 
-								<a href="{{URL::to('/employee')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
+								<a href="{{URL::to('/role')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>
@@ -45,7 +41,7 @@
 							</td>
 						</tr>
 						@endforeach
-					</tbody>
+					</tbody> 
 				</table>
 			</div>
 		</div>
