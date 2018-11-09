@@ -12,28 +12,39 @@ class DivisionController extends Controller
     public function index()
     {
     	$result=Division::all();
-        $data=Role::getAccessStatus();
-        return view('institutesettings.division.index',['result'=>$result,'data'=>$data]);
+        $accessStatus=Role::getAccessStatus();
+        return view('institutesettings.division.index',['result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
-    	return view('institutesettings.division.create');
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[2]==1){
+            return view('institutesettings.division.create');
+        }else{
+            return redirect('division');
+        }
+    	
     }
     public function store(Request $request){
-        $aObj=new Division();
-        $aObj->name=$request->name;
-        $aObj->save();
+        $aBean=new Division();
+        $aBean->name=$request->name;
+        $aBean->save();
         return redirect('division');
     }
     public function edit($id)
     {
-         $aObj=Division::findOrfail($id);
-         return view('institutesettings.division.edit',['bean'=>$aObj]);
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[4]==1){
+         $aBean=Division::findOrfail($id);
+        return view('institutesettings.division.edit',['bean'=>$aBean]);
+      }else{
+        return redirect('division');
+      }
     }
-     public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $aObj=Division::findOrfail($id);
-        $aObj->name=$request->name;
-        $aObj->update();
+        $aBean=Division::findOrfail($id);
+        $aBean->name=$request->name;
+        $aBean->update();
         return redirect('division');
     }
 }

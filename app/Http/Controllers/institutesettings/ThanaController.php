@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-
+use App\Role;
 use App\institutesettings\District;
 use App\institutesettings\Thana;
 use Illuminate\Http\Request;
@@ -11,36 +11,51 @@ class ThanaController extends Controller
 {
    public function index()
     {
+        $accessStatus=Role::getAccessStatus();
         $result=\DB::table('thanas')
         ->join('districts','thanas.districtid','=','districts.id')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('thanas.*','divisions.name as divisionName','districts.name as districtName')->get();
-        // dd($result);
-        return view('institutesettings.thana.index',['result'=>$result]);
+        return view('institutesettings.thana.index',['result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
-        $divisions=\DB::table('divisions')->get();
-        return view('institutesettings.thana.create',['divisions'=>$divisions]);
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[2]==1){
+            $divisions=\DB::table('divisions')->get();
+            return view('institutesettings.thana.create',['divisions'=>$divisions]);
+        }else{
+            return redirect('thana');
+        }
+        
     }
     public function store(Request $request){
-        $aObj=new Thana();
-        $aObj->name=$request->name;
-        $aObj->districtid=$request->districtid;
-        $aObj->save();
+        $aBean=new Thana();
+        $aBean->name=$request->name;
+        $aBean->districtid=$request->districtid;
+        $aBean->save();
         return redirect('thana');
     }
     public function edit($id)
     {
-         $aObj=District::findOrfail($id);
-         $divisions=\DB::table('divisions')->get();
-         return view('institutesettings.district.edit',['bean'=>$aObj,'divisions'=>$divisions]);
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[4]==1){
+             $aBean=District::findOrfail($id);
+             $divisions=\DB::table('divisions')->get();
+             $districts=\DB::table('districts')
+             ->where('districts.divisionid','=',$aBean->divisionid)
+             ->get();
+             return view('institutesettings.thana.edit',['bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts]);
+        }else{
+            return redirect('thana');
+        }
+        
     }
      public function update(Request $request, $id)
     {
-        $aObj=District::findOrfail($id);
-        $aObj->name=$request->name;
-        $aObj->divisionid=$request->divisionid;
-        $aObj->update();
-        return redirect('district');
+        $aBean=District::findOrfail($id);
+        $aBean->name=$request->name;
+        $aBean->divisionid=$request->divisionid;
+        $aBean->update();
+        return redirect('thana');
     }
 }

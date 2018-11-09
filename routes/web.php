@@ -29,7 +29,7 @@ Route::resource('institutetype', 'institutesettings\InstituteTypeController');
 Route::resource('institutecategory', 'institutesettings\InstituteCategoryController');
 Route::resource('institutesubcategory', 'institutesettings\InstituteSubCategoryController');
 Route::resource('institute', 'institutesettings\InstituteController');
-Route::resource('unit', 'institutesettings\BranchController');
+Route::resource('unit', 'institutesettings\UnitController');
 
 // General Settings
 Route::resource('session', 'settings\SessionController');

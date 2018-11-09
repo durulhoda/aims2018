@@ -32,7 +32,7 @@
 							<td>{{$aObj->districtName}}</td>
 							<td>{{$aObj->name}}</td>
 							<td> 
-								<a href="{{URL::to('/district')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
+								<a href="{{URL::to('/thana')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>

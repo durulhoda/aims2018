@@ -6,7 +6,7 @@
 		<div class="col-lg-12">
 			<div class="">
 				<h4>All Division</h4>
-				@if($data[2]==1)
+				@if($accessStatus[2]==1)
 					<a href="{{URL::to('/division')}}/{{'create'}}">New</a>
 				@endif
 			</div>
@@ -21,10 +21,10 @@
 						<tr>
 							<th>Sl No.</th>
 							<th>Division Name</th>
-							@if($data[4]==1)
+							@if($accessStatus[4]==1)
 							<th width="10px">Edit</th>
 							@endif
-							@if($data[8]==1)
+							@if($accessStatus[8]==1)
 							<th width="10px">Del</th>
 							@endif
 						</tr>
@@ -34,7 +34,7 @@
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
-							@if($data[4]==1)
+							@if($accessStatus[4]==1)
 							<td> 
 								<a href="{{URL::to('/division')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
@@ -43,7 +43,7 @@
 								</a>
 							</td>
 								@endif
-								@if($data[8]==1)
+								@if($accessStatus[8]==1)
 							<td>
 								<a href="" class="tooltip-error" data-rel="tooltip" title="Delete">
 									<span class="red">

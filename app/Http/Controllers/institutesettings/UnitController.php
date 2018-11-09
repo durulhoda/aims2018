@@ -1,21 +1,29 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
+use App\Role;
 use App\institutesettings\Branch;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BranchController extends Controller
+class UnitController extends Controller
 {
     public function index(){
+        $accessStatus=Role::getAccessStatus();
      	$result=\DB::table('branches')
         ->join('institute','branches.instituteid','=','institute.id')
         ->select('branches.*','institute.name as instituteName')->get();
-        return view('institutesettings.branch.index',['result'=>$result]);
+        return view('institutesettings.unit.index',['result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
-    	$institutes=\DB::table('institute')->get();
-    	return view('institutesettings.branch.create',['institutes'=>$institutes]);
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[2]==1){
+            $institutes=\DB::table('institute')->get();
+            return view('institutesettings.unit.create',['institutes'=>$institutes]);
+        }else{
+            return redirect('unit');
+        }
+    	
     }
     public function store(Request $request){
     	$aBean=new Branch();
@@ -23,12 +31,17 @@ class BranchController extends Controller
         $aBean->code=$request->code;
         $aBean->instituteid=$request->instituteid;
         $aBean->save();
-        return redirect('branch');
+        return redirect('unit');
     }
     public function edit($id){
-    	$aBean=Branch::findOrfail($id);
-        $institutes=\DB::table('institute')->get();
-        return view('institutesettings.branch.edit',['bean'=>$aBean,'institutes'=>$institutes]);
+          $accessStatus=Role::getAccessStatus();
+        if($accessStatus[4]==1){
+           $aBean=Branch::findOrfail($id);
+           $institutes=\DB::table('institute')->get();
+           return view('institutesettings.unit.edit',['bean'=>$aBean,'institutes'=>$institutes]);
+        }else{
+            return redirect('unit');
+        }
     }
     public function update(Request $request, $id){
     	$aBean=Branch::findOrfail($id);
@@ -36,6 +49,6 @@ class BranchController extends Controller
         $aBean->code=$request->code;
         $aBean->instituteid=$request->instituteid;
         $aBean->update();
-        return redirect('branch');
+        return redirect('unit');
     }
 }

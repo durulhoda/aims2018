@@ -6,7 +6,7 @@
 		<div class="col-lg-12">
 			<div class="">
 				<h4>All Codes</h4>
-				<a href="{{URL::to('/branch')}}/{{'create'}}">New</a>
+				<a href="{{URL::to('/unit')}}/{{'create'}}">New</a>
 			</div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 							<td>{{$aObj->name}}</td>
 							<td>{{$aObj->code}}</td>
 							<td> 
-								<a href="{{URL::to('/branch')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
+								<a href="{{URL::to('/unit')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>

@@ -6,14 +6,14 @@
  		<div class="col-lg-12">
  			<div class="">
  				<h4>Edit Code</h4>
- 				<a href="{{URL::to('/branch')}}">All</a>
+ 				<a href="{{URL::to('/unit')}}">All</a>
  			</div>
  		</div>
  	</div>
  	<!--overview start-->
  	<div class="row">
  		<div class="col-lg-12">
- 			<form action="{{URL::to('branch')}}/{{$bean->id}}" method="POST">
+ 			<form action="{{URL::to('unit')}}/{{$bean->id}}" method="POST">
  				@method('PUT')
  				{{csrf_field()}}
  				<div class="row">

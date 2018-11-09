@@ -70,3 +70,11 @@ sprintf(), using %b, %032b or %064b as the format
 
 
 https://wedevs.com/about-us/
+
+
+
+if($accessStatus[2]==1){
+
+        }else{
+
+        }
