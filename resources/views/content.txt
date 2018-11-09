@@ -67,3 +67,6 @@ dechex() - Decimal to hexadecimal
 base_convert() - Convert a number between arbitrary bases
 printf() - Output a formatted string, using %b, %032b or %064b as the format
 sprintf(), using %b, %032b or %064b as the format
+
+
+https://wedevs.com/about-us/

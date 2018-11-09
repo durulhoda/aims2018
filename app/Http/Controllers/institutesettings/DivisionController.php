@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\institutesettings;
 
 use App\institutesettings\Division;
+use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -10,13 +11,9 @@ class DivisionController extends Controller
 {
     public function index()
     {
-        // $id = \Auth::id();
-        // $accesspower=\DB::table('users')
-        // ->select('users.*')
-        // ->where('users.id','=',$id)
-        // ->get()[0]->accesspower;
     	$result=Division::all();
-        return view('institutesettings.division.index',['result'=>$result]);
+        $data=Role::getAccessStatus();
+        return view('institutesettings.division.index',['result'=>$result,'data'=>$data]);
     }
     public function create(){
     	return view('institutesettings.division.create');

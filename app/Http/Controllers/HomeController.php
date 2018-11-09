@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
-use App\UserRole;
-
+use App\Role;
 class HomeController extends Controller
 {
 /**
@@ -25,12 +23,8 @@ public function __construct()
  */
 public function index()
 {
-	$user = Auth::user()->id;
-
-	$role = UserRole::where('user_id',$user)->select('role_id')->first();
-	
-	// dd($role->role_id);
-
-    return view('home');
+	$data=Role::getAccessStatus();
+    return view('home',['data'=>$data]);
 }
+
 }
