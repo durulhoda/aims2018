@@ -39,7 +39,12 @@ class ThanaController extends Controller
     {
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
-             $aBean=District::findOrfail($id);
+             $result=\DB::table('thanas')
+            ->join('districts','thanas.districtid','=','districts.id')
+            ->join('divisions','districts.divisionid','=','divisions.id')
+            ->where('thanas.id','=',$id)
+            ->select('thanas.*','divisions.id as divisionid')->get();
+             $aBean=$result[0];
              $divisions=\DB::table('divisions')->get();
              $districts=\DB::table('districts')
              ->where('districts.divisionid','=',$aBean->divisionid)
@@ -52,9 +57,9 @@ class ThanaController extends Controller
     }
      public function update(Request $request, $id)
     {
-        $aBean=District::findOrfail($id);
+        $aBean=Thana::findOrfail($id);
         $aBean->name=$request->name;
-        $aBean->divisionid=$request->divisionid;
+        $aBean->districtid=$request->districtid;
         $aBean->update();
         return redirect('thana');
     }

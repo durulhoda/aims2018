@@ -3,45 +3,58 @@
 namespace App\Http\Controllers\studentsettings;
 
 use Illuminate\Http\Request;
+use App\Role;
 use App\Http\Controllers\Controller;
 use App\settings\ProgramLevel;
 use App\settings\Program;
 class ApplicantController extends Controller
 {
-    public function index()
+	public function index()
 	{
-		// SELECT programs.*,program_levels.programLevel from programs join program_levels ON programs.programLevelid=program_levels.id
+		$accessStatus=Role::getAccessStatus();
 		$result=\DB::table('programs')->join('program_levels','programs.programLevelid','=','program_levels.id')->select('programs.*', 'program_levels.programLevel')
 		->get();
-		return view('studentsettings.applicant.index',['result'=>$result]);
+		return view('studentsettings.applicant.index',['result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create()
 	{
-		$allLevel=ProgramLevel::all();
-		return view('studentsettings.applicant.create',compact('allLevel'));
+		$accessStatus=Role::getAccessStatus();
+		if($accessStatus[2]==1){
+			$allLevel=ProgramLevel::all();
+			return view('studentsettings.applicant.create',compact('allLevel'));
+		}else{
+			return redirect('program');
+		}
+		
 	}
 	public function store(Request $request)
 	{ 
-		$aObj=new Program();
-		$aObj->programName=$request->programName;
-		$aObj->programLevelid=$request->programLevelid;
-		$aObj->classId=$request->classId;
-		$aObj->save();
+		$aBean=new Program();
+		$aBean->programName=$request->programName;
+		$aBean->programLevelid=$request->programLevelid;
+		$aBean->classId=$request->classId;
+		$aBean->save();
 		return redirect('program');
 	}
 	public function edit($id)
-    {
-    	 $allLevel=ProgramLevel::all();
-    	 $aObj=Program::findOrfail($id);
-         return view('settings.program.edit',['bean'=>$aObj,'allLevel'=>$allLevel]);
-    }
-    public function update(Request $request, $id)
-    {
-    	$aObj=Program::findOrfail($id);
-    	$aObj->programName=$request->programName;
-		$aObj->programLevelid=$request->programLevelid;
-		$aObj->classId=$request->classId;
-		$aObj->update();
+	{
+		$accessStatus=Role::getAccessStatus();
+		if($accessStatus[4]==1){
+			$allLevel=ProgramLevel::all();
+			$aBean=Program::findOrfail($id);
+			return view('settings.program.edit',['bean'=>$aBean,'allLevel'=>$allLevel]);
+		}else{
+			return redirect('program');
+		}
+
+	}
+	public function update(Request $request, $id)
+	{
+		$aBean=Program::findOrfail($id);
+		$aBean->programName=$request->programName;
+		$aBean->programLevelid=$request->programLevelid;
+		$aBean->classId=$request->classId;
+		$aBean->update();
 		return redirect('program');
-    }
+	}
 }

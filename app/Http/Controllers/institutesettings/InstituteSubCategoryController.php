@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
+use App\Role;
 use App\institutesettings\InstituteSubCatagory;
 use App\institutesettings\InstituteCatagory;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ class InstituteSubCategoryController extends Controller
 {
    public function index()
     {
+        $accessStatus=Role::getAccessStatus();
         $result=\DB::table('institutesubcategory')
         ->join('institutecategory','institutesubcategory.categoryid','=','institutecategory.id')
         ->select('institutesubcategory.*','institutecategory.name As categoryName')
@@ -17,8 +19,14 @@ class InstituteSubCategoryController extends Controller
         return view('institutesettings.institutesubcategory.index',['result'=>$result]);
     }
     public function create(){
-        $categories=InstituteCatagory::all();
-        return view('institutesettings.institutesubcategory.create',['categories'=>$categories]);
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[2]==1){
+           $categories=InstituteCatagory::all();
+           return view('institutesettings.institutesubcategory.create',['categories'=>$categories]);
+        }else{
+           return redirect('institutesubcategory'); 
+        }
+       
     }
     public function store(Request $request){
         $aBean=new InstituteSubCatagory();
@@ -29,9 +37,15 @@ class InstituteSubCategoryController extends Controller
     }
     public function edit($id)
     {
-         $categories=InstituteCatagory::all();
-         $aBean=InstituteSubCatagory::findOrfail($id);
-         return view('institutesettings.institutesubcategory.edit',['bean'=>$aBean,'categories'=>$categories]);
+         $accessStatus=Role::getAccessStatus();
+         if($accessStatus[4]==1){
+            $categories=InstituteCatagory::all();
+            $aBean=InstituteSubCatagory::findOrfail($id);
+            return view('institutesettings.institutesubcategory.edit',['bean'=>$aBean,'categories'=>$categories]);
+         }else{
+            return redirect('institutesubcategory');
+         }
+         
     }
      public function update(Request $request, $id)
     {

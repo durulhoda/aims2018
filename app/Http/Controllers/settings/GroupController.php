@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\settings;
+use App\Role;
 use App\Http\Controllers\Controller;
 use App\settings\ProgramLevel;
 use Illuminate\Http\Request;
@@ -8,13 +9,20 @@ use App\settings\Group;
 class GroupController extends Controller
 {
 	public function index(){
+		$accessStatus=Role::getAccessStatus();
 		$result=\DB::table('groups')
 		->join('programlevels','groups.programLevelid','=','programlevels.id')->select('groups.*','programlevels.name as levelName')->get();
-		return view('settings.group.index',['result'=>$result]);
+		return view('settings.group.index',['result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create(){
-		$levels=ProgramLevel::all();
-		return view('settings.group.create',compact('levels'));
+		$accessStatus=Role::getAccessStatus();
+		if($accessStatus[2]==1){
+			$levels=ProgramLevel::all();
+			return view('settings.group.create',compact('levels'));
+		}else{
+			return redirect('group');
+		}
+		
 	}
 	public function store(Request $request){
 		$aObj=new Group();
@@ -25,9 +33,15 @@ class GroupController extends Controller
 	}
 	public function edit($id)
 	{	
-		$levels=ProgramLevel::all();
-		$aObj=Group::findOrfail($id);
-		return view('settings.group.edit',['bean'=>$aObj,'levels'=>$levels]);
+		$accessStatus=Role::getAccessStatus();
+		if($accessStatus[4]==1){
+			$levels=ProgramLevel::all();
+			$aObj=Group::findOrfail($id);
+			return view('settings.group.edit',['bean'=>$aObj,'levels'=>$levels]);
+		}else{
+			return redirect('group');
+		}
+		
 	}
 	 public function update(Request $request, $id)
     {

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\settings;
-
+use App\Role;
 use App\settings\ProgramLevel;
 use App\settings\Program;
 use App\settings\Medium;
@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 class ProgramOfferController extends Controller
 {
   public function index(){
+    $accessStatus=Role::getAccessStatus();
     $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.name as groupName,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
       INNER JOIN sessions ON programoffer.sessionid=sessions.id
       INNER JOIN programs ON programoffer.programid=programs.id
@@ -22,15 +23,21 @@ class ProgramOfferController extends Controller
       INNER JOIN programlevels ON groups.programLevelid=programlevels.id
       INNER JOIN mediums ON programoffer.mediumid=mediums.id
       INNER JOIN shifts ON programoffer.shiftid=shifts.id');
-    return view('settings.programoffer.index',['result'=>$result]);
+    return view('settings.programoffer.index',['result'=>$result,'accessStatus'=>$accessStatus]);
   }
   public function create(){
-    $sessions=Session::all();
-    $levels=ProgramLevel::all();
-    $mediums=Medium::all();
-    $shifts=Shift::all();
-    $msg="";
-    return view('settings.programoffer.create',['sessions'=>$sessions,'levels'=>$levels,'mediums'=>$mediums,'shifts'=>$shifts]);
+    $accessStatus=Role::getAccessStatus();
+    if($accessStatus[2]==1){
+        $sessions=Session::all();
+        $levels=ProgramLevel::all();
+        $mediums=Medium::all();
+        $shifts=Shift::all();
+        $msg="";
+        return view('settings.programoffer.create',['sessions'=>$sessions,'levels'=>$levels,'mediums'=>$mediums,'shifts'=>$shifts]);
+    }else{
+      return redirect('programoffer');
+    }
+    
   }
   public function store(Request $request){
     $aBean=new ProgramOffer();
@@ -52,7 +59,9 @@ class ProgramOfferController extends Controller
  }
  public function edit($id)
  {
-   $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.id as groupid,groups.name as groupName,programlevels.id As programLevelid,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
+   $accessStatus=Role::getAccessStatus();
+   if($accessStatus[4]==1){
+       $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.id as groupid,groups.name as groupName,programlevels.id As programLevelid,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
     INNER JOIN sessions ON programoffer.sessionid=sessions.id
     INNER JOIN programs ON programoffer.programid=programs.id
     INNER JOIN groups ON programs.groupid=groups.id
@@ -69,6 +78,10 @@ class ProgramOfferController extends Controller
    $mediums=Medium::all();
     $shifts=Shift::all();
    return view('settings.programoffer.edit',['bean'=>$aBean,'sessions'=>$sessions,'levels'=>$levels,'groups'=>$groups,'programs'=>$programs,'mediums'=>$mediums,'shifts'=>$shifts]);
+   }else{
+      return redirect('programoffer');
+   }
+  
  }
  public function update(Request $request, $id)
  {

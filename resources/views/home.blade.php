@@ -8,7 +8,7 @@
                  <h4>{{ session('status') }}</h4>
             </div>
             @endif
-           @if($data[1]==1)
+           @if($accessStatus[1]==1)
             <h4>Welcome !</h4>
            @endif
         </div>

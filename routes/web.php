@@ -72,5 +72,5 @@ Route::get('/getunion/','AjaxController@getUnionbyThana');
 
 // Menu Settings
 Route::resource('menu', 'menusettings\MenuController');
-Route::get('/asdfasdf','MenuController@getAll')->middleware('auth');
+Route::resource('rolemenu','menusettings\RoleMenuController');
 

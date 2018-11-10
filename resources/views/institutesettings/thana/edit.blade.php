@@ -20,7 +20,6 @@
  					<div class="col-xs-10 col-sm-4">
  						<label class="control-label" for="divisionid">Division  &nbsp; </label>
  						<select onchange="getDistbydivision()" name="divisionid" required="1" class="form-control" id="divisionid">
- 							<option value="">Select</option>
  							@foreach($divisions as $aObj)
  							@if($bean->divisionid==$aObj->id)
  								<option selected="" value="{{$aObj->id}}">{{$aObj->name}}</option>
@@ -34,7 +33,7 @@
  						<select name="districtid" required="1" class="form-control" id="districtid">
  							@foreach($districts as $aObj)
  							@if($aObj->id==$bean->districtid)
- 							<option selected="" value="{{$aObj->id}}">{{$aObj->name}}</option>
+ 							<option selected value="{{$aObj->id}}">{{$aObj->name}}</option>
  							@else
  							<option value="{{$aObj->id}}">{{$aObj->name}}</option>
  							@endif
@@ -46,7 +45,7 @@
  						<input type="text" class="form-control" id="name" name="name" value="{{$bean->name}}">
  					</div>
  				</div>
- 				<button type="submit" class="btn btn-default">Save</button>
+ 				<button type="submit" class="btn btn-default">Update</button>
  			</form>
  		</div>
  	</div>

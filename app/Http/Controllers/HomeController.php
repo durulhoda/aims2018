@@ -23,8 +23,8 @@ public function __construct()
  */
 public function index()
 {
-	$data=Role::getAccessStatus();
-    return view('home',['data'=>$data]);
+	$accessStatus=Role::getAccessStatus();
+    return view('home',['accessStatus'=>$accessStatus]);
 }
 
 }

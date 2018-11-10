@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\settings;
+use App\Role;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -11,17 +12,24 @@ class ProgramController extends Controller
 {
 	public function index()
 	{
+		$accessStatus=Role::getAccessStatus();
 		$result=\DB::table('programs')
 		->join('groups','programs.groupid','=','groups.id')
 		->join('programlevels','groups.programLevelid','=','programlevels.id')
 		->select('programs.*', 'programlevels.name as lavelName','groups.name as groupName')
 		->get();
-		return view('settings.program.index',['result'=>$result]);
+		return view('settings.program.index',['result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create()
 	{
-		$levels=ProgramLevel::all();
-		return view('settings.program.create',compact('levels'));
+		$accessStatus=Role::getAccessStatus();
+		if($accessStatus[2]==1){
+			$levels=ProgramLevel::all();
+			return view('settings.program.create',compact('levels'));
+		}else{
+			return redirect('program');
+		}
+		
 	}
 	public function store(Request $request)
 	{ 
@@ -33,17 +41,23 @@ class ProgramController extends Controller
 	}
 	public function edit($id)
     {
-    	 $levels=ProgramLevel::all();
-    	 $aBean=\DB::table('programs')
-    	 ->join('programlevels','programs.groupid','=','programlevels.id')
-    	 ->select('programs.*','programlevels.id as programLevelid')
-    	 ->where('programs.id',$id)
-    	 ->first();
-    	 $groups=\DB::table('groups')
-    	 ->select('groups.*')
-    	 ->where('groups.programLevelid',$aBean->programLevelid)
-    	 ->get();
-         return view('settings.program.edit',['bean'=>$aBean,'levels'=>$levels,'groups'=>$groups]);
+    	$accessStatus=Role::getAccessStatus();
+    	if($accessStatus[4]==1){
+    		 $levels=ProgramLevel::all();
+	    	 $aBean=\DB::table('programs')
+	    	 ->join('programlevels','programs.groupid','=','programlevels.id')
+	    	 ->select('programs.*','programlevels.id as programLevelid')
+	    	 ->where('programs.id',$id)
+	    	 ->first();
+	    	 $groups=\DB::table('groups')
+	    	 ->select('groups.*')
+	    	 ->where('groups.programLevelid',$aBean->programLevelid)
+	    	 ->get();
+	         return view('settings.program.edit',['bean'=>$aBean,'levels'=>$levels,'groups'=>$groups]);
+    	}else{
+    		return redirect('program');
+    	}
+    	
     }
     public function update(Request $request, $id)
     {

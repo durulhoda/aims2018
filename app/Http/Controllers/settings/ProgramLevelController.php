@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\settings;
+use App\Role;
 use App\Http\Controllers\Controller;
 
 use App\settings\ProgramLevel;
@@ -8,86 +9,49 @@ use Illuminate\Http\Request;
 
 class ProgramLevelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        $accessStatus=Role::getAccessStatus();
         $result=ProgramLevel::all();
-        return view('settings.programLevle.index',compact('result'));
+        return view('settings.programLevle.index',compact('result','accessStatus'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('settings.programLevle.create');
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[2]==1){
+             return view('settings.programLevle.create');
+        }else{
+             return redirect('programLevel');
+        }
+       
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
-        $aObj=new ProgramLevel();
-        $aObj->name=$request->name;
-        $aObj->save();
+        $aBean=new ProgramLevel();
+        $aBean->name=$request->name;
+        $aBean->save();
         return redirect('programLevel');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\settings\ProgramLevel  $programLevel
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProgramLevel $programLevel)
+    public function edit($id)
     {
-        //
+        $accessStatus=Role::getAccessStatus();
+        $aBean=ProgramLevel::findOrfail($id);
+        if($accessStatus[4]==1){
+            return view('settings.programLevle.edit',['bean'=>$aBean]);
+        }else{
+            return redirect('programLevel');
+        }
+       
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\settings\ProgramLevel  $programLevel
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ProgramLevel $programLevel)
+    public function update(Request $request,$id)
     {
-        return view('settings.programLevle.edit',['bean'=>$programLevel]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\settings\ProgramLevel  $programLevel
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ProgramLevel $programLevel)
-    {
-        $programLevel = ProgramLevel::findOrfail($programLevel->id);
-        $programLevel->name=$request->name;
-        $programLevel->update();
+        $aBean = aBean::findOrfail($id);
+        $aBean->name=$request->name;
+        $aBean->update();
         return redirect('programLevel');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\settings\ProgramLevel  $programLevel
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProgramLevel $programLevel)
-    {
-        //
     }
 }

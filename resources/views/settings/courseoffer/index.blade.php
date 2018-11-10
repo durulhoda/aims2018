@@ -6,7 +6,9 @@
 		<div class="col-lg-12">
 			<div class="">
 				<h4>All Course offer</h4>
-				<a href="{{URL::to('/courseoffer')}}/{{'create'}}">new</a>
+				@if($accessStatus[2]==1)
+					<a href="{{URL::to('/courseoffer')}}/{{'create'}}">New</a>
+				@endif
 			</div>
 		</div>
 	</div>
@@ -22,7 +24,12 @@
 							<th>Subject Code</th>
 							<th>Subject</th>
 							<th>Marks</th>
-							<th>Action</th>
+							@if($accessStatus[4]==1)
+							<th width="10px">Edit</th>
+							@endif
+							@if($accessStatus[8]==1)
+							<th width="10px">Del</th>
+							@endif
 						</tr>
 					</thead>
 					<tbody id="myTable">
@@ -33,18 +40,24 @@
 							<td>{{$aObj->subjectCode}}</td>
 							<td>{{$aObj->courseName}}</td>
 							<td>{{$aObj->marks}}</td>
+							@if($accessStatus[4]==1)
 							<td> 
 								<a href="{{URL::to('/courseoffer')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>
 								</a>
+							</td>
+							@endif
+							@if($accessStatus[8]==1)
+							<td>
 								<a href="" class="tooltip-error" data-rel="tooltip" title="Delete">
 									<span class="red">
 										<i class="ace-icon fa fa-trash-o bigger-120"></i>
 									</span>
 								</a>
 							</td>
+							@endif
 						</tr>
 						@endforeach
 					</tbody>

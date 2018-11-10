@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
+use App\Role;
 use App\institutesettings\Division;
 use App\institutesettings\LocalGov;
 use Illuminate\Http\Request;
@@ -10,17 +11,24 @@ class LocalGovController extends Controller
 {
     public function index()
     {
+        $accessStatus=Role::getAccessStatus();
     	$result=\DB::table('localgovs')
          ->join('thanas','localgovs.thanaid','=','thanas.id')
         ->join('districts','thanas.districtid','=','districts.id')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('localgovs.*','divisions.name as divisionName','districts.name as districtName','thanas.name as thanaName')
         ->get();
-        return view('institutesettings.localgov.index',['result'=>$result]);
+        return view('institutesettings.localgov.index',['result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
-    	 $divisions=\DB::table('divisions')->get();
-        return view('institutesettings.localgov.create',['divisions'=>$divisions]);
+         $accessStatus=Role::getAccessStatus();
+         if($accessStatus[2]==1){
+            $divisions=\DB::table('divisions')->get();
+            return view('institutesettings.localgov.create',['divisions'=>$divisions]);
+         }else{
+             return redirect('localgov');
+         }
+    	 
     }
     public function store(Request $request){
         $aBean=new LocalGov();
@@ -31,7 +39,9 @@ class LocalGovController extends Controller
     }
     public function edit($id)
     {
-        $result=\DB::table('localgovs')
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[4]==1){
+            $result=\DB::table('localgovs')
          ->join('thanas','localgovs.thanaid','=','thanas.id')
         ->join('districts','thanas.districtid','=','districts.id')
         ->join('divisions','districts.divisionid','=','divisions.id')
@@ -49,6 +59,10 @@ class LocalGovController extends Controller
          ->where('thanas.districtid','=',$aBean->districtid)
          ->get();
          return view('institutesettings.localgov.edit',['bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
+     }else{
+        return redirect('localgov');
+     }
+        
     }
     public function update(Request $request, $id)
     {

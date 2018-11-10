@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\settings;
+use App\Role;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -9,44 +10,56 @@ use App\settings\Section;
 class ShiftController extends Controller
 {
 	public function index(){
+		$accessStatus=Role::getAccessStatus();
 		$result=Shift::all();
-		foreach ($result as $aObj) {
-			$aObj->startTime=date("g:i a", strtotime($aObj->startTime));
-			$aObj->endTime=date("g:i a", strtotime($aObj->endTime));
+		foreach ($result as $aBean) {
+			$aBean->startTime=date("g:i a", strtotime($aBean->startTime));
+			$aBean->endTime=date("g:i a", strtotime($aBean->endTime));
 		}
-		return view('settings.shift.index',['result'=>$result]);
+		return view('settings.shift.index',['result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create(){
+		$accessStatus=Role::getAccessStatus();
+		if($accessStatus[2]==1){
+			return view('settings.shift.create');
+		}else{
+			return redirect('shift');
+		}
 		
-		return view('settings.shift.create');
 	}
 	public function store(Request $request){
-		$aObj=new Shift();
-		$aObj->name=$request->name;
-		$aObj->startTime=$request->startTime;
-		$aObj->endTime=$request->endTime;
-		$aObj->startTime=date("H:i", strtotime($aObj->startTime));
-		$aObj->endTime=date("H:i", strtotime($aObj->endTime));
-		echo $aObj->endTime;
-		$aObj->save();
+		$aBean=new Shift();
+		$aBean->name=$request->name;
+		$aBean->startTime=$request->startTime;
+		$aBean->endTime=$request->endTime;
+		$aBean->startTime=date("H:i", strtotime($aBean->startTime));
+		$aBean->endTime=date("H:i", strtotime($aBean->endTime));
+		echo $aBean->endTime;
+		$aBean->save();
 		return redirect('shift');
 	}
 	public function edit($id)
 	{
-		$aObj=Shift::findOrfail($id);
-		$aObj->startTime=date("g:i a", strtotime($aObj->startTime));
-		$aObj->endTime=date("g:i a", strtotime($aObj->endTime));
-		return view('settings.shift.edit',['bean'=>$aObj]);
+		$accessStatus=Role::getAccessStatus();
+		if($accessStatus[4]==1){
+			$aBean=Shift::findOrfail($id);
+			$aBean->startTime=date("g:i a", strtotime($aBean->startTime));
+			$aBean->endTime=date("g:i a", strtotime($aBean->endTime));
+			return view('settings.shift.edit',['bean'=>$aBean]);
+		}else{
+			return redirect('shift');
+		}
+		
 	}
-	 public function update(Request $request, $id)
-    {
-    	$aObj=Shift::findOrfail($id);
-    	$aObj->name=$request->name;
-		$aObj->startTime=$request->startTime;
-		$aObj->endTime=$request->endTime;
-		$aObj->startTime=date("H:i", strtotime($aObj->startTime));
-		$aObj->endTime=date("H:i", strtotime($aObj->endTime));
-		$aObj->update();
+	public function update(Request $request, $id)
+	{
+		$aBean=Shift::findOrfail($id);
+		$aBean->name=$request->name;
+		$aBean->startTime=$request->startTime;
+		$aBean->endTime=$request->endTime;
+		$aBean->startTime=date("H:i", strtotime($aBean->startTime));
+		$aBean->endTime=date("H:i", strtotime($aBean->endTime));
+		$aBean->update();
 		return redirect('shift');
-    }
+	}
 }

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\settings;
+
+use App\Role;
 use App\Http\Controllers\Controller;
 
 use App\settings\Course;
@@ -9,86 +11,46 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        $accessStatus=Role::getAccessStatus();
         $result=Course::all();
-        return view('settings.course.index',compact('result'));
+        return view('settings.course.index',compact('result','accessStatus'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('settings.course.create');
+        $accessStatus=Role::getAccessStatus();
+        if($accessStatus[2]==1){
+            return view('settings.course.create');
+        }else{
+            return redirect('course');
+        }
+        
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $aCourse=new Course();
-        $aCourse->name=$request->name;
-        $aCourse->save();
+        $aBean=new Course();
+        $aBean->name=$request->name;
+        $aBean->save();
         return redirect('course');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\settings\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Course $course)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\settings\Course  $course
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-         $aCourse = Course::findOrfail($id);
-         return view('settings.course.edit',['bean'=>$aCourse]);
+         $accessStatus=Role::getAccessStatus();
+         if($accessStatus[4]==1){
+            $aBean = Course::findOrfail($id);
+            return view('settings.course.edit',['bean'=>$aBean]);
+         }else{
+            return redirect('course');
+         }
+        
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\settings\Course  $course
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$id)
     {
-        $aCourse = Course::findOrfail($id);
-        $aCourse->name=$request->name;
-        $aCourse->update();
+        $aBean = Course::findOrfail($id);
+        $aBean->name=$request->name;
+        $aBean->update();
         return redirect('course');
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\settings\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Course $course)
-    {
-        //
     }
 }

@@ -72,9 +72,16 @@ sprintf(), using %b, %032b or %064b as the format
 https://wedevs.com/about-us/
 
 
-
+$accessStatus=Role::getAccessStatus();
 if($accessStatus[2]==1){
 
         }else{
 
         }
+
+
+
+        SELECT role_menu.role_id,role_menu.menu_id,roles.name as roleName,menus.name as menuName,menus.parentid FROM `role_menu`
+INNER JOIN menus on role_menu.menu_id=menus.id
+INNER JOIN roles on role_menu.role_id=roles.id
+WHERE roles.id=1
