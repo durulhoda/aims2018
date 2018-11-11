@@ -11,14 +11,16 @@ class DivisionController extends Controller
 {
     public function index()
     {
+        $dmenu=Role::getMenu();
     	$result=Division::all();
         $accessStatus=Role::getAccessStatus();
-        return view('institutesettings.division.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.division.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
-            return view('institutesettings.division.create');
+            $dmenu=Role::getMenu();
+            return view('institutesettings.division.create',['dmenu'=>$dmenu]);
         }else{
             return redirect('division');
         }
@@ -34,8 +36,9 @@ class DivisionController extends Controller
     {
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
+         $dmenu=Role::getMenu();
          $aBean=Division::findOrfail($id);
-        return view('institutesettings.division.edit',['bean'=>$aBean]);
+        return view('institutesettings.division.edit',['dmenu'=>$dmenu,'bean'=>$aBean]);
       }else{
         return redirect('division');
       }

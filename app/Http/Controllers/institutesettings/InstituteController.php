@@ -24,16 +24,17 @@ class InstituteController extends Controller
         ->select('institute.*','institutetype.name as typeName','institutecategory.name as categoryName','institutesubcategory.name as subcatName','thanas.name as thanaName','postoffices.name as postofficeName','localgovs.name as localgovsName')
         ->get();
 
-        return view('institutesettings.institute.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.institute.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
+            $dmenu=Role::getMenu();
             $instituteTypes=InstituteType::all();
             $instituteCategory=InstituteCatagory::all();
             $instituteSubCategory=InstituteSubCatagory::all();
             $divisions=\DB::table('divisions')->get();
-            return view('institutesettings.institute.create',['instituteTypes'=>$instituteTypes,'instituteCategory'=>$instituteCategory,'instituteSubCategory'=>$instituteSubCategory,'divisions'=>$divisions]);
+            return view('institutesettings.institute.create',['dmenu'=>$dmenu,'instituteTypes'=>$instituteTypes,'instituteCategory'=>$instituteCategory,'instituteSubCategory'=>$instituteSubCategory,'divisions'=>$divisions]);
         }else{
             return redirect('institute');
         }
@@ -57,6 +58,7 @@ class InstituteController extends Controller
     public function edit($id){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
+             $dmenu=Role::getMenu();
             $result=\DB::table('institute')
             ->join('institutetype','institute.institutetypeid','=','institutetype.id')
             ->join('institutecategory','institute.institutecategoryid','=','institutecategory.id')
@@ -89,7 +91,7 @@ class InstituteController extends Controller
              $localgovs=\DB::table('localgovs')
              ->where('localgovs.thanaid','=',$aBean->thanaid)
              ->get();
-            return view('institutesettings.institute.edit',['bean'=>$aBean,'instituteTypes'=>$instituteTypes,'instituteCategory'=>$instituteCategory,'instituteSubCategory'=>$instituteSubCategory,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas,'postoffices'=>$postoffices,'localgovs'=>$localgovs]);
+            return view('institutesettings.institute.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'instituteTypes'=>$instituteTypes,'instituteCategory'=>$instituteCategory,'instituteSubCategory'=>$instituteSubCategory,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas,'postoffices'=>$postoffices,'localgovs'=>$localgovs]);
         }else{
             return redirect('institute');
         }

@@ -11,18 +11,20 @@ class ThanaController extends Controller
 {
    public function index()
     {
+        $dmenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
         $result=\DB::table('thanas')
         ->join('districts','thanas.districtid','=','districts.id')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('thanas.*','divisions.name as divisionName','districts.name as districtName')->get();
-        return view('institutesettings.thana.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.thana.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
+            $dmenu=Role::getMenu();
             $divisions=\DB::table('divisions')->get();
-            return view('institutesettings.thana.create',['divisions'=>$divisions]);
+            return view('institutesettings.thana.create',['dmenu'=>$dmenu,'divisions'=>$divisions]);
         }else{
             return redirect('thana');
         }
@@ -39,6 +41,7 @@ class ThanaController extends Controller
     {
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
+            $dmenu=Role::getMenu();
              $result=\DB::table('thanas')
             ->join('districts','thanas.districtid','=','districts.id')
             ->join('divisions','districts.divisionid','=','divisions.id')
@@ -49,7 +52,7 @@ class ThanaController extends Controller
              $districts=\DB::table('districts')
              ->where('districts.divisionid','=',$aBean->divisionid)
              ->get();
-             return view('institutesettings.thana.edit',['bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts]);
+             return view('institutesettings.thana.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts]);
         }else{
             return redirect('thana');
         }

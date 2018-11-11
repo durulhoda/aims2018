@@ -11,18 +11,20 @@ class DistrictController extends Controller
 {
    public function index()
     {
+         $dmenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
     	$result=\DB::table('districts')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('districts.*','divisions.name as divisionName')->get();
-        return view('institutesettings.district.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.district.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
 
          $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
+             $dmenu=Role::getMenu();
             $divisions=\DB::table('divisions')->get();
-            return view('institutesettings.district.create',['divisions'=>$divisions]);
+            return view('institutesettings.district.create',['dmenu'=>$dmenu,'divisions'=>$divisions]);
         }else{
             return redirect('district');
         }
@@ -38,9 +40,10 @@ class DistrictController extends Controller
     {
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
+         $dmenu=Role::getMenu();
          $aBean=District::findOrfail($id);
          $divisions=\DB::table('divisions')->get();
-         return view('institutesettings.district.edit',['bean'=>$aBean,'divisions'=>$divisions]);
+         return view('institutesettings.district.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'divisions'=>$divisions]);
         }else{
             return redirect('district');
         }

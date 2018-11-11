@@ -7,14 +7,17 @@ use Illuminate\Http\Request;
 class RoleController extends Controller
 {
     public function index(){
+         $dmenu=Role::getMenu();
        $accessStatus=Role::getAccessStatus();
        $result=Role::all();
-       return view('roleconfig.role.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+       return view('roleconfig.role.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){
     $accessStatus=Role::getAccessStatus();
+    // dd($accessStatus);
     if($accessStatus[2]==1){
-        return view('roleconfig.role.create');
+        $dmenu=Role::getMenu();
+        return view('roleconfig.role.create',['dmenu'=>$dmenu,'accessStatus'=>$accessStatus]);
     }else{
        return redirect('role');
    }
@@ -46,6 +49,7 @@ public function store(Request $request){
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[2]==1){
+        $dmenu=Role::getMenu();
         $aBean=Role::findOrfail($id);
         $accesspowers=$aBean->accesspower;
         $bina=base_convert($accesspowers,10,2);
@@ -61,7 +65,7 @@ public function edit($id){
        $m=$m*2;
        $bina=$bina/10;
    }
-   return view('roleconfig.role.edit',['bean'=>$aBean,'access'=>$access]);
+   return view('roleconfig.role.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'access'=>$access]);
 }else{
 
 }

@@ -8,14 +8,16 @@ use App\employee\EmployeeDesignation;
 class EmployeeDesignationController extends Controller
 {
 	public function index(){
+		$dmenu=Role::getMenu();
 		$accessStatus=Role::getAccessStatus();
 		$result=EmployeeDesignation::all();
-		return view('employeesettings.designation.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+		return view('employeesettings.designation.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create(){
 		$accessStatus=Role::getAccessStatus();
 		if($accessStatus[2]==1){
-			return view('employeesettings.designation.create');
+			$dmenu=Role::getMenu();
+			return view('employeesettings.designation.create',['dmenu'=>$dmenu]);
 		}else{
 			return redirect('employeedesignation');
 		}
@@ -31,8 +33,9 @@ class EmployeeDesignationController extends Controller
 	{
 		$accessStatus=Role::getAccessStatus();
 		if($accessStatus[4]==1){
+			$dmenu=Role::getMenu();
 			$aBean=EmployeeDesignation::findOrfail($id);
-			return view('employeesettings.designation.edit',['bean'=>$aBean]);
+			return view('employeesettings.designation.edit',['dmenu'=>$dmenu,'bean'=>$aBean]);
 		}else{
 			return redirect('employeedesignation');
 		}

@@ -8,14 +8,16 @@ use Illuminate\Http\Request;
 class SessionController extends Controller
 {
     public function index(){
+        $dmenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
         $result=Session::all();
-        return view('settings.session.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('settings.session.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
-            return view('settings.session.create');
+          $dmenu=Role::getMenu();
+            return view('settings.session.create',['dmenu'=>$dmenu]);
         }else{
            return redirect('session');
        }
@@ -33,8 +35,9 @@ public function edit($id)
 
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[4]==1){
+       $dmenu=Role::getMenu();
        $aBean=Session::findOrfail($id);
-       return view('settings.session.edit',['bean'=>$aBean]);
+       return view('settings.session.edit',['dmenu'=>$dmenu,'bean'=>$aBean]);
    }else{
       return redirect('session');
   }

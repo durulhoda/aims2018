@@ -79,9 +79,19 @@ if($accessStatus[2]==1){
 
         }
 
-
-
-        SELECT role_menu.role_id,role_menu.menu_id,roles.name as roleName,menus.name as menuName,menus.parentid FROM `role_menu`
-INNER JOIN menus on role_menu.menu_id=menus.id
+SELECT menus.name as muneName,role_menu.menu_id,role_menu.role_id,roles.name as roleName
+from menus
+INNER JOIN role_menu on role_menu.menu_id=menus.id
 INNER JOIN roles on role_menu.role_id=roles.id
-WHERE roles.id=1
+
+
+
+select * From (SELECT menus.id,menus.name as muneName,menus.parentid,menus.url,role_menu.menu_id,role_menu.role_id,roles.name as roleName
+from menus
+INNER JOIN role_menu on role_menu.menu_id=menus.id
+INNER JOIN roles on role_menu.role_id=roles.id) as rolemenu
+INNER join (SELECT users.name,user_role.user_id,user_role.role_id
+FROM users
+INNER JOIN user_role on users.id=user_role.user_id
+INNER JOIN roles on user_role.role_id=roles.id) as userrole on userrole.role_id=rolemenu.role_id
+WHERE userrole.user_id=2 AND rolemenu.parentid=1

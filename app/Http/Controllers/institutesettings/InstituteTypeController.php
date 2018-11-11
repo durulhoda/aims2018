@@ -10,14 +10,16 @@ class InstituteTypeController extends Controller
 {
     public function index()
     {
+         $dmenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
     	$result=InstituteType::all();
-        return view('institutesettings.institutetype.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.institutetype.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
-            return view('institutesettings.institutetype.create');
+            $dmenu=Role::getMenu();
+            return view('institutesettings.institutetype.create',['dmenu'=>$dmenu]);
         }else{
             return redirect('institutetype');
         }
@@ -33,8 +35,9 @@ class InstituteTypeController extends Controller
     {
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
+             $dmenu=Role::getMenu();
             $aObj=InstituteType::findOrfail($id);
-            return view('institutesettings.institutetype.edit',['bean'=>$aObj]);
+            return view('institutesettings.institutetype.edit',['dmenu'=>$dmenu,'bean'=>$aObj]);
         }else{
             return redirect('institutetype');
         }

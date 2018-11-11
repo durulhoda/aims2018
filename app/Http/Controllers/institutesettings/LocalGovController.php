@@ -11,6 +11,7 @@ class LocalGovController extends Controller
 {
     public function index()
     {
+         $dmenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
     	$result=\DB::table('localgovs')
          ->join('thanas','localgovs.thanaid','=','thanas.id')
@@ -18,13 +19,14 @@ class LocalGovController extends Controller
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('localgovs.*','divisions.name as divisionName','districts.name as districtName','thanas.name as thanaName')
         ->get();
-        return view('institutesettings.localgov.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.localgov.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
          $accessStatus=Role::getAccessStatus();
          if($accessStatus[2]==1){
+             $dmenu=Role::getMenu();
             $divisions=\DB::table('divisions')->get();
-            return view('institutesettings.localgov.create',['divisions'=>$divisions]);
+            return view('institutesettings.localgov.create',['dmenu'=>$dmenu,'divisions'=>$divisions]);
          }else{
              return redirect('localgov');
          }
@@ -41,6 +43,7 @@ class LocalGovController extends Controller
     {
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
+            $dmenu=Role::getMenu();
             $result=\DB::table('localgovs')
          ->join('thanas','localgovs.thanaid','=','thanas.id')
         ->join('districts','thanas.districtid','=','districts.id')
@@ -58,7 +61,7 @@ class LocalGovController extends Controller
          $thanas=\DB::table('thanas')
          ->where('thanas.districtid','=',$aBean->districtid)
          ->get();
-         return view('institutesettings.localgov.edit',['bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
+         return view('institutesettings.localgov.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
      }else{
         return redirect('localgov');
      }

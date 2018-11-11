@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2018 at 12:54 PM
+-- Generation Time: Nov 11, 2018 at 12:28 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -336,6 +336,13 @@ CREATE TABLE `emp_designation` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `emp_designation`
+--
+
+INSERT INTO `emp_designation` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Teacher', 0, '2018-11-10 00:02:50', '2018-11-10 00:02:50');
+
 -- --------------------------------------------------------
 
 --
@@ -498,7 +505,7 @@ CREATE TABLE `localgovs` (
 
 INSERT INTO `localgovs` (`id`, `name`, `thanaid`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Ranihati', 2, 0, '2018-10-30 03:12:27', '2018-10-30 03:12:27'),
-(2, 'Nawalavanga', 2, 0, '2018-10-30 03:56:31', '2018-10-30 03:59:31');
+(2, 'Nawalavanga', 2, 0, '2018-10-30 03:56:31', '2018-11-09 22:00:13');
 
 -- --------------------------------------------------------
 
@@ -566,16 +573,18 @@ INSERT INTO `menus` (`id`, `name`, `url`, `parentid`, `status`, `created_at`, `u
 (21, 'Subject Code', 'subjectcode', 12, 0, '2018-11-06 00:31:00', '2018-11-06 00:31:00'),
 (22, 'Course Offer setup', 'courseoffer', 12, 0, '2018-11-06 00:31:25', '2018-11-06 00:31:25'),
 (23, 'Employee Settings', '#', 0, 0, '2018-11-06 00:31:51', '2018-11-06 00:33:51'),
-(24, 'Employee Designation', 'employeedesignation', 23, 0, '2018-11-06 00:32:22', '2018-11-06 00:32:22'),
-(25, 'Department', 'department', 23, 0, '2018-11-06 00:32:51', '2018-11-06 00:32:51'),
-(26, 'Employee', 'employee', 23, 0, '2018-11-06 00:34:47', '2018-11-06 00:34:47'),
+(24, 'Employee Type', 'employeeType', 23, 0, '2018-11-06 00:32:22', '2018-11-10 00:18:44'),
+(25, 'Designation', 'employeedesignation', 23, 0, '2018-11-06 00:32:51', '2018-11-10 00:22:30'),
+(26, 'Department', 'department', 23, 0, '2018-11-06 00:34:47', '2018-11-10 00:21:14'),
 (27, 'Student Settings', '#', 0, 0, '2018-11-06 00:35:18', '2018-11-06 00:35:18'),
 (28, 'Student', 'student', 27, 0, '2018-11-06 00:35:46', '2018-11-06 00:35:46'),
 (29, 'User Settings', '#', 0, 0, '2018-11-06 00:36:08', '2018-11-06 00:36:08'),
 (30, 'Role', 'role', 29, 0, '2018-11-06 00:37:15', '2018-11-06 00:37:15'),
 (31, 'User', 'user', 29, 0, '2018-11-06 00:37:36', '2018-11-06 00:37:36'),
 (32, 'Menu Settings', '#', 0, 0, '2018-11-06 00:38:01', '2018-11-06 00:38:01'),
-(33, 'Menu', 'menu', 32, 0, '2018-11-06 00:39:06', '2018-11-06 00:39:06');
+(33, 'Menu', 'menu', 32, 0, '2018-11-06 00:39:06', '2018-11-06 00:39:06'),
+(34, 'Employee', 'employee', 23, 0, '2018-11-10 00:21:41', '2018-11-10 00:21:41'),
+(35, 'RoleMenu Setup', 'rolemenu', 32, 0, '2018-11-10 02:41:41', '2018-11-10 02:41:41');
 
 -- --------------------------------------------------------
 
@@ -628,7 +637,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (41, '2018_11_06_043612_create_students_table', 9),
 (42, '2018_11_06_053612_create_menus_table', 10),
 (44, '2018_11_06_083215_create_userroles_table', 11),
-(45, '2018_11_08_060054_create_user_role_pivot_table', 12);
+(45, '2018_11_08_060054_create_user_role_pivot_table', 12),
+(46, '2018_11_10_075810_create_role_menu_create', 13);
 
 -- --------------------------------------------------------
 
@@ -797,11 +807,50 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `accesspower`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 63, 0, '2018-11-07 05:54:42', '2018-11-08 04:12:14'),
+(1, 'Admin', 63, 0, '2018-11-07 05:54:42', '2018-11-10 00:50:18'),
 (2, 'Teacher', 55, 0, '2018-11-07 05:56:01', '2018-11-08 04:17:35'),
-(3, 'Student', 61, 0, '2018-11-07 06:00:14', '2018-11-08 05:04:02'),
-(4, 'Staff', 63, 0, '2018-11-07 06:08:44', '2018-11-08 05:04:14'),
-(5, 'Office Aisstant', 3, 0, '2018-11-07 23:00:16', '2018-11-08 04:13:02');
+(3, 'Student', 53, 0, '2018-11-07 06:00:14', '2018-11-10 21:37:06'),
+(4, 'Staff', 49, 0, '2018-11-07 06:08:44', '2018-11-10 21:36:43'),
+(5, 'Office Aisstant', 39, 0, '2018-11-07 23:00:16', '2018-11-10 01:39:14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_menu`
+--
+
+CREATE TABLE `role_menu` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `menu_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `role_menu`
+--
+
+INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2018-11-10 03:08:59', '2018-11-10 03:08:59'),
+(2, 1, 2, '2018-11-10 03:39:36', '2018-11-10 03:39:36'),
+(3, 1, 3, '2018-11-10 03:45:30', '2018-11-10 03:45:30'),
+(4, 1, 4, '2018-11-10 03:46:10', '2018-11-10 03:46:10'),
+(5, 1, 30, '2018-11-10 03:46:36', '2018-11-10 03:46:36'),
+(6, 3, 27, '2018-11-11 01:06:44', '2018-11-11 01:06:44'),
+(7, 3, 28, '2018-11-11 01:07:02', '2018-11-11 01:07:02'),
+(8, 1, 35, '2018-11-11 02:55:01', '2018-11-11 02:55:01'),
+(9, 1, 34, '2018-11-11 02:57:43', '2018-11-11 02:57:43'),
+(10, 1, 21, '2018-11-11 02:59:40', '2018-11-11 02:59:40'),
+(11, 1, 32, '2018-11-11 03:23:16', '2018-11-11 03:23:16'),
+(12, 1, 33, '2018-11-11 03:25:37', '2018-11-11 03:25:37'),
+(13, 1, 12, '2018-11-11 03:43:12', '2018-11-11 03:43:12'),
+(14, 1, 23, '2018-11-11 03:45:00', '2018-11-11 03:45:00'),
+(15, 1, 24, '2018-11-11 03:46:00', '2018-11-11 03:46:00'),
+(16, 1, 26, '2018-11-11 03:46:35', '2018-11-11 03:46:35'),
+(17, 1, 25, '2018-11-11 03:47:04', '2018-11-11 03:47:04'),
+(18, 1, 29, '2018-11-11 04:02:38', '2018-11-11 04:02:38'),
+(19, 1, 13, '2018-11-11 04:40:17', '2018-11-11 04:40:17');
 
 -- --------------------------------------------------------
 
@@ -972,7 +1021,7 @@ INSERT INTO `thanas` (`id`, `name`, `districtid`, `status`, `created_at`, `updat
 (6, 'Bagha', 7, 0, '2018-10-30 02:35:20', '2018-10-30 02:35:20'),
 (7, 'Bagmara', 7, 0, '2018-10-30 02:35:39', '2018-10-30 02:35:39'),
 (8, 'Birampur', 57, 0, '2018-10-30 02:36:29', '2018-10-30 02:36:29'),
-(9, 'Birganj', 57, 0, '2018-10-30 02:36:57', '2018-10-30 02:36:57'),
+(9, 'Birganj', 58, 0, '2018-10-30 02:36:57', '2018-11-09 21:52:09'),
 (10, 'Ranihati', 2, 0, '2018-10-30 03:10:33', '2018-10-30 03:10:33');
 
 -- --------------------------------------------------------
@@ -997,12 +1046,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Rinku', 'rinku@gmail.com', NULL, '$2y$10$aoIgz2t6tzR4aBO2EPzfROLL45DnOLPCS.yFHf37MGnxWXi612OSm', 'DqibxPSfl0A8WR2ITu9U0E7PvClmnkFCYZRQRuENp1WkFq2eklUwx4cSy6W6', '2018-11-06 05:34:12', '2018-11-06 05:34:12'),
-(2, 'Admin', 'admin@gmail.com', NULL, '$2y$10$O76.ADcENaN6SBnHXkPj5O/OQR3mQd77zzQGkRuiCuwHTmbb4BXqC', 'Jpx8I1BUMup9ZOAa70daDAF6FT3O2LFza5ab85EHh3qApvie52idhmaaAI6R', '2018-11-06 21:36:51', '2018-11-06 21:36:51'),
-(3, 'Teacher', 'teacher@gmail.com', NULL, '$2y$10$pDiyK6p9lBZFk5XKDI5OnOG3lVrBudxCP68p2YY6fHirrBnJ05bq2', 'syIxXFuVtZswOBZ1nwrleTwGXHInYw08UBaRgkNkgkHHVYTlNTEEcSpr5swz', '2018-11-06 21:37:36', '2018-11-06 21:37:36'),
-(4, 'Office Assistant', 'assistant@gmail.com', NULL, '$2y$10$zluatAlikAQAxm5RconKFOHzc2eCTIdooO.kHGNiWhro49WUXfEYi', '0QieBqKQfvUF2hqBve3LgmbeBKPA6CvVuBz5QAtnKpyKqwupIPzxyw2CZzgq', '2018-11-06 21:41:42', '2018-11-06 21:41:42'),
+(1, 'Rinku', 'rinku@gmail.com', NULL, '$2y$10$aoIgz2t6tzR4aBO2EPzfROLL45DnOLPCS.yFHf37MGnxWXi612OSm', '2VJjerMJL6viJx45zcdxxaaj7Sh0ef9EQQLi9Y7YKR4LdH1yhfAcukB5Nrwa', '2018-11-06 05:34:12', '2018-11-06 05:34:12'),
+(2, 'Admin', 'admin@gmail.com', NULL, '$2y$10$O76.ADcENaN6SBnHXkPj5O/OQR3mQd77zzQGkRuiCuwHTmbb4BXqC', '5DnAt2oUQENB04WhQOhFR7NY4qTtJ844LRsVtK5cCLNZNbkOH7m89CtR5KAi', '2018-11-06 21:36:51', '2018-11-06 21:36:51'),
+(3, 'Teacher', 'teacher@gmail.com', NULL, '$2y$10$pDiyK6p9lBZFk5XKDI5OnOG3lVrBudxCP68p2YY6fHirrBnJ05bq2', 'h4ckRjcb0TFradHnZXnI9DK8BgTOm2a4lzyBABX3AIiYnzYs7br0hQkj0sfw', '2018-11-06 21:37:36', '2018-11-06 21:37:36'),
+(4, 'Office Assistant', 'assistant@gmail.com', NULL, '$2y$10$zluatAlikAQAxm5RconKFOHzc2eCTIdooO.kHGNiWhro49WUXfEYi', '9qqmbnHPxl0YMWvGqIeKESsRW1axMPr5srUtUJeAhZtuP2NV61YID5W42Pmh', '2018-11-06 21:41:42', '2018-11-06 21:41:42'),
 (5, 'cordinator', 'cordinator@gmail.com', NULL, '$2y$10$aojL6UzXscfDd6/slyeCJOYJrEamXKbPM7nvA1jspH3GqK8oB6/Ua', 'FnlNUddCZONNySRmu7CNYNigH7Pnc2eE2FttxsOLOZwvjKeXul9EwyHXXDkV', '2018-11-06 21:42:49', '2018-11-06 21:42:49'),
-(6, 'student', 'student@gmail.com', NULL, '$2y$10$4eKZy0zQbsdaLShw0ppG9uCW0Sw5/E7oOxeTyGxME/or9mzeESktW', 'rg6IWrGaZfpCwZ6It2bbPuYw89G5ee9oezOcYbpgHZAqXyebLjLeurRUy4wn', '2018-11-06 21:45:06', '2018-11-06 21:45:06');
+(6, 'student', 'student@gmail.com', NULL, '$2y$10$4eKZy0zQbsdaLShw0ppG9uCW0Sw5/E7oOxeTyGxME/or9mzeESktW', '8Y7pCrk2VXrHrXN8sxvFEc9MR6csgn55j1XmceWJH92GDvXeIAvUSvQAsiRo', '2018-11-06 21:45:06', '2018-11-06 21:45:06');
 
 -- --------------------------------------------------------
 
@@ -1023,8 +1072,11 @@ CREATE TABLE `user_role` (
 --
 
 INSERT INTO `user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, NULL, NULL),
-(2, 2, 2, NULL, NULL);
+(1, 1, 3, NULL, NULL),
+(2, 2, 1, NULL, NULL),
+(3, 3, 2, NULL, NULL),
+(4, 4, 5, NULL, NULL),
+(5, 6, 3, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1187,6 +1239,12 @@ ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `role_menu`
+--
+ALTER TABLE `role_menu`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sectionoffer`
 --
 ALTER TABLE `sectionoffer`
@@ -1303,7 +1361,7 @@ ALTER TABLE `employeetypes`
 -- AUTO_INCREMENT for table `emp_designation`
 --
 ALTER TABLE `emp_designation`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `groups`
@@ -1351,13 +1409,13 @@ ALTER TABLE `mediums`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `postoffices`
@@ -1394,6 +1452,12 @@ ALTER TABLE `program_levels`
 --
 ALTER TABLE `roles`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `role_menu`
+--
+ALTER TABLE `role_menu`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `sectionoffer`
@@ -1447,7 +1511,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

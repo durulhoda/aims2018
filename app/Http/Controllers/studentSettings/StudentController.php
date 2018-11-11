@@ -9,14 +9,16 @@ use App\Http\Controllers\Controller;
 class StudentController extends Controller
 {
    public function index(){
+      $dmenu=Role::getMenu();
       $accessStatus=Role::getAccessStatus();
       $result=Student::all();
-      return view('studentsettings.student.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+      return view('studentsettings.student.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
   }
   public function create(){
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[2]==1){
-       return view('studentsettings.student.create');
+      $dmenu=Role::getMenu();
+       return view('studentsettings.student.create',['dmenu'=>$dmenu]);
    }else{
        return redirect('student');
    }
@@ -31,9 +33,10 @@ public function store(Request $request){
 }
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
-    if($accessStatus[2]==1){
+    if($accessStatus[4]==1){
+      $dmenu=Role::getMenu();
       $aBean=Student::findOrfail($id);
-      return view('studentsettings.student.edit',['bean'=>$aBean]);
+      return view('studentsettings.student.edit',['dmenu'=>$dmenu,'bean'=>$aBean]);
   }else{
    return redirect('student');
 }

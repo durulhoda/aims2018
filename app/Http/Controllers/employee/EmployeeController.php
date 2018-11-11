@@ -8,18 +8,20 @@ use App\Http\Controllers\Controller;
 class EmployeeController extends Controller
 {
     public function index(){
+      $dmenu=Role::getMenu();
        $accessStatus=Role::getAccessStatus();
        $result=\DB::table('employees')
        ->join('employeetypes','employees.employeetypeid','=','employeetypes.id')
        ->select('employees.*','employeetypes.name as employeeType')
        ->get();
-       return view('employeesettings.employee.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+       return view('employeesettings.employee.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[2]==1){
+       $dmenu=Role::getMenu();
         $employeetypes=\DB::table('employeetypes')->get();
-        return view('employeesettings.employee.create',['employeetypes'=>$employeetypes]);
+        return view('employeesettings.employee.create',['dmenu'=>$dmenu,'employeetypes'=>$employeetypes]);
     }else{
         return redirect('employee');
     }
@@ -36,9 +38,10 @@ public function store(Request $request){
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[4]==1){
+      $dmenu=Role::getMenu();
        $aBean=Employee::findOrfail($id);
        $employeetypes=\DB::table('employeetypes')->get();
-       return view('employeesettings.employee.edit',['bean'=>$aBean],['employeetypes'=>$employeetypes]);
+       return view('employeesettings.employee.edit',['dmenu'=>$dmenu,'bean'=>$aBean],['employeetypes'=>$employeetypes]);
    }else{
     return redirect('employee');
 }
