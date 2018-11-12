@@ -14,6 +14,10 @@ use App\Http\Controllers\Controller;
 
 class ProgramOfferController extends Controller
 {
+  public function __construct()
+{
+    $this->middleware('auth');
+}
   public function index(){
     $dmenu=Role::getMenu();
     $accessStatus=Role::getAccessStatus();

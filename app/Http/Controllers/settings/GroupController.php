@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use App\settings\Group;
 class GroupController extends Controller
 {
+	public function __construct()
+{
+    $this->middleware('auth');
+}
 	public function index(){
 		$accessStatus=Role::getAccessStatus();
 		$result=\DB::table('groups')

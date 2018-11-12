@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 use Auth;
 class StudentController extends Controller
 {
+  public function __construct()
+{
+    $this->middleware('auth');
+}
+
    public function index(){
       $dmenu=Role::getMenu();
       $accessStatus=Role::getAccessStatus();
@@ -34,7 +39,7 @@ public function store(Request $request){
        $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
        $user_id=$newUserId;
        \DB::table('students')->insert(['name'=>$name,'registrationid'=>$registrationid,'user_id'=>$user_id]);
-       $role_id=3;
+       $role_id=2;
        \DB::table('user_role')->insert(['user_id'=>$user_id,'role_id'=>$role_id]);
     });
     return redirect('student');

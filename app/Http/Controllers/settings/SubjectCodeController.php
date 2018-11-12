@@ -12,6 +12,10 @@ use App\Http\Controllers\Controller;
 
 class SubjectCodeController extends Controller
 {
+  public function __construct()
+{
+    $this->middleware('auth');
+}
    public function index(){
     $accessStatus=Role::getAccessStatus();
     $result=\DB::select('SELECT subjectcodes.*,programlevels.name as levelName,groups.name as groupName,programs.name as programName,courses.name as courseName FROM `subjectcodes` 

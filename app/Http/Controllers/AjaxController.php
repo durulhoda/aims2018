@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\settings\Program;
 class AjaxController extends Controller
 {
+  
  public function getPrograms(Request $request){
     $id = $request->id;
     $query="SELECT * FROM  programs where groupid=?";

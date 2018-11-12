@@ -9,6 +9,10 @@ use App\settings\Shift;
 use App\settings\Section;
 class ShiftController extends Controller
 {
+	public function __construct()
+{
+    $this->middleware('auth');
+}
 	public function index(){
 		$accessStatus=Role::getAccessStatus();
 		$result=Shift::all();

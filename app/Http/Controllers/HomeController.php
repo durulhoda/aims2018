@@ -23,7 +23,6 @@ public function __construct()
  */
 public function index()
 {
-
 	$dmenu=Role::getMenu();
 	$accessStatus=Role::getAccessStatus();
     return view('home',['accessStatus'=>$accessStatus,'dmenu'=>$dmenu]);

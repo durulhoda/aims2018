@@ -8,6 +8,10 @@ use App\settings\Section;
 
 class SectionController extends Controller
 {
+	public function __construct()
+{
+    $this->middleware('auth');
+}
 	public function index(){
 		$accessStatus=Role::getAccessStatus();
 		$result=Section::all();

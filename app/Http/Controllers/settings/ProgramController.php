@@ -10,6 +10,10 @@ use App\settings\Group;
 use App\settings\Program;
 class ProgramController extends Controller
 {
+	public function __construct()
+{
+    $this->middleware('auth');
+}
 	public function index()
 	{
 		$accessStatus=Role::getAccessStatus();

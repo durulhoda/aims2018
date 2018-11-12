@@ -4,8 +4,8 @@ namespace App\institutesettings;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Branch extends Model
+class Unit extends Model
 {
-   	protected $table='branches';
+   	protected $table='units';
    	protected $fillable = ['name','code','instituteid','status'];
 }

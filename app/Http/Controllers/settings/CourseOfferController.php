@@ -15,6 +15,10 @@ use App\Http\Controllers\Controller;
 use App\settings\CourseOffer;
 class CourseOfferController extends Controller
 {
+   public function __construct()
+{
+    $this->middleware('auth');
+}
     
    public function index(){
     $accessStatus=Role::getAccessStatus();

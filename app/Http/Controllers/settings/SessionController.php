@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
+  public function __construct()
+{
+    $this->middleware('auth');
+}
     public function index(){
         $dmenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();

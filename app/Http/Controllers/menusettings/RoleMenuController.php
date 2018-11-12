@@ -9,6 +9,10 @@ use App\menusettings\Menu;
 use Auth;
 class RoleMenuController extends Controller
 {
+	public function __construct()
+	{
+	    $this->middleware('auth');
+	}
 	public function index(){
 		$dmenu=Role::getMenu();
 		$accessStatus=Role::getAccessStatus();
