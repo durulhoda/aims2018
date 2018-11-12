@@ -24,6 +24,10 @@
  						<label for="studentid">Student ID  :</label>
  						<input type="text" class="form-control" id="studentid" name="studentid">
  					</div>
+ 					<div class="form-group col-sm-4">
+ 						<label for="email">Email  :</label>
+ 						<input type="email" class="form-control" id="email" name="email">
+ 					</div>
  				</div>
  				<button type="submit" class="btn btn-default">Save</button>
  			</form>

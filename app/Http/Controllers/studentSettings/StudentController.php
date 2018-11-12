@@ -5,7 +5,7 @@ use App\Role;
 use App\studentsettings\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Auth;
 class StudentController extends Controller
 {
    public function index(){
@@ -25,10 +25,18 @@ class StudentController extends Controller
 
 }
 public function store(Request $request){
-    $aBean=new Student();
-    $aBean->name=$request->name;
-    $aBean->studentid=$request->studentid;
-    $aBean->save();
+    $name = $request->name;
+    $registrationid=$request->studentid;
+    $email=$request->email;
+    $password=bcrypt($registrationid);
+    \DB::transaction(function() use ($name,$registrationid,$email,$password) {
+       $username=$name;
+       $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
+       $user_id=$newUserId;
+       \DB::table('students')->insert(['name'=>$name,'registrationid'=>$registrationid,'user_id'=>$user_id]);
+       $role_id=3;
+       \DB::table('user_role')->insert(['user_id'=>$user_id,'role_id'=>$role_id]);
+    });
     return redirect('student');
 }
 public function edit($id){

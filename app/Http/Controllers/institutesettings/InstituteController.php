@@ -13,6 +13,7 @@ class InstituteController extends Controller
 {
 	 public function index()
     {
+         $dmenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
         $result=\DB::table('institute')
         ->join('institutetype','institute.institutetypeid','=','institutetype.id')

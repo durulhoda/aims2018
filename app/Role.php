@@ -13,8 +13,14 @@ class Role extends Model
    		$userid = Auth::user()->id;
    		$result=\DB::select('SELECT user_role.user_id,user_role.role_id,roles.name AS roleName,roles.accesspower FROM `user_role` 
 INNER JOIN `roles` on user_role.role_id=roles.id
-WHERE user_role.user_id=?',[$userid])[0];
-   		$bina=base_convert($result->accesspower,10,2);
+WHERE user_role.user_id=?',[$userid]);
+      if(count($result)==0){
+          $accesspower=0;
+      }else{
+        $aRow=$result[0];
+        $accesspower=$aRow->accesspower;
+      }
+   		$bina=base_convert($accesspower,10,2);
         $i=0;
         $access=array();
         while($bina>0) {
@@ -70,5 +76,6 @@ private static function hasChild($parentid){
         return false;
     }
 }
+
 }
 

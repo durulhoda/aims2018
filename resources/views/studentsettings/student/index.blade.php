@@ -21,7 +21,7 @@
 						<tr>
 							<th>Sl No.</th>
 							<th>Name</th>
-							<th>Student ID</th>
+							<th>Registrationid ID</th>
 							@if($accessStatus[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -36,7 +36,7 @@
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
-							<td>{{$aObj->studentid}}</td>
+							<td>{{$aObj->registrationid}}</td>
 							@if($accessStatus[4]==1)
 							<td> 
 								<a href="{{URL::to('/student')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
