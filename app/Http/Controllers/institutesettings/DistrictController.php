@@ -6,13 +6,13 @@ use App\institutesettings\Division;
 use App\institutesettings\District;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Route;
 class DistrictController extends Controller
 {
     public function __construct()
-{
-    $this->middleware('auth');
-}
+    {
+        $this->middleware('auth');
+    }
    public function index()
     {
          $dmenu=Role::getMenu();

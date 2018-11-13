@@ -7,9 +7,11 @@ use App\Role;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Auth\Guard;
 
 class DivisionController extends Controller
 {
+
 public function __construct()
 {
     $this->middleware('auth');
