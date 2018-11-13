@@ -87,3 +87,24 @@ INNER JOIN `role_menu` on role_menu.role_id=roles.id
 INNER JOIN `menus` on role_menu.menu_id=menus.id
 WHERE user_role.user_id=1
 order BY menus.id
+
+
+
+
+
+SELECT menus.id,
+menus.name AS menuName,
+IFNULL(vrole_menu.menu_id,0) AS menu_id
+FROM menus
+LEFT JOIN (SELECT users.id,users.name as userName,user_role.user_id,user_role.role_id,roles.name as roleName,role_menu.menu_id  FROM users
+INNER JOIN user_role ON users.id=user_role.user_id
+INNER JOIN roles ON user_role.role_id=roles.id
+INNER JOIN role_menu ON roles.id=role_menu.role_id
+WHERE users.id=1) as vrole_menu on menus.id=vrole_menu.menu_id
+
+
+SELECT users.id,users.name as userName,user_role.user_id,user_role.role_id,roles.name as roleName,role_menu.menu_id  FROM users
+INNER JOIN user_role ON users.id=user_role.user_id
+INNER JOIN roles ON user_role.role_id=roles.id
+INNER JOIN role_menu ON roles.id=role_menu.role_id
+WHERE users.id=1

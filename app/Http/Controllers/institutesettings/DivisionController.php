@@ -7,16 +7,10 @@ use App\Role;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Auth\Guard;
 
 class DivisionController extends Controller
 {
-    //public $userid = Auth::user()->id;
-    public function __construct(){
-        $this->middleware(function ($request,  $next){
-            $this->id=Auth::user()->id;
-            dd($next($request->'id'));
-        });
-    }
     public function index()
     {
         $userid = Auth::user()->id;
