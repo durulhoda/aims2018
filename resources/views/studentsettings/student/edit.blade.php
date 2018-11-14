@@ -23,7 +23,7 @@
  					</div>
  					<div class="form-group col-sm-4">
  						<label for="studentid">Student ID  :</label>
- 						<input type="text" class="form-control" id="studentid" name="studentid" value="{{$bean->studentid}}">
+ 						<input type="text" class="form-control" id="studentid" name="studentid" value="{{$bean->registrationid}}">
  					</div>
  				</div>
  				<button type="submit" class="btn btn-default">Update</button>

@@ -67,7 +67,6 @@ WHERE userrole.user_id=? and rolemenu.parentid=?',[$userid,$parentid]);
 }
 return $menu;
 }
-// {{URL::to('/')}}
 private static function hasChild($parentid){
     $result=\DB::select('SELECT * FROM `menus` where parentid=?',[$parentid]);
     if($result){

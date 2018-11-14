@@ -8,16 +8,16 @@ use App\employee\Department;
 class DepartmentController extends Controller
 {
 	public function index(){
-		$dmenu=Role::getMenu();
+		$sidebarMenu=Role::getMenu();
 		$accessStatus=Role::getAccessStatus();
 		$result=Department::all();
-		return view('employeesettings.department.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+		return view('employeesettings.department.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create(){
 		$accessStatus=Role::getAccessStatus();
 		if($accessStatus[2]==1){
-			$dmenu=Role::getMenu();
-			return view('employeesettings.department.create',['dmenu'=>$dmenu]);
+			$sidebarMenu=Role::getMenu();
+			return view('employeesettings.department.create',['sidebarMenu'=>$sidebarMenu]);
 		}else{
 			return redirect('department');
 		}
@@ -33,9 +33,9 @@ class DepartmentController extends Controller
 	{
 		$accessStatus=Role::getAccessStatus();
 		if($accessStatus[4]==1){
-			$dmenu=Role::getMenu();
+			$sidebarMenu=Role::getMenu();
 			$aBean=Department::findOrfail($id);
-			return view('employeesettings.department.edit',['dmenu'=>$dmenu,'bean'=>$aBean]);
+			return view('employeesettings.department.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
 		}else{
 			return redirect('department');
 		}

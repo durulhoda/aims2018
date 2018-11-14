@@ -14,16 +14,16 @@ class InstituteCategoryController extends Controller
 }
     public function index()
     {
-        $dmenu=Role::getMenu();
+        $sidebarMenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
         $result=InstituteCatagory::all();
-        return view('institutesettings.institutecategory.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.institutecategory.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
-            $dmenu=Role::getMenu();
-            return view('institutesettings.institutecategory.create',['dmenu'=>$dmenu]);
+            $sidebarMenu=Role::getMenu();
+            return view('institutesettings.institutecategory.create',['sidebarMenu'=>$sidebarMenu]);
         }else{
             return redirect('institutecategory');
         }
@@ -39,9 +39,9 @@ class InstituteCategoryController extends Controller
     {
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
-            $dmenu=Role::getMenu();
+            $sidebarMenu=Role::getMenu();
             $aBean=InstituteCatagory::findOrfail($id);
-            return view('institutesettings.institutecategory.edit',['dmenu'=>$dmenu,'bean'=>$aBean]);
+            return view('institutesettings.institutecategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
         }else{
             return redirect('institutecategory');
         }

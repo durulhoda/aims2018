@@ -11,17 +11,17 @@ class MenuController extends Controller
     $this->middleware('auth');
 }
     public function index(){
-      $dmenu=Role::getMenu();
+      $sidebarMenu=Role::getMenu();
        $accessStatus=Role::getAccessStatus();
        $result=\DB::select('SELECT vmenus.id as childid,vmenus.name as child,menus.name as parent,vmenus.url from menus INNER JOIN (SELECT * FROM `menus`) as vmenus ON vmenus.parentid=menus.id union ALL SELECT menus.id as childid,menus.name AS child,menus.name AS parent,menus.url FROM `menus` WHERE parentid=0 order by childid');
-       return view('menusettings.menu.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+       return view('menusettings.menu.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[2]==1){
-      $dmenu=Role::getMenu();
+      $sidebarMenu=Role::getMenu();
        $parents=Menu::all();
-       return view('menusettings.menu.create',['dmenu'=>$dmenu,'parents'=>$parents]);
+       return view('menusettings.menu.create',['sidebarMenu'=>$sidebarMenu,'parents'=>$parents]);
    }else{
     return redirect('menu');
 }
@@ -38,12 +38,12 @@ public function store(Request $request){
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[4]==1){
-        $dmenu=Role::getMenu();
+        $sidebarMenu=Role::getMenu();
         $aBean=Menu::findOrfail($id);
         $parents=\DB::table('menus')
         ->where('id','!=', $id)
         ->get();
-        return view('menusettings.menu.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'parents'=>$parents]);
+        return view('menusettings.menu.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'parents'=>$parents]);
     }else{
         return redirect('menu');
     }

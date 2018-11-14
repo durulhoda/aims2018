@@ -15,7 +15,7 @@ class PostOfficeController extends Controller
 }
      public function index()
     {
-         $dmenu=Role::getMenu();
+         $sidebarMenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
         $result=\DB::table('postoffices')
          ->join('thanas','postoffices.thanaid','=','thanas.id')
@@ -23,14 +23,14 @@ class PostOfficeController extends Controller
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('postoffices.*','divisions.name as divisionName','districts.name as districtName','thanas.name as thanaName')
         ->get();
-        return view('institutesettings.postoffice.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.postoffice.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
          $accessStatus=Role::getAccessStatus();
          if($accessStatus[2]==1){
-             $dmenu=Role::getMenu();
+             $sidebarMenu=Role::getMenu();
              $divisions=\DB::table('divisions')->get();
-            return view('institutesettings.postoffice.create',['dmenu'=>$dmenu,'divisions'=>$divisions]);
+            return view('institutesettings.postoffice.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
          }else{
             return redirect('postoffice');
          }
@@ -47,7 +47,7 @@ class PostOfficeController extends Controller
     {
          $accessStatus=Role::getAccessStatus();
          if($accessStatus[4]==1){
-             $dmenu=Role::getMenu();
+             $sidebarMenu=Role::getMenu();
             $result=\DB::table('postoffices')
              ->join('thanas','postoffices.thanaid','=','thanas.id')
             ->join('districts','thanas.districtid','=','districts.id')
@@ -65,7 +65,7 @@ class PostOfficeController extends Controller
              $thanas=\DB::table('thanas')
              ->where('thanas.districtid','=',$aBean->districtid)
              ->get();
-             return view('institutesettings.postoffice.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
+             return view('institutesettings.postoffice.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
          }else{
             return redirect('postoffice');
          }

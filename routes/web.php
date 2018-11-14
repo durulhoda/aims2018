@@ -19,6 +19,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::resource('role','RoleController');
+Route::resource('user','UserController');
 // Institute Settings
 Route::resource('division', 'institutesettings\DivisionController')->middleware('auth');
 Route::resource('district', 'institutesettings\DistrictController');
@@ -58,7 +59,8 @@ Route::resource('employee', 'employee\EmployeeController');
 Route::resource('applicant', 'studentsettings\ApplicantController');
 Route::resource('student', 'studentsettings\StudentController');
 
-
+// Menu Settings
+Route::resource('menu', 'menusettings\MenuController');
 // For Ajax 
 Route::get('/getPrograms/','AjaxController@getPrograms');
 Route::get('/getGroupByLevel/','AjaxController@getGroupByLevel');
@@ -68,9 +70,4 @@ Route::get('/getthana/','AjaxController@getThanabydistrict');
 Route::get('/getpostoffice/','AjaxController@getPostOfficebyThana');
 Route::get('/getunion/','AjaxController@getUnionbyThana');
 
-
-
-// Menu Settings
-Route::resource('menu', 'menusettings\MenuController');
-Route::resource('rolemenu','menusettings\RoleMenuController');
 

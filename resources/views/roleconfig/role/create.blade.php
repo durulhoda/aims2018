@@ -50,6 +50,15 @@
  						@endif
  					</div>
  				</div>
+ 				<div class="row">
+ 					@foreach($menus as $aObj)
+ 					 <div class="form-group col-sm-3">
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="menu_id[]" value="{{$aObj->id}}">{{$aObj->name}}</label>
+                        </div>
+                    </div>	
+                    @endforeach				
+ 				</div>
  				<button type="submit" class="btn btn-default">Save</button>
  			</form>
  		</div>

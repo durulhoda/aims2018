@@ -13,19 +13,19 @@ class UnitController extends Controller
     $this->middleware('auth');
 }
     public function index(){
-         $dmenu=Role::getMenu();
+         $sidebarMenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
      	$result=\DB::table('units')
         ->join('institute','units.instituteid','=','institute.id')
         ->select('units.*','institute.name as instituteName')->get();
-        return view('institutesettings.unit.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.unit.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
-            $dmenu=Role::getMenu();
+            $sidebarMenu=Role::getMenu();
             $institutes=\DB::table('institute')->get();
-            return view('institutesettings.unit.create',['dmenu'=>$dmenu,'institutes'=>$institutes]);
+            return view('institutesettings.unit.create',['sidebarMenu'=>$sidebarMenu,'institutes'=>$institutes]);
         }else{
             return redirect('unit');
         }
@@ -42,10 +42,10 @@ class UnitController extends Controller
     public function edit($id){
           $accessStatus=Role::getAccessStatus();
         if($accessStatus[4]==1){
-            $dmenu=Role::getMenu();
+            $sidebarMenu=Role::getMenu();
            $aBean=Unit::findOrfail($id);
            $institutes=\DB::table('institute')->get();
-           return view('institutesettings.unit.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'institutes'=>$institutes]);
+           return view('institutesettings.unit.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'institutes'=>$institutes]);
         }else{
             return redirect('unit');
         }

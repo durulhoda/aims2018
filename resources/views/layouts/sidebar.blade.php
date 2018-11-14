@@ -8,7 +8,7 @@
             <span>Dashboard</span>
           </a>
         </li>
-      <?php echo $dmenu; ?>
+      <?php echo $sidebarMenu; ?>
 </ul>
 <!-- sidebar menu end-->
 </div>

@@ -63,6 +63,19 @@
  						@endif
  					</div>
  				</div>
+ 				<div class="row">
+ 					@foreach($result as $aObj)
+ 					 <div class="form-group col-sm-3">
+                        <div class="checkbox">
+                        	@if($aObj->role_id==0)
+                            <label><input type="checkbox"  name="menu_id[]" value="{{$aObj->id}}">{{$aObj->menuName}}</label>
+                            @else
+                            <label><input type="checkbox" checked="" name="menu_id[]" value="{{$aObj->id}}">{{$aObj->menuName}}</label>
+                            @endif
+                        </div>
+                    </div>	
+                    @endforeach				
+ 				</div>
  				<button type="Update" class="btn btn-default">Update</button>
  			</form>
  		</div>

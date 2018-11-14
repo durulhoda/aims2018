@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Role;
+use App\menusettings\Menu;
+use App\menusettings\RoleMenu;
 use Illuminate\Http\Request;
-
 class RoleController extends Controller
 {
     public function __construct()
@@ -11,51 +12,59 @@ class RoleController extends Controller
     $this->middleware('auth');
 }
     public function index(){
-         $dmenu=Role::getMenu();
+       $sidebarMenu=Role::getMenu();
        $accessStatus=Role::getAccessStatus();
        $result=Role::all();
-       return view('roleconfig.role.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+       return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){
     $accessStatus=Role::getAccessStatus();
-    // dd($accessStatus);
     if($accessStatus[2]==1){
-        $dmenu=Role::getMenu();
-        return view('roleconfig.role.create',['dmenu'=>$dmenu,'accessStatus'=>$accessStatus]);
+        $sidebarMenu=Role::getMenu();
+        $menus=Menu::all();
+        return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'menus'=>$menus]);
     }else{
        return redirect('role');
    }
 }
 public function store(Request $request){
-    if(isset($request->accesspower)){
+    if(isset($request->accesspower) && isset($request->menu_id)){
         $accesspower=$request->accesspower;
+        $selectmenu=$request->menu_id;
         $sum=0;
         foreach ($accesspower as $key => $value) {
          $sum=$sum+$value;
-     }
-            // $hasSamePower=\DB::table('roles')
-            // ->select('roles.*')
-            // ->where('roles.accesspower','=',$sum)
-            // ->get()->count();
-            // if($hasSamePower==0){
-     $aBean=new Role();
-     $aBean->name=$request->name;
-     $aBean->accesspower=$sum;
-     $aBean->save();
-            // }else{
-            //     // dd($hasSamePower);
-            // }
- }else{
-
- }
- return redirect('role');
+        }
+         $aBean=new Role();
+         $aBean->name=$request->name;
+         $aBean->accesspower=$sum;
+         $aBean->save();
+         $lastRecord=\DB::select('SELECT * FROM `roles` ORDER BY ID DESC LIMIT 1')[0];
+        foreach ($selectmenu as $item) {
+            $aBean=new RoleMenu();
+            $aBean->role_id=$lastRecord->id;
+            $aBean->menu_id=$item;
+            $aBean->save();
+        }
+    }else{
+    }
+    return redirect('role');
 }
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
     if($accessStatus[2]==1){
-        $dmenu=Role::getMenu();
+        $sidebarMenu=Role::getMenu();
         $aBean=Role::findOrfail($id);
         $accesspowers=$aBean->accesspower;
+        $result=\DB::select('SELECT menus.id,
+menus.name AS menuName,
+menus.url,
+IFNULL(vrolemenu.role_id,0) AS role_id
+FROM menus
+LEFT JOIN (SELECT role_menu.role_id,role_menu.menu_id
+FROM role_menu
+INNER JOIN roles on role_menu.role_id=roles.id
+WHERE roles.id=?) as vrolemenu ON menus.id=vrolemenu.menu_id',[$id]);
         $bina=base_convert($accesspowers,10,2);
         $m=1;
         $access=array();
@@ -69,31 +78,33 @@ public function edit($id){
        $m=$m*2;
        $bina=$bina/10;
    }
-   return view('roleconfig.role.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'access'=>$access]);
+   return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'access'=>$access,'result'=>$result]);
 }else{
 
 }
 return redirect('role');
 }
 public function update(Request $request, $id){
-    if(isset($request->accesspower)){
+    if(isset($request->accesspower) && isset($request->menu_id)){
         $accesspower=$request->accesspower;
+        $selectmenu=$request->menu_id;
         $sum=0;
         foreach ($accesspower as $key => $value) {
          $sum=$sum+$value;
      }
-            // $hasSamePower=\DB::table('roles')
-            // ->select('roles.*')
-            // ->where('roles.accesspower','=',$sum)
-            // ->get()->count();
-            // if($hasSamePower==0){
      $aBean=Role::findOrfail($id);
      $aBean->name=$request->name;
      $aBean->accesspower=$sum;
      $aBean->update();
-            // }else{
-            //     // dd($hasSamePower);
-            // }
+    foreach ($selectmenu as $item) {
+        $hasRecord=\DB::select('SELECT * FROM `role_menu` WHERE role_id=? AND menu_id=?',[$id,$item]);
+      if(count($hasRecord)<1){
+         $aBean=new RoleMenu();
+         $aBean->role_id=$id;
+         $aBean->menu_id=$item;
+         $aBean->save();
+      }     
+    }
  }
  return redirect('role');
 }

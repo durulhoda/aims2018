@@ -15,20 +15,20 @@ class InstituteSubCategoryController extends Controller
 }
    public function index()
     {
-         $dmenu=Role::getMenu();
+         $sidebarMenu=Role::getMenu();
         $accessStatus=Role::getAccessStatus();
         $result=\DB::table('institutesubcategory')
         ->join('institutecategory','institutesubcategory.categoryid','=','institutecategory.id')
         ->select('institutesubcategory.*','institutecategory.name As categoryName')
         ->get();
-        return view('institutesettings.institutesubcategory.index',['dmenu'=>$dmenu,'result'=>$result]);
+        return view('institutesettings.institutesubcategory.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result]);
     }
     public function create(){
         $accessStatus=Role::getAccessStatus();
         if($accessStatus[2]==1){
-             $dmenu=Role::getMenu();
+             $sidebarMenu=Role::getMenu();
            $categories=InstituteCatagory::all();
-           return view('institutesettings.institutesubcategory.create',['dmenu'=>$dmenu,'categories'=>$categories]);
+           return view('institutesettings.institutesubcategory.create',['sidebarMenu'=>$sidebarMenu,'categories'=>$categories]);
         }else{
            return redirect('institutesubcategory'); 
         }
@@ -45,10 +45,10 @@ class InstituteSubCategoryController extends Controller
     {
          $accessStatus=Role::getAccessStatus();
          if($accessStatus[4]==1){
-             $dmenu=Role::getMenu();
+             $sidebarMenu=Role::getMenu();
             $categories=InstituteCatagory::all();
             $aBean=InstituteSubCatagory::findOrfail($id);
-            return view('institutesettings.institutesubcategory.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'categories'=>$categories]);
+            return view('institutesettings.institutesubcategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'categories'=>$categories]);
          }else{
             return redirect('institutesubcategory');
          }
