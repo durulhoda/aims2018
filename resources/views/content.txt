@@ -1,3 +1,5 @@
+ <a class="btn btn-info btn-lg btn-block" href="{{ route('register') }}">{{ __('Register') }}</a>
+
 public function index(){
 
     }

@@ -56,7 +56,7 @@
                 <span class="pull-right"> <a href="{{ route('password.request') }}">  {{ __('Forgot Your Password?') }}</a></span>
             </label>
         <button class="btn btn-primary btn-lg btn-block" type="submit"> {{ __('Login') }}</button>
-         <a class="btn btn-info btn-lg btn-block" href="{{ route('register') }}">{{ __('Register') }}</a>
+        
       </div>
     </form>
   </div>

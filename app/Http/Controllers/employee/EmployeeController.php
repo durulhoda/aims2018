@@ -8,7 +8,11 @@ use App\Http\Controllers\Controller;
 class EmployeeController extends Controller
 {
     public function index(){
-      $sidebarMenu=Role::getMenu();
+     if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
+        $sidebarMenu=Role::getMenu();
+     }
        $accessStatus=Role::getAccessStatus();
        $result=\DB::table('employees')
        ->join('employeetypes','employees.employeetypeid','=','employeetypes.id')
@@ -18,8 +22,12 @@ class EmployeeController extends Controller
    }
    public function create(){
     $accessStatus=Role::getAccessStatus();
+    if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
+        $sidebarMenu=Role::getMenu();
+     }
     if($accessStatus[2]==1){
-       $sidebarMenu=Role::getMenu();
         $employeetypes=\DB::table('employeetypes')->get();
         return view('employeesettings.employee.create',['sidebarMenu'=>$sidebarMenu,'employeetypes'=>$employeetypes]);
     }else{
@@ -37,8 +45,12 @@ public function store(Request $request){
 }
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
+    if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
+        $sidebarMenu=Role::getMenu();
+     }
     if($accessStatus[4]==1){
-      $sidebarMenu=Role::getMenu();
        $aBean=Employee::findOrfail($id);
        $employeetypes=\DB::table('employeetypes')->get();
        return view('employeesettings.employee.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean],['employeetypes'=>$employeetypes]);

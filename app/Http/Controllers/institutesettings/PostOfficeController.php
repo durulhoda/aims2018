@@ -10,15 +10,19 @@ use App\Http\Controllers\Controller;
 class PostOfficeController extends Controller
 {
     public function __construct()
-{
-    $this->middleware('auth');
-}
-     public function index()
     {
-         $sidebarMenu=Role::getMenu();
+        $this->middleware('auth');
+    }
+    public function index()
+    {
+        if(Role::checkAdmin()==1){
+            $sidebarMenu=Role::getAllMenu();
+        }else{
+            $sidebarMenu=Role::getMenu();
+        }
         $accessStatus=Role::getAccessStatus();
         $result=\DB::table('postoffices')
-         ->join('thanas','postoffices.thanaid','=','thanas.id')
+        ->join('thanas','postoffices.thanaid','=','thanas.id')
         ->join('districts','thanas.districtid','=','districts.id')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('postoffices.*','divisions.name as divisionName','districts.name as districtName','thanas.name as thanaName')
@@ -26,57 +30,65 @@ class PostOfficeController extends Controller
         return view('institutesettings.postoffice.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
-         $accessStatus=Role::getAccessStatus();
-         if($accessStatus[2]==1){
-             $sidebarMenu=Role::getMenu();
-             $divisions=\DB::table('divisions')->get();
-            return view('institutesettings.postoffice.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
-         }else{
-            return redirect('postoffice');
-         }
-        
+       $accessStatus=Role::getAccessStatus();
+       if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+    }else{
+        $sidebarMenu=Role::getMenu();
     }
-    public function store(Request $request){
-        $aBean=new PostOffice();
-        $aBean->name=$request->name;
-        $aBean->thanaid=$request->thanaid;
-        $aBean->save();
-        return redirect('postoffice');
-    }
-    public function edit($id)
-    {
-         $accessStatus=Role::getAccessStatus();
-         if($accessStatus[4]==1){
-             $sidebarMenu=Role::getMenu();
-            $result=\DB::table('postoffices')
-             ->join('thanas','postoffices.thanaid','=','thanas.id')
-            ->join('districts','thanas.districtid','=','districts.id')
-            ->join('divisions','districts.divisionid','=','divisions.id')
-            ->select('postoffices.*','divisions.id as divisionid','districts.id as districtid','thanas.id as thanaid')
-            ->where('postoffices.id','=',$id)
-            ->get();
-            $aBean=$result[0];
-             $divisions=\DB::table('divisions')
-             ->select('divisions.*')
-             ->get();
-             $districts=\DB::table('districts')
-             ->where('districts.divisionid','=',$aBean->divisionid)
-             ->get();
-             $thanas=\DB::table('thanas')
-             ->where('thanas.districtid','=',$aBean->districtid)
-             ->get();
-             return view('institutesettings.postoffice.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
-         }else{
-            return redirect('postoffice');
-         }
-    }
-     public function update(Request $request, $id)
-    {
-       
-        $aBean=PostOffice::findOrfail($id);
-        $aBean->name=$request->name;
-        $aBean->thanaid=$request->thanaid;
-        $aBean->update();
-        return redirect('postoffice');
-    }
+    if($accessStatus[2]==1){
+       $divisions=\DB::table('divisions')->get();
+       return view('institutesettings.postoffice.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
+   }else{
+    return redirect('postoffice');
+}
+
+}
+public function store(Request $request){
+    $aBean=new PostOffice();
+    $aBean->name=$request->name;
+    $aBean->thanaid=$request->thanaid;
+    $aBean->save();
+    return redirect('postoffice');
+}
+public function edit($id)
+{
+   $accessStatus=Role::getAccessStatus();
+   if(Role::checkAdmin()==1){
+    $sidebarMenu=Role::getAllMenu();
+}else{
+    $sidebarMenu=Role::getMenu();
+}
+if($accessStatus[4]==1){
+    $result=\DB::table('postoffices')
+    ->join('thanas','postoffices.thanaid','=','thanas.id')
+    ->join('districts','thanas.districtid','=','districts.id')
+    ->join('divisions','districts.divisionid','=','divisions.id')
+    ->select('postoffices.*','divisions.id as divisionid','districts.id as districtid','thanas.id as thanaid')
+    ->where('postoffices.id','=',$id)
+    ->get();
+    $aBean=$result[0];
+    $divisions=\DB::table('divisions')
+    ->select('divisions.*')
+    ->get();
+    $districts=\DB::table('districts')
+    ->where('districts.divisionid','=',$aBean->divisionid)
+    ->get();
+    $thanas=\DB::table('thanas')
+    ->where('thanas.districtid','=',$aBean->districtid)
+    ->get();
+    return view('institutesettings.postoffice.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
+}else{
+    return redirect('postoffice');
+}
+}
+public function update(Request $request, $id)
+{
+ 
+    $aBean=PostOffice::findOrfail($id);
+    $aBean->name=$request->name;
+    $aBean->thanaid=$request->thanaid;
+    $aBean->update();
+    return redirect('postoffice');
+}
 }

@@ -23,6 +23,7 @@
 							<th>Menu Name</th>
 							<th>Parent</th>
 							<th>Url</th>
+							<th>Menu Order</th>
 							@if($accessStatus[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -38,6 +39,7 @@
 							<td>{{$aObj->child}}</td>
 							<td>{{$aObj->parent}}</td>
 							<td>{{$aObj->url}}</td>
+							<td>{{$aObj->menuorder}}</td>
 							@if($accessStatus[4]==1)
 							<td> 
 								<a href="{{URL::to('/menu')}}/{{$aObj->childid}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">

@@ -49,13 +49,13 @@ Route::resource('subjectcode', 'settings\SubjectCodeController');
 Route::resource('courseoffer', 'settings\CourseOfferController');
 
 
-// For Employee related
+// For Employee Settings
 Route::resource('employeeType', 'employee\EmployeeTypeController');
 Route::resource('employeedesignation', 'employee\EmployeeDesignationController');
 Route::resource('department', 'employee\DepartmentController');
 Route::resource('employee', 'employee\EmployeeController');
 
-// For Student related
+// For Student Settings
 Route::resource('applicant', 'studentsettings\ApplicantController');
 Route::resource('student', 'studentsettings\StudentController');
 

@@ -7,20 +7,27 @@ use App\menusettings\RoleMenu;
 use Illuminate\Http\Request;
 class RoleController extends Controller
 {
-    public function __construct()
-{
-    $this->middleware('auth');
-}
+    public function __construct(){
+      $this->middleware('auth');
+  }
     public function index(){
-       $sidebarMenu=Role::getMenu();
-       $accessStatus=Role::getAccessStatus();
-       $result=Role::all();
-       return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+      $accessStatus=Role::getAccessStatus();
+      $result=Role::all();
+     if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
+        $sidebarMenu=Role::getMenu();
+     }
+     return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){
     $accessStatus=Role::getAccessStatus();
-    if($accessStatus[2]==1){
+    if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
         $sidebarMenu=Role::getMenu();
+     }
+    if($accessStatus[2]==1){
         $menus=Menu::all();
         return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'menus'=>$menus]);
     }else{
@@ -52,8 +59,12 @@ public function store(Request $request){
 }
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
-    if($accessStatus[2]==1){
+    if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
         $sidebarMenu=Role::getMenu();
+     }
+    if($accessStatus[2]==1){
         $aBean=Role::findOrfail($id);
         $accesspowers=$aBean->accesspower;
         $result=\DB::select('SELECT menus.id,

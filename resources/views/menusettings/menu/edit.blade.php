@@ -38,6 +38,10 @@
  						<label for="url">Route  :</label>
  						<input type="text" class="form-control" id="url" name="url" value="{{$bean->url}}">
  					</div>
+ 					<div class="form-group col-sm-4">
+ 						<label for="menuorder">Menu Order  :</label>
+ 						<input type="text" class="form-control" id="menuorder" name="menuorder" value="{{$bean->menuorder}}">
+ 					</div>
  				</div>
  				<button type="Update" class="btn btn-default">Update</button>
  			</form>

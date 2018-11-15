@@ -8,15 +8,23 @@ use App\employee\EmployeeType;
 class EmployeeTypeController extends Controller
 {
 	public function index(){
-		$sidebarMenu=Role::getMenu();
+		if(Role::checkAdmin()==1){
+			$sidebarMenu=Role::getAllMenu();
+		}else{
+			$sidebarMenu=Role::getMenu();
+		}
 		$accessStatus=Role::getAccessStatus();
 		$result=EmployeeType::all();
 		return view('employeesettings.employeeType.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create(){
 		$accessStatus=Role::getAccessStatus();
-		if($accessStatus[2]==1){
+		if(Role::checkAdmin()==1){
+			$sidebarMenu=Role::getAllMenu();
+		}else{
 			$sidebarMenu=Role::getMenu();
+		}
+		if($accessStatus[2]==1){
 			return view('employeesettings.employeeType.create',['sidebarMenu'=>$sidebarMenu]);
 		}else{
 			return redirect('employeeType');
@@ -32,8 +40,12 @@ class EmployeeTypeController extends Controller
 	public function edit($id)
 	{
 		$accessStatus=Role::getAccessStatus();
-		if($accessStatus[4]==1){
+		if(Role::checkAdmin()==1){
+			$sidebarMenu=Role::getAllMenu();
+		}else{
 			$sidebarMenu=Role::getMenu();
+		}
+		if($accessStatus[4]==1){
 			$aBean=EmployeeType::findOrfail($id);
 			return view('employeesettings.employeeType.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
 		}else{

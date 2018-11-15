@@ -14,7 +14,11 @@ public function __construct()
 
 public function index()
 {
-	$sidebarMenu=Role::getMenu();
+	if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
+        $sidebarMenu=Role::getMenu();
+     }
 	$accessStatus=Role::getAccessStatus();
     return view('home',['accessStatus'=>$accessStatus,'sidebarMenu'=>$sidebarMenu]);
 }

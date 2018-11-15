@@ -33,6 +33,10 @@
  						<label for="url">Route  :</label>
  						<input type="text" class="form-control" id="url" name="url">
  					</div>
+ 					<div class="form-group col-sm-4">
+ 						<label for="menuorder">Menu Order  :</label>
+ 						<input type="text" class="form-control" id="menuorder" name="menuorder">
+ 					</div>
  				</div>
  				<button type="submit" class="btn btn-default">Save</button>
  			</form>
