@@ -51,7 +51,8 @@ public static function getAllMenu(){
 }
 private static function adminmenu($parentid){
   $menu = "";
-   $result=\DB::select('SELECT menus.id,menus.name as menuName,menus.parentid,menus.url from menus where parentid=?',[$parentid]);
+   $result=\DB::select('SELECT menus.id,menus.name as menuName,menus.parentid,menus.url,menus.menuorder from menus where parentid=?
+ORDER by menus.menuorder DESC',[$parentid]);
    foreach ($result as $key => $value) {
     $isTrue=Role::hasChild($value->id);
     if($isTrue){
