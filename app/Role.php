@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
   protected $table='roles';
-  protected $fillable = ['name','accesspower','status'];
+  protected $fillable = ['name','rolecreatorid','instituteid','accesspower','status'];
   public static function getAllRole(){
        $userid = Auth::user()->id;
        $result=\DB::select();
@@ -52,7 +52,7 @@ public static function getAllMenu(){
 private static function adminmenu($parentid){
   $menu = "";
    $result=\DB::select('SELECT menus.id,menus.name as menuName,menus.parentid,menus.url,menus.menuorder from menus where parentid=?
-ORDER by menus.menuorder DESC',[$parentid]);
+ORDER by menus.menuorder ASC',[$parentid]);
    foreach ($result as $key => $value) {
     $isTrue=Role::hasChild($value->id);
     if($isTrue){
@@ -106,6 +106,13 @@ public static function checkAdmin(){
     WHERE users.id=?',[$userid]);
   return $result[0]->role_id;
 }
-
+public static function getRoleid(){
+  $userid = Auth::user()->id;
+  $result=\DB::select('SELECT users.id,users.name AS userName,roles.id as role_id,roles.name as roleName FROM users
+    INNER JOIN user_role ON users.id=user_role.user_id
+    INNER JOIN roles ON user_role.role_id=roles.id
+    WHERE users.id=?',[$userid]);
+  return $result[0]->role_id;
+}
 }
 

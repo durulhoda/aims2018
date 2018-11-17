@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2018 at 05:45 AM
+-- Generation Time: Nov 17, 2018 at 12:24 PM
 -- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.11
+-- PHP Version: 7.2.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -193,6 +193,14 @@ CREATE TABLE `institute` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `institute`
+--
+
+INSERT INTO `institute` (`id`, `name`, `institutetypeid`, `institutecategoryid`, `institutesubcategoryid`, `divisionid`, `districtid`, `thanaid`, `postofficeid`, `localgovid`, `wordno`, `cluster`, `ein`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Horinagor High School', 1, 1, 1, 1, 1, 1, 1, 1, '1', '1', 111, 0, NULL, NULL),
+(2, 'Horimohon Govt High School', 1, 1, 1, 1, 1, 1, 1, 1, '1', '1', 111, 0, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -276,6 +284,7 @@ CREATE TABLE `menus` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `url` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parentid` int(11) NOT NULL,
+  `menuorder` int(20) NOT NULL DEFAULT '100',
   `status` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -285,42 +294,34 @@ CREATE TABLE `menus` (
 -- Dumping data for table `menus`
 --
 
-INSERT INTO `menus` (`id`, `name`, `url`, `parentid`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Menu Setting', '#', 0, 0, '2018-11-11 19:27:03', '2018-11-11 19:27:03'),
-(2, 'Role-Menu', 'rolemenu', 1, 0, '2018-11-11 19:27:49', '2018-11-11 19:27:49'),
-(3, 'Institute Settings', '#', 0, 0, '2018-11-11 20:34:34', '2018-11-11 20:34:34'),
-(4, 'Division', 'division', 3, 0, '2018-11-11 20:35:28', '2018-11-11 20:35:28'),
-(5, 'District', 'district', 3, 0, '2018-11-11 20:37:11', '2018-11-11 20:37:11'),
-(6, 'Thana', 'thana', 3, 0, '2018-11-11 20:37:36', '2018-11-11 20:37:36'),
-(7, 'Union', 'localgov', 3, 0, '2018-11-11 20:38:35', '2018-11-11 20:38:35'),
-(8, 'Post Office', 'postoffice', 3, 0, '2018-11-11 20:39:04', '2018-11-11 20:39:04'),
-(9, 'Institute Type', 'institutetype', 3, 0, '2018-11-11 20:39:42', '2018-11-11 20:39:42'),
-(10, 'Institute Category', 'institutecategory', 3, 0, '2018-11-11 20:40:19', '2018-11-11 20:40:19'),
-(11, 'Institute Sub Category', 'institutesubcategory', 3, 0, '2018-11-11 20:41:24', '2018-11-11 20:41:24'),
-(12, 'Institute', 'institute', 3, 0, '2018-11-11 20:42:03', '2018-11-11 20:42:03'),
-(13, 'Unit', 'unit', 3, 0, '2018-11-11 20:42:26', '2018-11-11 20:42:26'),
-(14, 'Menu', 'menu', 1, 0, '2018-11-11 20:53:15', '2018-11-11 20:53:15'),
-(15, 'General Settings', '#', 0, 0, '2018-11-11 20:55:01', '2018-11-11 20:55:01'),
-(16, 'Session', 'session', 15, 0, '2018-11-11 20:56:26', '2018-11-11 20:56:26'),
-(17, 'Program Level', 'programLevel', 15, 0, '2018-11-11 20:57:10', '2018-11-11 20:57:10'),
-(18, 'Group', 'group', 15, 0, '2018-11-11 20:59:03', '2018-11-11 20:59:03'),
-(19, 'Program', 'program', 15, 0, '2018-11-11 20:59:37', '2018-11-11 20:59:37'),
-(20, 'Medium', 'medium', 15, 0, '2018-11-11 21:00:10', '2018-11-11 21:00:10'),
-(21, 'Shift', 'shift', 15, 0, '2018-11-11 21:00:38', '2018-11-11 21:00:38'),
-(22, 'Program Offer', 'programoffer', 15, 0, '2018-11-11 21:01:14', '2018-11-11 21:01:14'),
-(23, 'Course', 'course', 15, 0, '2018-11-11 21:01:44', '2018-11-11 21:01:44'),
-(24, 'Section', 'section', 15, 0, '2018-11-11 21:02:21', '2018-11-11 21:02:21'),
-(25, 'Subject Code', 'subjectcode', 15, 0, '2018-11-11 21:02:59', '2018-11-11 21:02:59'),
-(26, 'Course Offer', 'courseoffer', 15, 0, '2018-11-11 21:03:34', '2018-11-11 21:03:34'),
-(27, 'Employee Settings', '#', 0, 0, '2018-11-11 21:04:03', '2018-11-11 21:04:03'),
-(28, 'Employee Type', 'employeeType', 27, 0, '2018-11-11 21:04:32', '2018-11-11 21:04:32'),
-(29, 'Designation', 'employeedesignation', 27, 0, '2018-11-11 21:05:00', '2018-11-11 21:05:00'),
-(30, 'Department', 'department', 27, 0, '2018-11-11 21:05:23', '2018-11-11 21:05:23'),
-(31, 'Employee', 'employee', 27, 0, '2018-11-11 21:05:50', '2018-11-11 21:05:50'),
-(32, 'Student Setting', '#', 0, 0, '2018-11-11 21:06:54', '2018-11-11 21:06:54'),
-(33, 'Applicant', 'applicant', 32, 0, '2018-11-11 21:07:23', '2018-11-11 21:07:23'),
-(34, 'Student', 'student', 32, 0, '2018-11-11 21:07:47', '2018-11-11 21:07:47'),
-(35, 'Role', 'role', 1, 0, '2018-11-11 21:17:41', '2018-11-11 21:18:50');
+INSERT INTO `menus` (`id`, `name`, `url`, `parentid`, `menuorder`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Role Settings', '#', 0, 2, 0, '2018-11-15 03:52:43', '2018-11-17 01:15:25'),
+(2, 'Role', 'role', 1, 100, 0, '2018-11-15 03:53:00', '2018-11-17 01:11:41'),
+(3, 'Institute Settings', '#', 0, 5, 0, '2018-11-15 04:01:33', '2018-11-17 01:32:35'),
+(4, 'Menu Settings', '#', 0, 1, 0, '2018-11-15 04:02:20', '2018-11-17 01:14:55'),
+(5, 'Menu', 'menu', 4, 100, 0, '2018-11-15 04:02:41', '2018-11-17 01:11:48'),
+(6, 'Division SetUp', 'division', 12, 100, 0, '2018-11-15 04:03:07', '2018-11-17 01:11:58'),
+(7, 'Student Settings', '#', 0, 100, 0, '2018-11-15 04:03:49', '2018-11-17 01:12:06'),
+(8, 'Employee Settings', '#', 0, 100, 0, '2018-11-15 04:04:56', '2018-11-17 01:12:13'),
+(9, 'General Settings', '#', 0, 4, 0, '2018-11-15 04:05:17', '2018-11-17 01:32:04'),
+(10, 'Program', 'program', 9, 100, 0, '2018-11-17 00:10:02', '2018-11-17 01:36:03'),
+(11, 'Program Level', 'programLevel', 9, 2, 0, '2018-11-17 00:10:54', '2018-11-17 01:35:21'),
+(12, 'Basic Settings', '#', 0, 3, 0, '2018-11-17 00:42:29', '2018-11-17 01:34:50'),
+(13, 'District SetUp', 'district', 12, 100, 0, '2018-11-17 00:47:20', '2018-11-17 01:12:21'),
+(14, 'Thana SetUp', 'thana', 12, 100, 0, '2018-11-17 00:49:31', '2018-11-17 01:12:32'),
+(15, 'Union SetUp', 'localgov', 12, 100, 0, '2018-11-17 00:49:55', '2018-11-17 01:12:59'),
+(16, 'Post Office SetUp', 'postoffice', 12, 100, 0, '2018-11-17 00:50:21', '2018-11-17 01:13:07'),
+(17, 'Institute Type SetUp', 'institutetype', 12, 100, 0, '2018-11-17 00:51:05', '2018-11-17 01:13:22'),
+(18, 'Institute Category SetUp', 'institutecategory', 12, 100, 0, '2018-11-17 00:51:47', '2018-11-17 01:13:29'),
+(19, 'Institute Sub Category', 'institutesubcategory', 12, 100, 0, '2018-11-17 00:53:04', '2018-11-17 01:13:37'),
+(20, 'Session setup', 'session', 9, 1, 0, '2018-11-17 01:31:39', '2018-11-17 01:31:39'),
+(21, 'Group setup', 'group', 9, 3, 0, '2018-11-17 01:34:05', '2018-11-17 01:34:33'),
+(22, 'Medium setup', 'medium', 9, 100, 0, '2018-11-17 01:36:37', '2018-11-17 01:36:37'),
+(23, 'Shift setup', 'shift', 9, 100, 0, '2018-11-17 01:37:35', '2018-11-17 01:37:35'),
+(24, 'Program Offer setup', 'programoffer', 3, 100, 0, '2018-11-17 01:42:07', '2018-11-17 01:42:07'),
+(25, 'Institute SetUp', 'institute', 3, 1, 0, '2018-11-17 01:43:35', '2018-11-17 01:43:58'),
+(26, 'Domain Setup', 'domain', 3, 2, 0, '2018-11-17 01:49:56', '2018-11-17 01:50:08'),
+(27, 'newDivision', 'dd', 6, 100, 0, '2018-11-17 04:18:29', '2018-11-17 04:18:29');
 
 -- --------------------------------------------------------
 
@@ -339,40 +340,40 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_resets_table', 1),
-(3, '2018_10_16_044922_create_sessions_table', 1),
-(4, '2018_10_16_065445_create_courses_table', 1),
-(5, '2018_10_16_094330_create_programlevels_table', 1),
-(6, '2018_10_17_042437_create_programs_table', 1),
-(7, '2018_10_17_074602_create_mediums_table', 1),
-(8, '2018_10_17_090328_create_groups_table', 1),
-(9, '2018_10_17_103023_create_sections_table', 1),
-(10, '2018_10_17_120643_create_shifts_table', 1),
-(11, '2018_10_18_074310_create_programoffer_table', 1),
-(12, '2018_10_20_092319_create_employees_create', 1),
-(13, '2018_10_20_100252_create_employeetypes_table', 1),
-(14, '2018_10_20_105650_create_emp_designation_table', 1),
-(15, '2018_10_20_112543_create_department_table', 1),
-(16, '2018_10_21_051933_create_applicants_table', 1),
-(17, '2018_10_21_114645_create_courseoffer_table', 1),
-(18, '2018_10_23_100908_create_subjectcodes_table', 1),
-(19, '2018_10_24_043251_create_sectionoffer_table', 1),
-(20, '2018_10_27_074343_create_divisions_table', 1),
-(21, '2018_10_27_074537_create_districts_table', 1),
-(22, '2018_10_27_074637_create_thanas_table', 1),
-(23, '2018_10_27_074719_create_postoffices_table', 1),
-(24, '2018_10_27_074812_create_localgovs_table', 1),
-(25, '2018_10_27_083642_create_institutetype_table', 1),
-(26, '2018_10_27_083756_create_institutecategory_table', 1),
-(27, '2018_10_27_083939_create_institutesubcategory_table', 1),
-(28, '2018_10_27_084337_create_institute_table', 1),
-(30, '2018_11_06_032421_create_roles_table', 1),
-(31, '2018_11_06_043612_create_students_table', 1),
-(32, '2018_11_06_053612_create_menus_table', 1),
-(33, '2018_11_08_060054_create_user_role_pivot_table', 1),
-(34, '2018_11_10_075810_create_role_menu_create', 1),
-(35, '2018_11_01_103526_create_units_create', 2);
+(35, '2014_10_12_000000_create_users_table', 1),
+(36, '2014_10_12_100000_create_password_resets_table', 1),
+(37, '2018_10_16_044922_create_sessions_table', 1),
+(38, '2018_10_16_065445_create_courses_table', 1),
+(39, '2018_10_16_094330_create_programlevels_table', 1),
+(40, '2018_10_17_042437_create_programs_table', 1),
+(41, '2018_10_17_074602_create_mediums_table', 1),
+(42, '2018_10_17_090328_create_groups_table', 1),
+(43, '2018_10_17_103023_create_sections_table', 1),
+(44, '2018_10_17_120643_create_shifts_table', 1),
+(45, '2018_10_18_074310_create_programoffer_table', 1),
+(46, '2018_10_20_092319_create_employees_table', 1),
+(47, '2018_10_20_100252_create_employeetypes_table', 1),
+(48, '2018_10_20_105650_create_emp_designation_table', 1),
+(49, '2018_10_20_112543_create_department_table', 1),
+(50, '2018_10_21_051933_create_applicants_table', 1),
+(51, '2018_10_21_114645_create_courseoffer_table', 1),
+(52, '2018_10_23_100908_create_subjectcodes_table', 1),
+(53, '2018_10_24_043251_create_sectionoffer_table', 1),
+(54, '2018_10_27_074343_create_divisions_table', 1),
+(55, '2018_10_27_074537_create_districts_table', 1),
+(56, '2018_10_27_074637_create_thanas_table', 1),
+(57, '2018_10_27_074719_create_postoffices_table', 1),
+(58, '2018_10_27_074812_create_localgovs_table', 1),
+(59, '2018_10_27_083642_create_institutetype_table', 1),
+(60, '2018_10_27_083756_create_institutecategory_table', 1),
+(61, '2018_10_27_083939_create_institutesubcategory_table', 1),
+(62, '2018_10_27_084337_create_institute_table', 1),
+(63, '2018_11_01_103526_create_units_table', 1),
+(64, '2018_11_06_032421_create_roles_table', 1),
+(65, '2018_11_06_043612_create_students_table', 1),
+(66, '2018_11_06_053612_create_menus_table', 1),
+(67, '2018_11_08_060054_create_user_role_table', 1),
+(68, '2018_11_10_075810_create_role_menu_table', 1);
 
 -- --------------------------------------------------------
 
@@ -458,6 +459,8 @@ CREATE TABLE `programs` (
 CREATE TABLE `roles` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rolecreatorid` int(50) NOT NULL,
+  `instituteid` int(50) NOT NULL,
   `accesspower` int(11) NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -468,10 +471,10 @@ CREATE TABLE `roles` (
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`id`, `name`, `accesspower`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 63, 0, '2018-11-20 18:00:00', '2018-11-19 18:00:00'),
-(2, 'Student', 53, 0, '2018-11-11 21:20:23', '2018-11-11 21:20:23'),
-(3, 'Employee', 7, 0, '2018-11-11 21:20:52', '2018-11-11 21:20:52');
+INSERT INTO `roles` (`id`, `name`, `rolecreatorid`, `instituteid`, `accesspower`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Supper Admin', 0, 0, 63, 0, NULL, NULL),
+(2, 'School1(Admin)', 1, 1, 7, 0, '2018-11-15 04:06:30', '2018-11-17 05:22:09'),
+(3, 'School2(Admin)', 1, 2, 49, 0, '2018-11-15 04:10:41', '2018-11-15 04:10:50');
 
 -- --------------------------------------------------------
 
@@ -492,46 +495,27 @@ CREATE TABLE `role_menu` (
 --
 
 INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2018-11-11 19:28:23', '2018-11-11 19:28:23'),
-(2, 1, 2, '2018-11-11 19:28:38', '2018-11-11 19:28:38'),
-(3, 1, 3, '2018-11-11 20:43:23', '2018-11-11 20:43:23'),
-(4, 1, 4, '2018-11-11 20:43:35', '2018-11-11 20:43:35'),
-(5, 1, 5, '2018-11-11 20:43:45', '2018-11-11 20:43:45'),
-(6, 1, 6, '2018-11-11 20:50:49', '2018-11-11 20:50:49'),
-(7, 1, 7, '2018-11-11 20:51:01', '2018-11-11 20:51:01'),
-(8, 1, 8, '2018-11-11 20:51:11', '2018-11-11 20:51:11'),
-(9, 1, 9, '2018-11-11 20:51:22', '2018-11-11 20:51:22'),
-(10, 1, 10, '2018-11-11 20:51:37', '2018-11-11 20:51:37'),
-(11, 1, 11, '2018-11-11 20:51:48', '2018-11-11 20:52:01'),
-(12, 1, 12, '2018-11-11 20:52:13', '2018-11-11 20:52:13'),
-(13, 1, 13, '2018-11-11 20:52:23', '2018-11-11 20:52:23'),
-(14, 1, 14, '2018-11-11 20:53:46', '2018-11-11 20:53:46'),
-(15, 1, 15, '2018-11-11 20:55:25', '2018-11-11 20:55:25'),
-(16, 1, 16, '2018-11-11 20:57:54', '2018-11-11 20:57:54'),
-(17, 1, 17, '2018-11-11 20:58:11', '2018-11-11 20:58:11'),
-(18, 1, 18, '2018-11-11 21:08:49', '2018-11-11 21:09:18'),
-(19, 1, 19, '2018-11-11 21:09:45', '2018-11-11 21:09:45'),
-(20, 1, 20, '2018-11-11 21:09:58', '2018-11-11 21:09:58'),
-(21, 1, 21, '2018-11-11 21:10:25', '2018-11-11 21:10:25'),
-(22, 1, 22, '2018-11-11 21:10:46', '2018-11-11 21:10:46'),
-(23, 1, 23, '2018-11-11 21:11:08', '2018-11-11 21:11:08'),
-(24, 1, 24, '2018-11-11 21:11:31', '2018-11-11 21:11:31'),
-(25, 1, 25, '2018-11-11 21:12:02', '2018-11-11 21:12:02'),
-(26, 1, 26, '2018-11-11 21:12:31', '2018-11-11 21:12:31'),
-(27, 1, 27, '2018-11-11 21:12:49', '2018-11-11 21:12:49'),
-(28, 1, 28, '2018-11-11 21:13:11', '2018-11-11 21:13:11'),
-(29, 1, 29, '2018-11-11 21:13:23', '2018-11-11 21:13:23'),
-(30, 1, 30, '2018-11-11 21:13:45', '2018-11-11 21:13:45'),
-(31, 1, 31, '2018-11-11 21:13:58', '2018-11-11 21:13:58'),
-(32, 1, 32, '2018-11-11 21:14:15', '2018-11-11 21:14:15'),
-(33, 1, 33, '2018-11-11 21:14:36', '2018-11-11 21:14:36'),
-(34, 1, 34, '2018-11-11 21:14:50', '2018-11-11 21:14:50'),
-(35, 1, 35, '2018-11-11 21:19:15', '2018-11-11 21:19:15'),
-(36, 2, 32, '2018-11-11 21:24:55', '2018-11-11 21:26:45'),
-(37, 2, 33, '2018-11-11 21:28:36', '2018-11-11 21:28:36'),
-(38, 2, 34, '2018-11-11 21:28:50', '2018-11-11 21:28:50'),
-(39, 3, 27, '2018-11-11 21:29:49', '2018-11-11 21:29:49'),
-(40, 3, 28, '2018-11-11 21:30:11', '2018-11-11 21:30:11');
+(1, 1, 1, NULL, NULL),
+(2, 2, 3, '2018-11-15 04:06:30', '2018-11-15 04:06:30'),
+(3, 3, 7, '2018-11-15 04:10:41', '2018-11-15 04:10:41'),
+(4, 2, 1, '2018-11-17 04:14:20', '2018-11-17 04:14:20'),
+(5, 2, 2, '2018-11-17 04:14:20', '2018-11-17 04:14:20'),
+(6, 2, 6, '2018-11-17 04:14:20', '2018-11-17 04:14:20'),
+(7, 2, 7, '2018-11-17 04:14:20', '2018-11-17 04:14:20'),
+(8, 2, 8, '2018-11-17 04:14:20', '2018-11-17 04:14:20'),
+(9, 2, 9, '2018-11-17 04:14:32', '2018-11-17 04:14:32'),
+(10, 2, 10, '2018-11-17 04:14:32', '2018-11-17 04:14:32'),
+(11, 2, 11, '2018-11-17 04:14:32', '2018-11-17 04:14:32'),
+(12, 2, 12, '2018-11-17 04:14:32', '2018-11-17 04:14:32'),
+(13, 2, 13, '2018-11-17 04:14:32', '2018-11-17 04:14:32'),
+(14, 2, 14, '2018-11-17 04:15:29', '2018-11-17 04:15:29'),
+(15, 2, 15, '2018-11-17 04:15:30', '2018-11-17 04:15:30'),
+(16, 2, 16, '2018-11-17 04:15:30', '2018-11-17 04:15:30'),
+(17, 2, 17, '2018-11-17 04:15:30', '2018-11-17 04:15:30'),
+(18, 2, 18, '2018-11-17 04:15:30', '2018-11-17 04:15:30'),
+(19, 2, 19, '2018-11-17 04:15:30', '2018-11-17 04:15:30'),
+(20, 2, 20, '2018-11-17 04:15:30', '2018-11-17 04:15:30'),
+(21, 2, 21, '2018-11-17 04:16:49', '2018-11-17 04:16:49');
 
 -- --------------------------------------------------------
 
@@ -604,13 +588,6 @@ CREATE TABLE `students` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `students`
---
-
-INSERT INTO `students` (`id`, `name`, `registrationid`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Lima', 'lima', '2', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -680,8 +657,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin@gmail.com', NULL, '$2y$10$JDgz0PxIi7uYdcM/03bCWeYRa22rFLy5hYDHAeuBahOYIZv0QzmaK', 'LcSbsaxBR5gRVaTwjZKniK5R9Fiuk65L0RXYiY3bDdHXswP06IPMc9UlgJRo', '2018-11-11 19:22:17', '2018-11-11 19:22:17'),
-(2, 'Lima', 'lima@gmail.com', NULL, '$2y$10$GLamMg6gks.72Rb48DO2.Odc5tiduG9j4.g2vy0SNV2MQRFFFGl0C', 'LUOhmEvCahClWt8ZuVGdUTuhkbfTS8Jqt0s1EVOQmB45jPfj44rOpQlLclmX', NULL, NULL);
+(1, 'Lima', 'lima@gmail.com', NULL, '$2y$10$nREHoHY1rICePg6pkaySp.th4YLjYk7dsJ09Vk8Xh7Jl9MD5kdIN.', '8RrJ3RTjUnWdThNEvetz5oXV4dp9QPvQ5WT0Ucl9JN6wAFmjv2V2JfX5uZ18', NULL, NULL),
+(2, 'Supper Admin', 'supperadmin@gmail.com', NULL, '$2y$10$6mCYNCeg6frFbH8QtYJAReC5ZgLf3Dr8SZIn.WGsyCnzP7hC6lENW', 'Uhte0JM1Zo3ZQbvyM3ALY6MCiy45KPNPsCx6vnrFxAXia8tZY7iv70pW2lM8', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -702,8 +679,8 @@ CREATE TABLE `user_role` (
 --
 
 INSERT INTO `user_role` (`id`, `user_id`, `role_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2018-11-14 18:00:00', '2018-11-19 18:00:00'),
-(2, 2, 2, NULL, NULL);
+(1, 1, 1, NULL, NULL),
+(2, 2, 1, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -988,7 +965,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `institute`
 --
 ALTER TABLE `institute`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `institutecategory`
@@ -1024,13 +1001,13 @@ ALTER TABLE `mediums`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `postoffices`
@@ -1066,7 +1043,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `role_menu`
 --
 ALTER TABLE `role_menu`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `sectionoffer`
@@ -1096,7 +1073,7 @@ ALTER TABLE `shifts`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `subjectcodes`

@@ -16,13 +16,18 @@ class ProgramController extends Controller
 }
 	public function index()
 	{
+		if(Role::checkAdmin()==1){
+        $sidebarMenu=Role::getAllMenu();
+     }else{
+        $sidebarMenu=Role::getMenu();
+     }
 		$accessStatus=Role::getAccessStatus();
 		$result=\DB::table('programs')
 		->join('groups','programs.groupid','=','groups.id')
 		->join('programlevels','groups.programLevelid','=','programlevels.id')
 		->select('programs.*', 'programlevels.name as lavelName','groups.name as groupName')
 		->get();
-		return view('settings.program.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+		return view('settings.program.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
 	}
 	public function create()
 	{

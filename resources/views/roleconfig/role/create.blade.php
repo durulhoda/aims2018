@@ -16,11 +16,18 @@
  			<form action="{{URL::to('role')}}" method="POST">
  				{{csrf_field()}}
  				<div class="row">
- 					<div class="form-group col-sm-4">
+ 					<div class="form-group col-sm-3">
  						<label for="name">Role  :</label>
  						<input type="text" class="form-control" id="name" name="name">
  					</div>
- 					<div class="form-group col-sm-8">
+ 					<div class="form-group col-sm-3">
+ 						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
+ 						<select name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
+ 							<option value="0">Select</option>
+ 							
+ 						</select>
+ 					</div>
+ 					<div class="form-group col-sm-6">
  						<?php
  							$read=(isset($accessStatus[1])? $accessStatus[1]:0);
  							$create=(isset($accessStatus[2])? $accessStatus[2]:0);

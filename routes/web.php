@@ -20,7 +20,7 @@ Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::resource('role','RoleController');
 Route::resource('user','UserController');
-// Institute Settings
+// 	General Settings
 Route::resource('division', 'institutesettings\DivisionController')->middleware('auth');
 Route::resource('district', 'institutesettings\DistrictController');
 Route::resource('thana', 'institutesettings\ThanaController');
@@ -29,9 +29,9 @@ Route::resource('postoffice', 'institutesettings\PostOfficeController');
 Route::resource('institutetype', 'institutesettings\InstituteTypeController');
 Route::resource('institutecategory', 'institutesettings\InstituteCategoryController');
 Route::resource('institutesubcategory', 'institutesettings\InstituteSubCategoryController');
-Route::resource('institute', 'institutesettings\InstituteController');
 Route::resource('unit', 'institutesettings\UnitController');
-
+// Institute Settings
+Route::resource('institute', 'institutesettings\InstituteController');
 // General Settings
 Route::resource('session', 'settings\SessionController');
 Route::resource('programLevel', 'settings\ProgramLevelController');

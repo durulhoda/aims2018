@@ -21,6 +21,8 @@
 						<tr>
 							<th>Sl No.</th>
 							<th>Role</th>
+							<th>Role Creator</th>
+							<th>Institute</th>
 							@if($accessStatus[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -34,6 +36,8 @@
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
+							<td>{{$aObj->roleCreatorName}}</td>
+							<td>{{$aObj->institueName}}</td>
 							@if($accessStatus[4]==1)
 							<td> 
 								<a href="{{URL::to('/role')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">

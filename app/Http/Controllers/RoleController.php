@@ -12,12 +12,15 @@ class RoleController extends Controller
   }
     public function index(){
       $accessStatus=Role::getAccessStatus();
-      $result=Role::all();
      if(Role::checkAdmin()==1){
         $sidebarMenu=Role::getAllMenu();
      }else{
         $sidebarMenu=Role::getMenu();
      }
+     $result=\DB::select('SELECT roles.id,roles.name,roles.rolecreatorid,roles.instituteid,institute.name as institueName,vroles.roleCreatorName FROM `roles`
+INNER JOIN institute ON roles.instituteid=institute.id
+INNER JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid,roles.instituteid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
+WHERE roles.rolecreatorid=?',[Role::getRoleid()]);
      return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){

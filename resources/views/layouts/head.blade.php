@@ -38,4 +38,3 @@
   <link href="{{asset('admin/css/jquery-ui-1.10.4.min.css')}}" rel="stylesheet">
    <link href="{{asset('admin/css/multiselect.css')}}" rel="stylesheet">
   <link href="{{asset('admin/css/custom.css')}}" rel="stylesheet">
-  

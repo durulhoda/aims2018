@@ -18,7 +18,6 @@ public function __construct()
 }
 public function index()
 {
-    $userid = Auth::user()->id;
    if(Role::checkAdmin()==1){
         $sidebarMenu=Role::getAllMenu();
      }else{

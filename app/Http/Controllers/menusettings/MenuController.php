@@ -22,8 +22,12 @@ class MenuController extends Controller
    }
    public function create(){
     $accessStatus=Role::getAccessStatus();
+    if(Role::checkAdmin()==1){
+            $sidebarMenu=Role::getAllMenu();
+       }else{
+          $sidebarMenu=Role::getMenu();
+       }
     if($accessStatus[2]==1){
-      $sidebarMenu=Role::getMenu();
        $parents=Menu::all();
        return view('menusettings.menu.create',['sidebarMenu'=>$sidebarMenu,'parents'=>$parents]);
    }else{
@@ -45,8 +49,12 @@ public function store(Request $request){
 }
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
+    if(Role::checkAdmin()==1){
+            $sidebarMenu=Role::getAllMenu();
+       }else{
+          $sidebarMenu=Role::getMenu();
+       }
     if($accessStatus[4]==1){
-        $sidebarMenu=Role::getMenu();
         $aBean=Menu::findOrfail($id);
         $parents=\DB::table('menus')
         ->where('id','!=', $id)
