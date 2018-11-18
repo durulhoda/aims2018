@@ -20,7 +20,8 @@
 					<thead>
 						<tr>
 							<th>Sl No.</th>
-							<th>Role</th>
+							<th><span style="margin-right: 25px;">Role Created By</span><label class="radio-inline"><input type="radio" name="creator" checked value="1" onchange="go(this)">Own</label>
+<label class="radio-inline"><input type="radio" name="creator" value="2" onchange="go(this)">Successor</label></th>
 							<th>Role Creator</th>
 							<th>Institute</th>
 							@if($accessStatus[4]==1)

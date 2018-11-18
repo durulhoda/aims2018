@@ -56,57 +56,12 @@ class CreateTrigger extends Migration
          // DB::unprepared('DROP TRIGGER `beforereturn`');
     }
 
-
-$id = \Auth::id();
-        echo $id;
-        exit();
-
-
-
-        bindec() - Binary to decimal
-decoct() - Decimal to octal
-dechex() - Decimal to hexadecimal
-base_convert() - Convert a number between arbitrary bases
-printf() - Output a formatted string, using %b, %032b or %064b as the format
-sprintf(), using %b, %032b or %064b as the format
-
-
-https://wedevs.com/about-us/
-
-
-$accessStatus=Role::getAccessStatus();
-if($accessStatus[2]==1){
-
-        }else{
-
-        }
-
-
-SELECT role_menu.menu_id,menus.name as menuName,menus.url
-FROM `user_role` 
-INNER JOIN `roles` on user_role.role_id=roles.id
-INNER JOIN `role_menu` on role_menu.role_id=roles.id
-INNER JOIN `menus` on role_menu.menu_id=menus.id
-WHERE user_role.user_id=1
-order BY menus.id
-
-
-
-
-
-SELECT menus.id,
-menus.name AS menuName,
-IFNULL(vrole_menu.menu_id,0) AS menu_id
-FROM menus
-LEFT JOIN (SELECT users.id,users.name as userName,user_role.user_id,user_role.role_id,roles.name as roleName,role_menu.menu_id  FROM users
-INNER JOIN user_role ON users.id=user_role.user_id
-INNER JOIN roles ON user_role.role_id=roles.id
+SELECT roles.*,menus.name as menuName FROM `roles`
 INNER JOIN role_menu ON roles.id=role_menu.role_id
-WHERE users.id=1) as vrole_menu on menus.id=vrole_menu.menu_id
+INNER JOIN menus ON role_menu.menu_id=menus.id
+WHERE roles.id=2
 
 
-SELECT users.id,users.name as userName,user_role.user_id,user_role.role_id,roles.name as roleName,role_menu.menu_id  FROM users
-INNER JOIN user_role ON users.id=user_role.user_id
-INNER JOIN roles ON user_role.role_id=roles.id
-INNER JOIN role_menu ON roles.id=role_menu.role_id
-WHERE users.id=1
+
+
+https://laravelcode.com/post/laravel-55-get-last-inserted-id-with-example

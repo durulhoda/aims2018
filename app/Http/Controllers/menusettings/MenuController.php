@@ -4,6 +4,7 @@ use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\menusettings\Menu;
+use App\menusettings\RoleMenu;
 class MenuController extends Controller
 {
   public function __construct()
@@ -11,22 +12,14 @@ class MenuController extends Controller
     $this->middleware('auth');
 }
     public function index(){
-      if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-       }else{
-          $sidebarMenu=Role::getMenu();
-       }
-       $accessStatus=Role::getAccessStatus();
+      $accessStatus=Role::getAccessStatus();
+      $sidebarMenu=Role::getMenu();
        $result=\DB::select('SELECT vmenus.id as childid,vmenus.name as child,menus.name as parent,vmenus.url,vmenus.menuorder from menus INNER JOIN (SELECT * FROM `menus`) as vmenus ON vmenus.parentid=menus.id union ALL SELECT menus.id as childid,menus.name AS child,menus.name AS parent,menus.url,menus.menuorder FROM `menus` WHERE parentid=0 order by childid');
        return view('menusettings.menu.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){
+    $sidebarMenu=Role::getMenu();
     $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-       }else{
-          $sidebarMenu=Role::getMenu();
-       }
     if($accessStatus[2]==1){
        $parents=Menu::all();
        return view('menusettings.menu.create',['sidebarMenu'=>$sidebarMenu,'parents'=>$parents]);
@@ -45,15 +38,15 @@ public function store(Request $request){
       $aBean->menuorder=100;
     }
     $aBean->save();
+    $aRoleMenu=new RoleMenu();
+    $aRoleMenu->role_id=Role::getRoleid();
+    $aRoleMenu->menu_id=$aBean->id;
+    $aRoleMenu->save();
     return redirect('menu');
 }
 public function edit($id){
+    $sidebarMenu=Role::getMenu();
     $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-       }else{
-          $sidebarMenu=Role::getMenu();
-       }
     if($accessStatus[4]==1){
         $aBean=Menu::findOrfail($id);
         $parents=\DB::table('menus')

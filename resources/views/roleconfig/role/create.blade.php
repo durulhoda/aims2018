@@ -23,8 +23,10 @@
  					<div class="form-group col-sm-3">
  						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
  						<select name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
- 							<option value="0">Select</option>
- 							
+ 							<option value="{{$rolecreatorid}}">Select</option>
+ 							@foreach($roleCreators as $aObj)
+ 								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
+ 							@endforeach
  						</select>
  					</div>
  					<div class="form-group col-sm-6">

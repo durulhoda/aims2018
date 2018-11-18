@@ -96,3 +96,17 @@ function getPostOfficebyUnion(){
 		}
 	});
 }
+
+function go(value){
+	var id = value.value;
+	console.log(id);
+	$.ajax({
+		type:'get',
+		url: "/role",
+		dataType: "html",
+		data: {'id' : id},
+		success: function( result ) {
+			// $( "#localgovid" ).empty().append(result);
+		}
+	});
+}

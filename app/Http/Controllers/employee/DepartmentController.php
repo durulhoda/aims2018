@@ -8,12 +8,8 @@ use App\employee\Department;
 class DepartmentController extends Controller
 {
 	public function index(){
-		if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-	     }else{
-	        $sidebarMenu=Role::getMenu();
-	     }
-		$accessStatus=Role::getAccessStatus();
+		$sidebarMenu=Role::getMenu();
+        $accessStatus=Role::getAccessStatus();
 		$result=Department::all();
 		return view('employeesettings.department.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
 	}

@@ -75,4 +75,8 @@ class AjaxController extends Controller
    }
    echo "<option value=\"\">Select</option>" . $prglvlList;
   }
+  public function index1(Request $request){
+    $id = $request->id;
+    dd($id);
+}
 }
