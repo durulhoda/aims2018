@@ -65,3 +65,14 @@ WHERE roles.id=2
 
 
 https://laravelcode.com/post/laravel-55-get-last-inserted-id-with-example
+
+
+
+SELECT roles.*,institute.name FROM roles
+LEFT JOIN institute ON roles.instituteid=institute.id
+WHERE roles.rolecreatorid=1
+
+SELECT roles.id,roles.name,roles.rolecreatorid,vroles.roleCreatorName,roles.instituteid,institute.name as institueName FROM `roles`
+        INNER JOIN institute ON roles.instituteid=institute.id
+        INNER JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid,roles.instituteid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
+        WHERE roles.rolecreatorid=?

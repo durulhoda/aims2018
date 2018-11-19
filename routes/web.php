@@ -32,7 +32,7 @@ Route::resource('institutesubcategory', 'institutesettings\InstituteSubCategoryC
 Route::resource('unit', 'institutesettings\UnitController');
 // Institute Settings
 Route::resource('institute', 'institutesettings\InstituteController');
-// General Settings
+// Basic Settings
 Route::resource('session', 'settings\SessionController');
 Route::resource('programLevel', 'settings\ProgramLevelController');
 Route::resource('group', 'settings\GroupController');

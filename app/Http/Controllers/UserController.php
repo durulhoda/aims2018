@@ -17,9 +17,9 @@ class UserController extends Controller
 		return view('roleconfig.user.index',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'result'=>$result]);
 	}
 	public function create(){
+		$sidebarMenu=Role::getMenu();
 		$accessStatus=Role::getAccessStatus();
 		if($accessStatus[2]==1){
-			$sidebarMenu=Role::getMenu();
 			$roles=Role::all();
 			return view('roleconfig.user.create',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'roles'=>$roles]);
 		}else{
@@ -41,9 +41,9 @@ class UserController extends Controller
 		return redirect('user');
 	}
 	public function edit($id){
+		$sidebarMenu=Role::getMenu();
 		$accessStatus=Role::getAccessStatus();
 		if($accessStatus[4]==1){
-			$sidebarMenu=Role::getMenu();
 			$aBean=User::findOrfail($id);
 			$roles=Role::all();
 			return view('roleconfig.user.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'roles'=>$roles]);

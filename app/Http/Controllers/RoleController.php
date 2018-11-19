@@ -11,12 +11,8 @@ class RoleController extends Controller
       $this->middleware('auth');
   }
   public function index(){
-      $accessStatus=Role::getAccessStatus();
-      if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
+    $accessStatus=Role::getAccessStatus();
+    $sidebarMenu=Role::getMenu();
     $roleid=Role::getRoleid();
     $result=$this->getRoleByCretor($roleid);
     return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
@@ -24,17 +20,12 @@ class RoleController extends Controller
 
 public function create(){
     $accessStatus=Role::getAccessStatus();
+    $sidebarMenu=Role::getMenu();
     $roleid=Role::getRoleid();
-    $roleCreators=$this->getRoleByCretor($roleid);
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
     if($accessStatus[2]==1){
         $menus=Menu::all();
-        $rolecreatorid=Role::roleCreator();
-        return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'menus'=>$menus,'rolecreatorid'=>$rolecreatorid,'roleCreators'=>$roleCreators]);
+        $roleCreators=$this->getRoleByCretor($roleid);
+        return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'menus'=>$menus,'rolecreatorid'=>$roleid,'roleCreators'=>$roleCreators]);
     }else{
      return redirect('role');
  }
@@ -42,7 +33,6 @@ public function create(){
 public function store(Request $request){
     if(isset($request->accesspower)){
         $accesspower=$request->accesspower;
-        $selectmenu=$request->menu_id;
         $sum=0;
         foreach ($accesspower as $key => $value) {
            $sum=$sum+$value;
@@ -50,13 +40,16 @@ public function store(Request $request){
        $aBean=new Role();
        $aBean->name=$request->name;
        $aBean->accesspower=$sum;
+       $aBean->rolecreatorid=$request->rolecreatorid;
+       $aBean->instituteid=0;
        $aBean->save();
        $lastRecord=\DB::select('SELECT * FROM `roles` ORDER BY ID DESC LIMIT 1')[0];
+       $selectmenu=$request->menu_id;
        foreach ($selectmenu as $item) {
-        $aBean=new RoleMenu();
-        $aBean->role_id=$lastRecord->id;
-        $aBean->menu_id=$item;
-        $aBean->save();
+        $aRoleMenu=new RoleMenu();
+        $aRoleMenu->role_id=$lastRecord->id;
+        $aRoleMenu->menu_id=$item;
+        $aRoleMenu->save();
     }
 }else{
 }
@@ -64,13 +57,10 @@ return redirect('role');
 }
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
+    $sidebarMenu=Role::getMenu();
+     $roleid=Role::getRoleid();
     if($accessStatus[4]==1){
-       $rolecreatorid=Role::roleCreator();
+        $roleCreators=$this->getRoleByCretor($roleid);
         $aBean=Role::findOrfail($id);
         $accesspowers=$aBean->accesspower;
         $result=\DB::select('SELECT menus.id,
@@ -95,7 +85,7 @@ public function edit($id){
          $m=$m*2;
          $bina=$bina/10;
      }
-     return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'access'=>$access,'result'=>$result,'rolecreatorid'=>$rolecreatorid]);
+     return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'access'=>$access,'result'=>$result,'rolecreatorid'=>$roleid,'roleCreators'=>$roleCreators]);
  }else{
 
  }
@@ -124,10 +114,10 @@ public function update(Request $request, $id){
 return redirect('role');
 }
 private function getRoleByCretor($roleid){
-    $result=\DB::select('SELECT roles.id,roles.name,roles.rolecreatorid,vroles.roleCreatorName,roles.instituteid,institute.name as institueName FROM `roles`
-        INNER JOIN institute ON roles.instituteid=institute.id
-        INNER JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid,roles.instituteid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
-        WHERE roles.rolecreatorid=?',[$roleid]);
+    $result=\DB::select("SELECT roles.id,roles.name,roles.rolecreatorid,vroles.roleCreatorName,IFNULL(roles.instituteid,0) asinstituteid,IFNULL(institute.name,'No Institute') as institueName FROM `roles`
+        left JOIN institute ON roles.instituteid=institute.id
+        left JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid,roles.instituteid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
+        WHERE roles.rolecreatorid=?",[$roleid]);
     $i=0;
     if(count($result)){
         foreach ($result as $item) {

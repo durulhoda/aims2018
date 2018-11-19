@@ -15,12 +15,8 @@ class ThanaController extends Controller
     }
     public function index()
     {
-     if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    $accessStatus=Role::getAccessStatus();
+     $accessStatus=Role::getAccessStatus();
+    $sidebarMenu=Role::getMenu();
     $result=\DB::table('thanas')
     ->join('districts','thanas.districtid','=','districts.id')
     ->join('divisions','districts.divisionid','=','divisions.id')
@@ -28,12 +24,8 @@ class ThanaController extends Controller
     return view('institutesettings.thana.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
 }
 public function create(){
-    $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
+     $accessStatus=Role::getAccessStatus();
+    $sidebarMenu=Role::getMenu();
     if($accessStatus[2]==1){
         $divisions=\DB::table('divisions')->get();
         return view('institutesettings.thana.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
@@ -51,12 +43,8 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-    $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
+     $accessStatus=Role::getAccessStatus();
+     $sidebarMenu=Role::getMenu();
     if($accessStatus[4]==1){
        $result=\DB::table('thanas')
        ->join('districts','thanas.districtid','=','districts.id')

@@ -25,6 +25,13 @@
  						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
  						<select name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
  							<option value="{{$rolecreatorid}}">Select</option>
+ 							@foreach($roleCreators as $aObj)
+ 							@if($aObj->rolecreatorid==$bean->id)
+ 							<option selected="" value="{{$aObj->rolecreatorid}}">{{$aObj->roleCreatorName}}</option>
+ 							@else
+ 							<option value="{{$aObj->rolecreatorid}}">{{$aObj->roleCreatorName}}</option>
+ 							@endif
+ 							@endforeach
  						</select>
  					</div>
  					<div class="form-group col-sm-6">

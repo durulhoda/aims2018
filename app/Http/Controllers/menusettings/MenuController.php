@@ -14,7 +14,20 @@ class MenuController extends Controller
     public function index(){
       $accessStatus=Role::getAccessStatus();
       $sidebarMenu=Role::getMenu();
-       $result=\DB::select('SELECT vmenus.id as childid,vmenus.name as child,menus.name as parent,vmenus.url,vmenus.menuorder from menus INNER JOIN (SELECT * FROM `menus`) as vmenus ON vmenus.parentid=menus.id union ALL SELECT menus.id as childid,menus.name AS child,menus.name AS parent,menus.url,menus.menuorder FROM `menus` WHERE parentid=0 order by childid');
+       $result=\DB::select("SELECT vmenus.id as childid,vmenus.name as child,menus.name as parent,vmenus.url,vmenus.menuorder 
+from menus 
+INNER JOIN (SELECT * FROM `menus`) as vmenus ON vmenus.parentid=menus.id 
+union ALL 
+SELECT 
+menus.id as childid,
+menus.name AS child,
+(CASE
+WHEN menus.parentid=0 THEN 'No Parent'
+END) as parent,
+menus.url,
+menus.menuorder 
+FROM `menus` 
+WHERE menus.parentid=0 order by childid");
        return view('menusettings.menu.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
    }
    public function create(){

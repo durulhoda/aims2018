@@ -8,6 +8,7 @@ class Role extends Model
 {
   protected $table='roles';
   protected $fillable = ['name','rolecreatorid','instituteid','accesspower','status'];
+  
   public static function getAllRole(){
    $userid = Auth::user()->id;
    $result=\DB::select();
@@ -44,44 +45,21 @@ class Role extends Model
  return $accessStatus;
 }
 public static function getMenu(){
- return Role::menucreate(0);
-}
-public static function getAllMenu(){
  return Role::adminmenu(0);
 }
 private static function adminmenu($parentid){
+  $userid = Auth::user()->id;
   $menu = "";
-  $result=\DB::select('SELECT menus.id,menus.name as menuName,menus.parentid,menus.url,menus.menuorder from menus where parentid=?
-    ORDER by menus.menuorder ASC',[$parentid]);
+  $result=\DB::select('SELECT menus.id,menus.name as menuName,menus.parentid,menus.url,menus.menuorder
+    FROM `role_menu`
+    INNER JOIN menus on role_menu.menu_id=menus.id
+    WHERE role_menu.role_id=? AND menus.parentid=?
+    ORDER by menus.menuorder ASC',[Role::getRoleid(),$parentid]);
   foreach ($result as $key => $value) {
     $isTrue=Role::hasChild($value->id);
     if($isTrue){
      $menu .="<li class='sub-menu'><a href='javascript:;'>".$value->menuName."</a>";
      $menu .= "<ul class='sub'>".Role::adminmenu($value->id)."</ul>";
-   }else{
-    $menu .="<li class=''><a href='".$value->url."'>".$value->menuName."</a>";
-  }
-  $menu .= "</li>";
-}
-return $menu;
-}
-private static function menucreate($parentid){
-  $userid = Auth::user()->id;
-  $menu = "";
-  $result=\DB::select('select * From (SELECT menus.id,menus.name as menuName,menus.parentid,menus.url,role_menu.menu_id,role_menu.role_id,roles.name as roleName
-    from menus
-    INNER JOIN role_menu on role_menu.menu_id=menus.id
-    INNER JOIN roles on role_menu.role_id=roles.id) as rolemenu
-    INNER join (SELECT users.name,user_role.user_id,user_role.role_id
-    FROM users
-    INNER JOIN user_role on users.id=user_role.user_id
-    INNER JOIN roles on user_role.role_id=roles.id) as userrole on userrole.role_id=rolemenu.role_id
-    WHERE userrole.user_id=? and rolemenu.parentid=?',[$userid,$parentid]);
-  foreach ($result as $key => $value) {
-    $isTrue=Role::hasChild($value->id);
-    if($isTrue){
-     $menu .="<li class='sub-menu'><a href='javascript:;'>".$value->menuName."</a>";
-     $menu .= "<ul class='sub'>".Role::menucreate($value->id)."</ul>";
    }else{
     $s="{{URL::to('/')}}";
     $menu .="<li class=''><a href='".$value->url."'>".$value->menuName."</a>";
@@ -98,14 +76,6 @@ private static function hasChild($parentid){
     return false;
   }
 }
-public static function checkAdmin(){
-  $userid = Auth::user()->id;
-  $result=\DB::select('SELECT users.id,users.name AS userName,roles.id as role_id,roles.name as roleName FROM users
-    INNER JOIN user_role ON users.id=user_role.user_id
-    INNER JOIN roles ON user_role.role_id=roles.id
-    WHERE users.id=?',[$userid]);
-  return $result[0]->role_id;
-}
 public static function getRoleid(){
   $userid = Auth::user()->id;
   $result=\DB::select('SELECT users.id,users.name AS userName,roles.id as role_id,roles.name as roleName FROM users
@@ -121,6 +91,6 @@ public static function roleCreator(){
     INNER JOIN roles ON user_role.role_id=roles.id
     WHERE users.id=?',[$userid]);
   return $result[0]->rolecreatorid;
-}
+  }
 }
 

@@ -15,12 +15,8 @@ class DistrictController extends Controller
     }
     public function index()
     {
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
         $accessStatus=Role::getAccessStatus();
+        $sidebarMenu=Role::getMenu();
         $result=\DB::table('districts')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('districts.*','divisions.name as divisionName')->get();
@@ -28,12 +24,8 @@ class DistrictController extends Controller
     }
     public function create(){
 
-       $accessStatus=Role::getAccessStatus();
-       if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
+        $accessStatus=Role::getAccessStatus();
+    $sidebarMenu=Role::getMenu();
     if($accessStatus[2]==1){
         $divisions=\DB::table('divisions')->get();
         return view('institutesettings.district.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
@@ -50,12 +42,8 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-    $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
+     $accessStatus=Role::getAccessStatus();
+    $sidebarMenu=Role::getMenu();
     if($accessStatus[4]==1){
        $aBean=District::findOrfail($id);
        $divisions=\DB::table('divisions')->get();

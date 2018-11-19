@@ -7,20 +7,16 @@ use App\Role;
 class HomeController extends Controller
 {
 
-public function __construct()
-{
-    $this->middleware('auth');
-}
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
 
-public function index()
-{
-	if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-     }else{
-        $sidebarMenu=Role::getMenu();
-     }
-	$accessStatus=Role::getAccessStatus();
-    return view('home',['accessStatus'=>$accessStatus,'sidebarMenu'=>$sidebarMenu]);
-}
+	public function index()
+	{
+		$accessStatus=Role::getAccessStatus();
+		$sidebarMenu=Role::getMenu();
+		return view('home',['accessStatus'=>$accessStatus,'sidebarMenu'=>$sidebarMenu]);
+	}
 
 }
