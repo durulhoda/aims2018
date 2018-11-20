@@ -67,12 +67,20 @@ WHERE roles.id=2
 https://laravelcode.com/post/laravel-55-get-last-inserted-id-with-example
 
 
-
-SELECT roles.*,institute.name FROM roles
-LEFT JOIN institute ON roles.instituteid=institute.id
-WHERE roles.rolecreatorid=1
-
-SELECT roles.id,roles.name,roles.rolecreatorid,vroles.roleCreatorName,roles.instituteid,institute.name as institueName FROM `roles`
-        INNER JOIN institute ON roles.instituteid=institute.id
-        INNER JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid,roles.instituteid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
-        WHERE roles.rolecreatorid=?
+select 
+IFNULL(childrolemenu.menu_id,0) AS id,
+parentrolemenu.menuName,
+parentrolemenu.url,
+parentrolemenu.parentid,
+parentrolemenu.menuorder
+FROM(SELECT roles.id as parentroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder
+from roles
+INNER JOIN role_menu on roles.id=role_menu.role_id
+INNER JOIN menus ON role_menu.menu_id=menus.id
+WHERE roles.id=2) AS parentrolemenu
+left JOIN
+(SELECT roles.id as childroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName
+from roles
+INNER JOIN role_menu on roles.id=role_menu.role_id
+INNER JOIN menus ON role_menu.menu_id=menus.id
+WHERE roles.id=3) AS childrolemenu ON parentrolemenu.menu_id=childrolemenu.menu_id

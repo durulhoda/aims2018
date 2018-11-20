@@ -58,34 +58,16 @@ return redirect('role');
 public function edit($id){
     $accessStatus=Role::getAccessStatus();
     $sidebarMenu=Role::getMenu();
-     $roleid=Role::getRoleid();
+    $rolecreatorid=$this->getRoleCreatorID($id);
+    $roleid=Role::getRoleid();
+    $rolepower=$this->getRolePower($rolecreatorid);
     if($accessStatus[4]==1){
-        $roleCreators=$this->getRoleByCretor($roleid);
+        $roleCreators=$this->getCretor($roleid);
         $aBean=Role::findOrfail($id);
         $accesspowers=$aBean->accesspower;
-        $result=\DB::select('SELECT menus.id,
-            menus.name AS menuName,
-            menus.url,
-            IFNULL(vrolemenu.role_id,0) AS role_id
-            FROM menus
-            LEFT JOIN (SELECT role_menu.role_id,role_menu.menu_id
-            FROM role_menu
-            INNER JOIN roles on role_menu.role_id=roles.id
-            WHERE roles.id=?) as vrolemenu ON menus.id=vrolemenu.menu_id',[$id]);
-        $bina=base_convert($accesspowers,10,2);
-        $m=1;
-        $access=array();
-        while($bina>0) {
-           $mr=$bina%10;
-           $bina=$bina-$mr;
-           $dr=$mr*$m;
-           if($dr){
-             $access[$dr]=$dr;
-         }
-         $m=$m*2;
-         $bina=$bina/10;
-     }
-     return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'access'=>$access,'result'=>$result,'rolecreatorid'=>$roleid,'roleCreators'=>$roleCreators]);
+        $result=\DB::select("select parentrolemenu.menu_id, IFNULL(childrolemenu.menu_id,0) AS id, parentrolemenu.menuName, parentrolemenu.url, parentrolemenu.parentid, parentrolemenu.menuorder FROM(SELECT roles.id as parentroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder from roles INNER JOIN role_menu on roles.id=role_menu.role_id INNER JOIN menus ON role_menu.menu_id=menus.id WHERE roles.id=?) AS parentrolemenu left JOIN (SELECT roles.id as childroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName from roles INNER JOIN role_menu on roles.id=role_menu.role_id INNER JOIN menus ON role_menu.menu_id=menus.id WHERE roles.id=?) AS childrolemenu ON parentrolemenu.menu_id=childrolemenu.menu_id",[$rolecreatorid,$id]);
+     $access=$this->getBinaryPositionValue($accesspowers);
+     return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'access'=>$access,'result'=>$result,'roleCreators'=>$roleCreators,'rolepower'=>$rolepower]);
  }else{
 
  }
@@ -114,7 +96,7 @@ public function update(Request $request, $id){
 return redirect('role');
 }
 private function getRoleByCretor($roleid){
-    $result=\DB::select("SELECT roles.id,roles.name,roles.rolecreatorid,vroles.roleCreatorName,IFNULL(roles.instituteid,0) asinstituteid,IFNULL(institute.name,'No Institute') as institueName FROM `roles`
+    $result=\DB::select("SELECT roles.id,roles.name,roles.rolecreatorid,vroles.roleCreatorName,IFNULL(roles.instituteid,0) as instituteid,IFNULL(institute.name,'No Institute') as institueName FROM `roles`
         left JOIN institute ON roles.instituteid=institute.id
         left JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid,roles.instituteid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
         WHERE roles.rolecreatorid=?",[$roleid]);
@@ -134,5 +116,48 @@ private function getRoleByCretor($roleid){
     return $result;
   }
 }
+private function getCretor($roleid){
+    $result=\DB::select("SELECT roles.rolecreatorid,vroles.roleCreatorName FROM `roles`
+        INNER JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
+        group by  roles.rolecreatorid");
+    return $result;
+  }
+  private function getRolePower($roleid){
+    $rolepower=array();
+    $accessPower=\DB::select("SELECT roles.id,roles.name AS roleName,roles.accesspower
+FROM roles
+WHERE roles.id=?",[$roleid])[0]->accesspower;
+    $menusAccess=\DB::select("SELECT roles.id,roles.name AS roleName,roles.accesspower,
+IFNULL(vmenus.menu_id,0) as menu_id,
+IFNULL(vmenus.menuName,'No Selected') as menuName
+FROM roles
+left JOIN (SELECT role_menu.role_id,role_menu.menu_id,menus.name AS menuName from role_menu
+INNER JOIN menus ON role_menu.menu_id=menus.id) as vmenus on vmenus.role_id=roles.id
+WHERE roles.id=?",[$roleid]);
+    $accessPower=$this->getBinaryPositionValue($accessPower);
+    $rolepower['accessPower']=$accessPower;
+    $rolepower['menusAccess']=$menusAccess;
+    return $rolepower;
+  }
+  private function getRoleCreatorID($id){
+     $aRow=\DB::table('roles')->where('id', $id)->first();
+    return $aRow->rolecreatorid;
+  }
+  private function getBinaryPositionValue($accesspowers){
+      $bina=base_convert($accesspowers,10,2);
+        $m=1;
+        $access=array();
+        while($bina>0) {
+           $mr=$bina%10;
+           $bina=$bina-$mr;
+           $dr=$mr*$m;
+           if($dr){
+             $access[$dr]=$dr;
+         }
+         $m=$m*2;
+         $bina=$bina/10;
+     }
+      return $access;
+  }
 }
 
