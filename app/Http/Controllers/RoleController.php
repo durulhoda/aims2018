@@ -60,16 +60,16 @@ public function edit($id){
     $sidebarMenu=Role::getMenu();
     $rolecreatorid=$this->getRoleCreatorID($id);
     $roleid=Role::getRoleid();
+    // dd($roleid);
     $rolepower=$this->getRolePower($rolecreatorid);
     if($accessStatus[4]==1){
-        $roleCreators=$this->getCretor($roleid);
+         $list[0]=\DB::table('roles')->where('id', $roleid)->first();
+         $roleCreators=$this->getRoleCreator($roleid,$list);
         $aBean=Role::findOrfail($id);
         $accesspowers=$aBean->accesspower;
+        $access=$this->getBinaryPositionValue($accesspowers);
         $result=\DB::select("select parentrolemenu.menu_id, IFNULL(childrolemenu.menu_id,0) AS id, parentrolemenu.menuName, parentrolemenu.url, parentrolemenu.parentid, parentrolemenu.menuorder FROM(SELECT roles.id as parentroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder from roles INNER JOIN role_menu on roles.id=role_menu.role_id INNER JOIN menus ON role_menu.menu_id=menus.id WHERE roles.id=?) AS parentrolemenu left JOIN (SELECT roles.id as childroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName from roles INNER JOIN role_menu on roles.id=role_menu.role_id INNER JOIN menus ON role_menu.menu_id=menus.id WHERE roles.id=?) AS childrolemenu ON parentrolemenu.menu_id=childrolemenu.menu_id",[$rolecreatorid,$id]);
-     $access=$this->getBinaryPositionValue($accesspowers);
      return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'access'=>$access,'result'=>$result,'roleCreators'=>$roleCreators,'rolepower'=>$rolepower]);
- }else{
-
  }
  return redirect('role');
 }
@@ -83,6 +83,7 @@ public function update(Request $request, $id){
        }
        $aBean=Role::findOrfail($id);
        $aBean->name=$request->name;
+       $aBean->rolecreatorid=$request->rolecreatorid;
        $aBean->accesspower=$sum;
        $aBean->update();
        \DB::select('DELETE  FROM `role_menu` WHERE role_id=?',[$id]);
@@ -101,6 +102,24 @@ private function getRoleByCretor($roleid){
         left JOIN (SELECT roles.id,roles.name as roleCreatorName,roles.rolecreatorid,roles.instituteid FROM `roles`) AS vroles ON vroles.id=roles.rolecreatorid
         WHERE roles.rolecreatorid=?",[$roleid]);
     $i=0;
+    if(count($result)){
+        foreach ($result as $item) {
+            $list[$i]=$item;
+            $i++;
+            $iresult=$this->getRoleByCretor($item->id);
+            foreach ($iresult as $value) {
+               $list[$i]=$value;
+               $i++;
+           }
+       }
+       return $list;
+   }else{
+    return $result;
+  }
+}
+private function getRoleCreator($roleid,$list){
+    $result=\DB::select('select * from roles where rolecreatorid=?', [$roleid]);
+    $i=1;
     if(count($result)){
         foreach ($result as $item) {
             $list[$i]=$item;

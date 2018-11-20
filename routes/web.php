@@ -49,13 +49,13 @@ Route::resource('subjectcode', 'settings\SubjectCodeController');
 Route::resource('courseoffer', 'settings\CourseOfferController');
 
 
-// For Employee Settings
+// Employee Settings
 Route::resource('employeeType', 'employee\EmployeeTypeController');
 Route::resource('employeedesignation', 'employee\EmployeeDesignationController');
 Route::resource('department', 'employee\DepartmentController');
 Route::resource('employee', 'employee\EmployeeController');
 
-// For Student Settings
+// Student Settings
 Route::resource('applicant', 'studentsettings\ApplicantController');
 Route::resource('student', 'studentsettings\StudentController');
 
@@ -70,5 +70,6 @@ Route::get('/getthana/','AjaxController@getThanabydistrict');
 Route::get('/getpostoffice/','AjaxController@getPostOfficebyThana');
 Route::get('/getunion/','AjaxController@getUnionbyThana');
 Route::get('/index1/','AjaxController@index1');
+Route::get('/rolePower/','AjaxController@rolePower');
 
 

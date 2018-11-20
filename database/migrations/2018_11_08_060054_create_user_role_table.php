@@ -14,8 +14,7 @@ class CreateUserRoleTable extends Migration
     public function up()
     {
         Schema::create('user_role', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->length(20);
+            $table->integer('user_id')->unique()->length(20);
             $table->integer('role_id')->length(20);
             $table->timestamps();
         });

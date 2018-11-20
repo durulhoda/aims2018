@@ -110,3 +110,16 @@ function go(value){
 		}
 	});
 }
+function rolePower(){
+	var id = $("#id").val();
+	var rolecreatorid = $("#rolecreatorid").val();
+	$.ajax({
+		type:'get',
+		url: "/rolePower",
+		dataType: "html",
+		data: {'id' : id,'rolecreatorid':rolecreatorid},
+		success: function( result ) {
+			$( "#output" ).empty().append(result);
+		}
+	});
+}

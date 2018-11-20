@@ -17,21 +17,10 @@
  				@method('PUT')
  				{{csrf_field()}}
  				<div class="row">
+ 					<input type="hidden" class="form-control" id="id" name="id" value="{{$bean->id}}">
  					<div class="form-group col-sm-3">
  						<label for="name">Role  :</label>
  						<input type="text" class="form-control" id="name" name="name" value="{{$bean->name}}">
- 					</div>
- 					<div class="form-group col-sm-3">
- 						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
- 						<select name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
- 							@foreach($roleCreators as $aObj)
- 							@if($aObj->rolecreatorid==$bean->rolecreatorid)
- 							<option selected="" value="{{$aObj->rolecreatorid}}">{{$aObj->roleCreatorName}}</option>
- 							@else
- 							<option value="{{$aObj->rolecreatorid}}">{{$aObj->roleCreatorName}}</option>
- 							@endif
- 							@endforeach
- 						</select>
  					</div>
  					<?php
  					        $option=array();
@@ -46,7 +35,21 @@
  					        	$value[$val]=(isset($access[$val])? $access[$val]:0);
  					        }
  						 ?>
- 					<div class="form-group col-sm-6">
+ 					<div class="form-group col-sm-3">
+ 						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
+ 						<select onchange="rolePower()" name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
+ 							@foreach($roleCreators as $aObj)
+ 							@if($aObj->id==$bean->rolecreatorid)
+ 							<option selected="" value="{{$aObj->id}}">{{$aObj->name}}</option>
+ 							@else
+ 							<option value="{{$aObj->id}}">{{$aObj->name}}</option>
+ 							@endif
+ 							@endforeach
+ 						</select>
+ 					</div>
+ 				</div>
+ 				<div class="row" id="output">
+ 					<div class="form-group col-sm-12">
  						<label>Access power  :</label><br/>
  						@foreach($rolepower['accessPower'] as $val)
  						@if($value[$val]==$val)
@@ -55,10 +58,7 @@
  						  <input type="checkbox" name="accesspower[]" value="{{$val}}">{{$option[$val]}} &nbsp;&nbsp;
  						  @endif
  						@endforeach
- 					
  					</div>
- 				</div>
- 				<div class="row">
  					@foreach($result as $aObj)
  					 <div class="form-group col-sm-3">
                         <div class="checkbox">
