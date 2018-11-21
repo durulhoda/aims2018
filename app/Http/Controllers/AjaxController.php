@@ -79,7 +79,33 @@ class AjaxController extends Controller
     $id = $request->id;
     dd($id);
 }
-public function rolePower(Request $request){
+public function createRolePower(Request $request){
+                  $option=array();
+                  $option[1]="Read";
+                  $option[2]="create";
+                  $option[4]="Up";
+                  $option[8]="del";
+                  $option[16]="Print";
+                  $option[32]="Down";
+   $rolecreatorid=$request->rolecreatorid;
+   $rolepower=$this->getRolePower($rolecreatorid);
+   // dd($rolepower['menusAccess']);
+   $output="<div class='form-group col-sm-12'>"."<label>Access power  :</label><br/>";
+   foreach ($rolepower['accessPower'] as $val) {
+       $output.="<input type='checkbox' name='accesspower[]' value='".$val."'> ".$option[$val]."&nbsp;&nbsp";
+    }
+    $output.="</div>";
+    $output.="<div class='col-sm-12'>
+            <label>Menu Access  :</label><br/>
+          </div>";
+    foreach ($rolepower['menusAccess'] as $aObj){
+    $output.="<div class='form-group col-sm-3'><div class='checkbox'>";
+    $output.="<label><input type='checkbox'  name='menu_id[]' value='".$aObj->menu_id."'>".$aObj->menuName."</label>";
+    $output.="</div></div>";
+    }
+   echo  $output;
+}
+public function editRolePower(Request $request){
                   $option=array();
                   $option[1]="Read";
                   $option[2]="create";
@@ -108,6 +134,9 @@ public function rolePower(Request $request){
       }
     }
     $output.="</div>";
+    $output.="<div class='col-sm-12'>
+            <label>Menu Access  :</label><br/>
+          </div>";
     foreach ($result as $aObj){
     $output.="<div class='form-group col-sm-3'><div class='checkbox'>";
     if($aObj->id==0){

@@ -110,14 +110,27 @@ function go(value){
 		}
 	});
 }
-function rolePower(){
+function editRolePower(){
 	var id = $("#id").val();
 	var rolecreatorid = $("#rolecreatorid").val();
 	$.ajax({
 		type:'get',
-		url: "/rolePower",
+		url: "/editRolePower",
 		dataType: "html",
 		data: {'id' : id,'rolecreatorid':rolecreatorid},
+		success: function( result ) {
+			$( "#output" ).empty().append(result);
+		}
+	});
+}
+function createRolePower(){
+	var rolecreatorid = $("#rolecreatorid").val();
+	console.log(rolecreatorid);
+	$.ajax({
+		type:'get',
+		url: "/createRolePower",
+		dataType: "html",
+		data: {'rolecreatorid':rolecreatorid},
 		success: function( result ) {
 			$( "#output" ).empty().append(result);
 		}

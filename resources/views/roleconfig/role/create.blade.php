@@ -20,50 +20,39 @@
  						<label for="name">Role  :</label>
  						<input type="text" class="form-control" id="name" name="name">
  					</div>
+ 					<?php
+ 					        $option=array();
+ 					        $option[1]="Read";
+ 					        $option[2]="create";
+ 					        $option[4]="Up";
+ 					        $option[8]="del";
+ 					        $option[16]="Print";
+ 					        $option[32]="Down";
+ 						 ?>
  					<div class="form-group col-sm-3">
  						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
- 						<select name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
+ 						<select onchange="createRolePower()" name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
  							<option value="{{$rolecreatorid}}">Select</option>
  							@foreach($roleCreators as $aObj)
  								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
  							@endforeach
  						</select>
  					</div>
- 					<div class="form-group col-sm-6">
- 						<?php
- 							$read=(isset($accessStatus[1])? $accessStatus[1]:0);
- 							$create=(isset($accessStatus[2])? $accessStatus[2]:0);
- 							$up=(isset($accessStatus[4])? $accessStatus[4]:0);
- 							$del=(isset($accessStatus[8])? $accessStatus[8]:0);
- 							$print=(isset($accessStatus[16])? $accessStatus[16]:0);
- 							$down=(isset($accessStatus[32])? $accessStatus[32]:0);
- 						 ?>
- 						<label>Access power  :</label><br/>
- 						@if($read==1)
- 						<input type="checkbox" name="accesspower[]" value="1">read &nbsp;&nbsp;
- 						@endif
- 						@if($create==1)
- 						<input type="checkbox" name="accesspower[]" value="2">create &nbsp;&nbsp;
- 						@endif
- 						@if($up==1)
- 						<input type="checkbox" name="accesspower[]" value="4">Up &nbsp;&nbsp;
- 						@endif
- 						@if($del==1)
- 						<input type="checkbox" name="accesspower[]" value="8">del &nbsp;&nbsp;
- 						@endif
- 						@if($print==1)
- 						<input type="checkbox" name="accesspower[]" value="16">Print &nbsp;&nbsp;
- 						@endif
- 						@if($down==1)
- 						<input type="checkbox" name="accesspower[]" value="32">down
- 						@endif
- 					</div>
  				</div>
- 				<div class="row">
- 					@foreach($menus as $aObj)
+ 				<div class="row" id="output">
+ 					<div class="form-group col-sm-12">
+ 						<label>Access power  :</label><br/>
+ 						@foreach($rolepower['accessPower'] as $val)
+ 						 <input type="checkbox" name="accesspower[]" value="{{$val}}">{{$option[$val]}} &nbsp;&nbsp;
+ 						@endforeach
+ 					</div>
+ 					<div class=" col-sm-12">
+ 						<label>Menu Access  :</label><br/>
+ 					</div>
+ 					@foreach($rolepower['menusAccess'] as $aObj)
  					 <div class="form-group col-sm-3">
                         <div class="checkbox">
-                            <label><input type="checkbox" name="menu_id[]" value="{{$aObj->id}}">{{$aObj->name}}</label>
+                            <label><input type="checkbox" name="menu_id[]" value="{{$aObj->id}}">{{$aObj->menuName}}</label>
                         </div>
                     </div>	
                     @endforeach				

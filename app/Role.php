@@ -8,12 +8,6 @@ class Role extends Model
 {
   protected $table='roles';
   protected $fillable = ['name','rolecreatorid','instituteid','accesspower','status'];
-  
-  public static function getAllRole(){
-   $userid = Auth::user()->id;
-   $result=\DB::select();
-   return $result;
- }
  public static function getAccessStatus(){
    $userid = Auth::user()->id;
    $result=\DB::select('SELECT user_role.user_id,user_role.role_id,roles.name AS roleName,roles.accesspower FROM `user_role` 
@@ -61,8 +55,7 @@ private static function adminmenu($parentid){
      $menu .="<li class='sub-menu'><a href='javascript:;'>".$value->menuName."</a>";
      $menu .= "<ul class='sub'>".Role::adminmenu($value->id)."</ul>";
    }else{
-    $s="{{URL::to('/')}}";
-    $menu .="<li class=''><a href='".$value->url."'>".$value->menuName."</a>";
+    $menu .="<li class=''><a href='/".$value->url."'>".$value->menuName."</a>";
   }
   $menu .= "</li>";
 }

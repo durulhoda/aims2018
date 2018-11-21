@@ -37,7 +37,7 @@
  						 ?>
  					<div class="form-group col-sm-3">
  						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
- 						<select onchange="rolePower()" name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
+ 						<select onchange="editRolePower()" name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
  							@foreach($roleCreators as $aObj)
  							@if($aObj->id==$bean->rolecreatorid)
  							<option selected="" value="{{$aObj->id}}">{{$aObj->name}}</option>
@@ -58,6 +58,9 @@
  						  <input type="checkbox" name="accesspower[]" value="{{$val}}">{{$option[$val]}} &nbsp;&nbsp;
  						  @endif
  						@endforeach
+ 					</div>
+ 					<div class=" col-sm-12">
+ 						<label>Menu Access  :</label><br/>
  					</div>
  					@foreach($result as $aObj)
  					 <div class="form-group col-sm-3">

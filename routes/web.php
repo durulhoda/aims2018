@@ -70,6 +70,7 @@ Route::get('/getthana/','AjaxController@getThanabydistrict');
 Route::get('/getpostoffice/','AjaxController@getPostOfficebyThana');
 Route::get('/getunion/','AjaxController@getUnionbyThana');
 Route::get('/index1/','AjaxController@index1');
-Route::get('/rolePower/','AjaxController@rolePower');
+Route::get('/editRolePower/','AjaxController@editRolePower');
+Route::get('/createRolePower/','AjaxController@createRolePower');
 
 
