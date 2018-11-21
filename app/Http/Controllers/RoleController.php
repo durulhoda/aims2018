@@ -26,7 +26,7 @@ public function create(){
     if($accessStatus[2]==1){
         $roleCreators=$this->getRoleByCretor(2); //All Successor
         // dd($roleCreators);
-        return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'rolecreatorid'=>$roleid,'roleCreators'=>$roleCreators,'rolepower'=>$rolepower]);
+        return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'rolecreatorid'=>$roleid,'roleCreators'=>$roleCreators,'rolepower'=>$rolepower]);
     }else{
      return redirect('role');
  }
