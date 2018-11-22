@@ -56,31 +56,9 @@ class CreateTrigger extends Migration
          // DB::unprepared('DROP TRIGGER `beforereturn`');
     }
 
-SELECT roles.*,menus.name as menuName FROM `roles`
-INNER JOIN role_menu ON roles.id=role_menu.role_id
-INNER JOIN menus ON role_menu.menu_id=menus.id
-WHERE roles.id=2
-
-
-
-
-https://laravelcode.com/post/laravel-55-get-last-inserted-id-with-example
-
-
-select 
-IFNULL(childrolemenu.menu_id,0) AS id,
-parentrolemenu.menuName,
-parentrolemenu.url,
-parentrolemenu.parentid,
-parentrolemenu.menuorder
-FROM(SELECT roles.id as parentroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder
-from roles
-INNER JOIN role_menu on roles.id=role_menu.role_id
-INNER JOIN menus ON role_menu.menu_id=menus.id
-WHERE roles.id=2) AS parentrolemenu
-left JOIN
-(SELECT roles.id as childroleid,roles.name AS roleName,roles.rolecreatorid,roles.instituteid,roles.accesspower,menus.id AS menu_id,menus.name AS menuName
-from roles
-INNER JOIN role_menu on roles.id=role_menu.role_id
-INNER JOIN menus ON role_menu.menu_id=menus.id
-WHERE roles.id=3) AS childrolemenu ON parentrolemenu.menu_id=childrolemenu.menu_id
+                            $option[1]="Read";
+                            $option[2]="create";
+                            $option[4]="Up";
+                            $option[8]="del";
+                            $option[16]="Print";
+                            $option[32]="Down";

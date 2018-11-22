@@ -4,7 +4,8 @@ use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\menusettings\Menu;
-use App\menusettings\RoleMenu;
+use App\role\RoleMenu;
+use App\role\RoleHelper;
 class MenuController extends Controller
 {
   public function __construct()
@@ -42,18 +43,20 @@ WHERE menus.parentid=0 order by childid");
 
 }
 public function store(Request $request){
-    $aBean=new Menu();
-    $aBean->name=$request->name;
-    $aBean->parentid=$request->parentid;
-    $aBean->url=$request->url;
-    $aBean->menuorder=$request->menuorder;
-    if($aBean->menuorder==''){
-      $aBean->menuorder=100;
+    $rh=new RoleHelper();
+    $aMenu=new Menu();
+    $aMenu->name=$request->name;
+    $aMenu->parentid=$request->parentid;
+    $aMenu->url=$request->url;
+    $aMenu->menuorder=$request->menuorder;
+    if($aMenu->menuorder==''){
+      $aMenu->menuorder=100;
     }
-    $aBean->save();
+    $aMenu->save();
     $aRoleMenu=new RoleMenu();
     $aRoleMenu->role_id=Role::getRoleid();
-    $aRoleMenu->menu_id=$aBean->id;
+    $aRoleMenu->menu_id=$aMenu->id;
+    $aRoleMenu->permissionvalue=$rh->getPermissionValue();
     $aRoleMenu->save();
     return redirect('menu');
 }

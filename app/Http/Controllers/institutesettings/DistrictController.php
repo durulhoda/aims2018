@@ -24,7 +24,7 @@ class DistrictController extends Controller
     }
     public function create(){
 
-        $accessStatus=Role::getAccessStatus();
+    $accessStatus=Role::getAccessStatus();
     $sidebarMenu=Role::getMenu();
     if($accessStatus[2]==1){
         $divisions=\DB::table('divisions')->get();

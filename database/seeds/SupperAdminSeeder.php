@@ -25,6 +25,7 @@ class SupperAdminSeeder extends Seeder
             'instituteid' => '0',
             'accesspower' => '63',
         ]);
+
         DB::table('user_role')->insert([
         	[
             'user_id' => '1',
@@ -35,6 +36,10 @@ class SupperAdminSeeder extends Seeder
             'role_id' => '1',
         	]
         ]);
+        DB::table('permissions')->insert([
+            'name' => 'Read',
+            'level' => '1',
+        ]);
         DB::table('menus')->insert([
             'name' => 'Menus',
             'url' => 'menu',
@@ -44,6 +49,7 @@ class SupperAdminSeeder extends Seeder
         DB::table('role_menu')->insert([
             'role_id' => '1',
             'menu_id' => '1',
+            'permissionvalue' => '1',
         ]);
     }
 }

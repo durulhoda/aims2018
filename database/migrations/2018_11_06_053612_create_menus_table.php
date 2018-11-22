@@ -17,8 +17,8 @@ class CreateMenusTable extends Migration
             $table->increments('id');
             $table->string('name',50);
             $table->string('url',50);
-            $table->integer('parentid')->length(20);
-            $table->integer('menuorder')->length(20)->default(0);
+            $table->integer('parentid')->length(10);
+            $table->integer('menuorder')->length(10)->default(0);
             $table->integer('status')->length(5)->default(0);
             $table->timestamps();
         });

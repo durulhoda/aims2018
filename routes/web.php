@@ -19,7 +19,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::resource('role','RoleController');
-Route::resource('role1','Role1Controller');
+Route::resource('role1','role\RoleController');
+Route::resource('permission','role\PermissionController');
 Route::resource('user','UserController');
 // 	General Settings
 Route::resource('division', 'institutesettings\DivisionController')->middleware('auth');
