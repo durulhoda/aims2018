@@ -4,23 +4,32 @@ namespace App\Http\Controllers\role;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Role;
 use App\role\Permission;
 use App\role\RoleHelper;
 class PermissionController extends Controller
 {
-
+    public function __construct(){
+      $this->middleware('auth');
+    }
     public function index(){
         $rh=new RoleHelper();
-        $sidebarMenu=Role::getMenu();
-        $roleid=$rh->getRoleId();
         $menuid=$rh->getMenuId('permission');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $permissionList=Permission::all();
-    	return view('roleconfig.permission.index',['sidebarMenu'=>$sidebarMenu,'result'=>$permissionList]);
+    	return view('roleconfig.permission.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$permissionList]);
     }
     public function create(){
-    	$sidebarMenu=Role::getMenu();
-    	return view('roleconfig.permission.create',['sidebarMenu'=>$sidebarMenu]);
+    	$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('permission');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
+            return view('roleconfig.permission.create',['sidebarMenu'=>$sidebarMenu]);
+        }else{
+            return redirect('permission');   
+        }
+    	
     }
     public function store(Request $request){
         $rh=new RoleHelper();
@@ -39,9 +48,16 @@ class PermissionController extends Controller
         return redirect('permission');
     }
     public function edit($id){
-        $sidebarMenu=Role::getMenu();
-        $aPermission=Permission::findOrfail($id);
-        return view('roleconfig.permission.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aPermission]);
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('permission');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[4]==1){
+           $aPermission=Permission::findOrfail($id);
+           return view('roleconfig.permission.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aPermission]);
+        }else{
+            return redirect('permission');   
+        }
     }
     public function update(Request $request, $id){
     	$aPermission=Permission::findOrfail($id);

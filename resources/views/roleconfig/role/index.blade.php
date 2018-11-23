@@ -6,7 +6,7 @@
 		<div class="col-lg-12">
 			<div class="">
 				<h4>All Role</h4>
-				@if($accessStatus[2]==1)
+				@if($permission[2]==1)
 					<a href="{{URL::to('/role')}}/{{'create'}}">New</a>
 				@endif
 			</div>
@@ -24,10 +24,10 @@
 <label class="radio-inline"><input type="radio" name="creator" value="2" onchange="go(this)">Successor</label></th>
 							<th>Role Creator</th>
 							<th>Institute</th>
-							@if($accessStatus[4]==1)
+							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
-							@if($accessStatus[8]==1)
+							@if($permission[8]==1)
 							<th width="10px">Del</th>
 							@endif
 						</tr>
@@ -39,7 +39,7 @@
 							<td>{{$aObj->name}}</td>
 							<td>{{$aObj->roleCreatorName}}</td>
 							<td>{{$aObj->institueName}}</td>
-							@if($accessStatus[4]==1)
+							@if($permission[4]==1)
 							<td> 
 								<a href="{{URL::to('/role')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
@@ -48,7 +48,7 @@
 								</a>
 							</td>
 							@endif
-							@if($accessStatus[8]==1)
+							@if($permission[8]==1)
 							<td>
 								<a href="" class="tooltip-error" data-rel="tooltip" title="Delete">
 									<span class="red">

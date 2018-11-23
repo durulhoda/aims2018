@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use App\Role;
 use App\menusettings\Menu;
-use App\menusettings\RoleMenu;
+use App\role\RoleMenu;
+use App\role\RoleHelper;
 use Illuminate\Http\Request;
 class RoleController extends Controller
 {
@@ -11,21 +12,24 @@ class RoleController extends Controller
       $this->middleware('auth');
   }
   public function index(){
-    $accessStatus=Role::getAccessStatus();
-    $sidebarMenu=Role::getMenu();
-    $roleid=Role::getRoleid();
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('menu');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    $roleid=$rh->getRoleId();
     $result=$this->getRoleByCretor($roleid);
-    return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+    return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$result]);
 }
 
 public function create(){
-    $accessStatus=Role::getAccessStatus();
-    $sidebarMenu=Role::getMenu();
-    $roleid=Role::getRoleid();
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('menu');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    $roleid=$rh->getRoleId();
     $rolepower=$this->getRolePower($roleid);
-    if($accessStatus[2]==1){
+    if($permission[2]==1){
         $roleCreators=$this->getRoleByCretor(2); //All Successor
-        // dd($roleCreators);
         return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'rolecreatorid'=>$roleid,'roleCreators'=>$roleCreators,'rolepower'=>$rolepower]);
     }else{
      return redirect('role');
@@ -156,6 +160,7 @@ WHERE roles.id=?",[$roleid]);
     $accessPower=$this->getBinaryPositionValue($accessPower);
     $rolepower['accessPower']=$accessPower;
     $rolepower['menusAccess']=$menusAccess;
+    // dd($rolepower);
     return $rolepower;
   }
   private function getRoleCreatorID($id){

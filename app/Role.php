@@ -30,6 +30,7 @@ class Role extends Model
    $bina=$bina/10;
    $i++;
  }
+ 
  $accessStatus[1]=(isset($access[0])? $access[0]:0);
  $accessStatus[2]=(isset($access[1])? $access[1]:0);
  $accessStatus[4]=(isset($access[2])? $access[2]:0);

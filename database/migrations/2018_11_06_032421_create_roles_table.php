@@ -17,9 +17,8 @@ class CreateRolesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name',50);
-            $table->integer('rolecreatorid')->length(50);
-            $table->integer('instituteid')->length(50);
-            $table->integer('accesspower')->length(50);
+            $table->integer('rolecreatorid')->length(11);
+            $table->integer('instituteid')->length(11);
             $table->integer('status')->length(5)->default(0);
             $table->timestamps();
         });

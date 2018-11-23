@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
+use App\role\RoleHelper;
 use App\institutesettings\Division;
 use App\institutesettings\District;
 use Illuminate\Http\Request;
@@ -15,15 +15,16 @@ class DistrictController extends Controller
     }
     public function index()
     {
-        $accessStatus=Role::getAccessStatus();
-        $sidebarMenu=Role::getMenu();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('permission');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $result=\DB::table('districts')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('districts.*','divisions.name as divisionName')->get();
         return view('institutesettings.district.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
     }
     public function create(){
-
     $accessStatus=Role::getAccessStatus();
     $sidebarMenu=Role::getMenu();
     if($accessStatus[2]==1){

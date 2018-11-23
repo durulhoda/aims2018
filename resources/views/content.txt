@@ -62,3 +62,27 @@ class CreateTrigger extends Migration
                             $option[8]="del";
                             $option[16]="Print";
                             $option[32]="Down";
+
+
+
+
+$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('permission');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
+           
+        }else{
+            return redirect('permission');   
+        }
+
+
+
+
+
+
+
+
+
+
+
