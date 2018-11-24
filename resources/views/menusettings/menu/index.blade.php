@@ -6,9 +6,7 @@
 		<div class="col-lg-12">
 			<div class="">
 				<h4>All Menu</h4>
-				@if($permission[2]==1)
-					<a href="{{URL::to('/menu')}}/{{'create'}}">New</a>
-				@endif
+				<a href="{{URL::to('/menu')}}/{{'create'}}">New</a>
 			</div>
 		</div>
 	</div>
@@ -24,12 +22,11 @@
 							<th>Parent</th>
 							<th>Url</th>
 							<th>Menu Order</th>
-							@if($permission[4]==1)
+							
 							<th width="10px">Edit</th>
-							@endif
-							@if($permission[8]==1)
+							
 							<th width="10px">Del</th>
-							@endif
+							
 						</tr>
 					</thead>
 					 <tbody id="datalist">
@@ -40,7 +37,7 @@
 							<td>{{$aObj->parent}}</td>
 							<td>{{$aObj->url}}</td>
 							<td>{{$aObj->menuorder}}</td>
-							@if($permission[4]==1)
+							
 							<td> 
 								<a href="{{URL::to('/menu')}}/{{$aObj->childid}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
@@ -48,8 +45,7 @@
 									</span>
 								</a>
 							</td>
-							@endif
-							@if($permission[8]==1)
+							
 							<td>
 								<a href="" class="tooltip-error" data-rel="tooltip" title="Delete">
 									<span class="red">
@@ -57,7 +53,7 @@
 									</span>
 								</a>
 							</td>
-							@endif
+						
 						</tr>
 						@endforeach
 					</tbody> 

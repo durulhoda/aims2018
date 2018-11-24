@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\institutesettings;
 
 use App\institutesettings\Division;
-use App\Role;
-use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
-
+use App\role\RoleHelper;
 class DivisionController extends Controller
 {
 
@@ -18,23 +16,19 @@ public function __construct()
 }
 public function index()
 {
-   if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-     }else{
-        $sidebarMenu=Role::getMenu();
-     }
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('division');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     $result=Division::all();
-    $accessStatus=Role::getAccessStatus();
-    return view('institutesettings.division.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+    return view('institutesettings.division.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 }
 public function create(){
-    $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-     }else{
-        $sidebarMenu=Role::getMenu();
-     }
-    if($accessStatus[2]==1){
+    $rh=new RoleHelper();
+       $menuid=$rh->getMenuId('menu');
+       $sidebarMenu=$rh->getMenu();
+       $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
         return view('institutesettings.division.create',['sidebarMenu'=>$sidebarMenu]);
     }else{
         return redirect('division');

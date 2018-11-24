@@ -16,18 +16,20 @@ class DistrictController extends Controller
     public function index()
     {
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('permission');
+        $menuid=$rh->getMenuId('district');
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=\DB::table('districts')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('districts.*','divisions.name as divisionName')->get();
-        return view('institutesettings.district.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.district.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
     }
     public function create(){
-    $accessStatus=Role::getAccessStatus();
-    $sidebarMenu=Role::getMenu();
-    if($accessStatus[2]==1){
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('district');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
         $divisions=\DB::table('divisions')->get();
         return view('institutesettings.district.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
     }else{

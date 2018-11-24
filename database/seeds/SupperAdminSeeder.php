@@ -19,11 +19,9 @@ class SupperAdminSeeder extends Seeder
         	]
         ]);
         DB::table('roles')->insert([
-            'id' => '1',
             'name' => 'Supper Admin',
             'rolecreatorid' => '0',
             'instituteid' => '0',
-            'accesspower' => '63',
         ]);
 
         DB::table('user_role')->insert([

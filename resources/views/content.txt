@@ -59,7 +59,7 @@ class CreateTrigger extends Migration
                             $option[1]="Read";
                             $option[2]="create";
                             $option[4]="Up";
-                            $option[8]="del";
+                            $option[8]="Del";
                             $option[16]="Print";
                             $option[32]="Down";
 
@@ -78,7 +78,7 @@ $rh=new RoleHelper();
 
 
 
-
+transaction is Applied on Student Registration
 
 
 

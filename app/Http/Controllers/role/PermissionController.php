@@ -24,12 +24,7 @@ class PermissionController extends Controller
         $menuid=$rh->getMenuId('permission');
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
-        if($permission[2]==1){
-            return view('roleconfig.permission.create',['sidebarMenu'=>$sidebarMenu]);
-        }else{
-            return redirect('permission');   
-        }
-    	
+        return view('roleconfig.permission.create',['sidebarMenu'=>$sidebarMenu]);
     }
     public function store(Request $request){
         $rh=new RoleHelper();
@@ -52,12 +47,8 @@ class PermissionController extends Controller
         $menuid=$rh->getMenuId('permission');
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
-        if($permission[4]==1){
-           $aPermission=Permission::findOrfail($id);
-           return view('roleconfig.permission.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aPermission]);
-        }else{
-            return redirect('permission');   
-        }
+        $aPermission=Permission::findOrfail($id);
+        return view('roleconfig.permission.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aPermission]);
     }
     public function update(Request $request, $id){
     	$aPermission=Permission::findOrfail($id);

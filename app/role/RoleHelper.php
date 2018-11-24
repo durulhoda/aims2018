@@ -56,12 +56,19 @@ public function getMenuId($url){
    $aMenus = \DB::table('menus')->where('url',$url)->first();
    return $aMenus->id;
 }
-public function getMenuByRole(){
+public function getMenuListByRole(){
     $menuListByRole=\DB::select("SELECT menus.id as menu_id,menus.name menuName,role_menu.permissionvalue
 FROM `role_menu`
 INNER JOIN menus ON role_menu.menu_id=menus.id
 WHERE role_menu.role_id=?",[$this->getRoleId()]);
-    return $menuListByRole;
+    $menuitems=array();
+    $i=0;
+    foreach ($menuListByRole as $item) {
+      $binaryPositionValue=$this->getBinaryPositionValue($item->permissionvalue);
+      $menuitems[$i]=['item'=>$item,'binaryPositionValue'=>$binaryPositionValue];
+        $i++;
+    }
+    return $menuitems;
 }
 public function getPermitedMenus(){
     $permitedMenus=\DB::select("SELECT role_menu.menu_id FROM `role_menu`
@@ -96,9 +103,32 @@ public function getPermission($menuid){
      }
      return $permission;
 }
+  public function getPermissionNamebyLevel(){
+     $permissionList=Permission::all();
+     foreach ($permissionList as $aObj) {
+        $permissionNameList[$aObj->level]=$aObj->name;
+     }
+     return $permissionNameList;
+  }
 public function getRolePower(){
 
 }
+ private function getBinaryPositionValue($permissionvalue){
+      $bina=base_convert($permissionvalue,10,2);
+        $m=1;
+        $access=array();
+        while($bina>0) {
+           $mr=$bina%10;
+           $bina=$bina-$mr;
+           $dr=$mr*$m;
+           if($dr){
+             $access[$dr]=$dr;
+         }
+         $m=$m*2;
+         $bina=$bina/10;
+     }
+      return $access;
+  }
 // For Dynamic Sidebar Menu=======================================
 public function getMenu(){
     return $this->adminmenu(0);

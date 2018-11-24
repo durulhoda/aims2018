@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Role;
+use App\role\RoleHelper;
 class HomeController extends Controller
 {
 
@@ -14,9 +14,8 @@ class HomeController extends Controller
 
 	public function index()
 	{
-		$accessStatus=Role::getAccessStatus();
-		$sidebarMenu=Role::getMenu();
-		return view('home',['accessStatus'=>$accessStatus,'sidebarMenu'=>$sidebarMenu]);
+		$rh=new RoleHelper();
+        $sidebarMenu=$rh->getMenu();
+		return view('home',['sidebarMenu'=>$sidebarMenu]);
 	}
-
 }

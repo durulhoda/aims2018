@@ -11,7 +11,7 @@ class MenuController extends Controller
 {
     $this->middleware('auth');
 }
-    public function index(){
+public function index(){
        $rh=new RoleHelper();
        $menuid=$rh->getMenuId('menu');
        $sidebarMenu=$rh->getMenu();
@@ -26,7 +26,7 @@ menus.name AS child,
 (CASE
 WHEN menus.parentid=0 THEN 'No Parent'
 END) as parent,
-menus.url,
+IFNULL(menus.url,'No Url') AS url,
 menus.menuorder 
 FROM `menus` 
 WHERE menus.parentid=0 order by childid");
@@ -37,13 +37,8 @@ WHERE menus.parentid=0 order by childid");
        $menuid=$rh->getMenuId('menu');
        $sidebarMenu=$rh->getMenu();
        $permission=$rh->getPermission($menuid);
-    if($permission[2]==1){
        $parents=Menu::all();
        return view('menusettings.menu.create',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'parents'=>$parents]);
-   }else{
-    return redirect('menu');
-}
-
 }
 public function store(Request $request){
     $rh=new RoleHelper();
@@ -71,17 +66,12 @@ public function edit($id){
        $menuid=$rh->getMenuId('menu');
        $sidebarMenu=$rh->getMenu();
        $permission=$rh->getPermission($menuid);
-    if($permission[4]==1){
         $aMenu=Menu::findOrfail($id);
         $parents=\DB::table('menus')
         ->where('id','!=', $id)
         ->get();
         return view('menusettings.menu.edit',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'bean'=>$aMenu,'parents'=>$parents]);
-    }else{
-        return redirect('menu');
-    }
-
-}
+  }
 public function update(Request $request, $id){
    $aBean=Menu::findOrfail($id);
    $aBean->name=$request->name;

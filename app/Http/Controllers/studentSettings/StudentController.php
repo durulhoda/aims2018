@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\studentsettings;
-use App\Role;
 use App\studentsettings\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
+use App\role\RoleHelper;
 class StudentController extends Controller
 {
   public function __construct()
@@ -14,15 +13,19 @@ class StudentController extends Controller
 }
 
    public function index(){
-      $sidebarMenu=Role::getMenu();
-      $accessStatus=Role::getAccessStatus();
+      $rh=new RoleHelper();
+      $menuid=$rh->getMenuId('student');
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
       $result=Student::all();
-      return view('studentsettings.student.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+      return view('studentsettings.student.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
   }
   public function create(){
-    $accessStatus=Role::getAccessStatus();
-    if($accessStatus[2]==1){
-      $sidebarMenu=Role::getMenu();
+    $rh=new RoleHelper();
+      $menuid=$rh->getMenuId('student');
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
        return view('studentsettings.student.create',['sidebarMenu'=>$sidebarMenu]);
    }else{
        return redirect('student');
