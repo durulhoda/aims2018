@@ -30,9 +30,7 @@
  					</div>
  				</div>
  				<div class="row" id="output">
- 					<div class="form-group col-sm-12">
- 					</div>
- 					 @foreach($menus as $aObj)
+ 					 @foreach($menuListByRole as $aObj)
  					 <div class="form-group col-sm-4">
                             <label style="color: red"><input type="checkbox" name="menu_id[]" value="{{$aObj['item']->menu_id}}">{{$aObj['item']->menuName}}</label><br>
                              @foreach($aObj['binaryPositionValue'] as $bpv)

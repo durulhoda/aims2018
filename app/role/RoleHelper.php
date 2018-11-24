@@ -32,6 +32,9 @@ public function getRoleCreatorId(){
  $aRole=\DB::select('select * from roles where id=?',[$this->getRoleId()])[0];
  return $aRole->rolecreatorid;
 }
+public function getOnlySuccessorRole(){
+   return $this->getRoleCreator($this->getRoleId(),0);
+}
 public function getSuccessorRole(){
      return $this->getRoleCreator($this->getRoleCreatorId(),0);
 }
@@ -61,6 +64,20 @@ public function getMenuListByRole(){
 FROM `role_menu`
 INNER JOIN menus ON role_menu.menu_id=menus.id
 WHERE role_menu.role_id=?",[$this->getRoleId()]);
+    $menuitems=array();
+    $i=0;
+    foreach ($menuListByRole as $item) {
+      $binaryPositionValue=$this->getBinaryPositionValue($item->permissionvalue);
+      $menuitems[$i]=['item'=>$item,'binaryPositionValue'=>$binaryPositionValue];
+        $i++;
+    }
+    return $menuitems;
+}
+public function getFilterMenuListByRole($id){
+    $menuListByRole=\DB::select("SELECT menus.id as menu_id,menus.name menuName,role_menu.permissionvalue
+FROM `role_menu`
+INNER JOIN menus ON role_menu.menu_id=menus.id
+WHERE role_menu.role_id=?",[$id]);
     $menuitems=array();
     $i=0;
     foreach ($menuListByRole as $item) {

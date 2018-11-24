@@ -15,7 +15,7 @@ class RoleController extends Controller
         $menuid=$rh->getMenuId('role1');
         $permission=$rh->getPermission($menuid);
         $roleid=$rh->getRoleId();
-        $roleList=Role::all();
+        $roleList=$rh->getOnlySuccessorRole();
     	return view('roleconfig.role1.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$roleList]);
     }
     public function create(){
@@ -23,11 +23,11 @@ class RoleController extends Controller
         $sidebarMenu=$rh->getMenu();
         $menuid=$rh->getMenuId('role1');
         $permission=$rh->getPermission($menuid);
-        $menuListByRole=$rh->getMenuListByRole();
         $successorRole=$rh->getSuccessorRole();
+        $menuListByRole=$rh->getMenuListByRole();
         $permissionNameList=$rh->getPermissionNamebyLevel();
         if($permission[2]==1){
-           return view('roleconfig.role1.create',['sidebarMenu'=>$sidebarMenu,'menus'=>$menuListByRole,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
+           return view('roleconfig.role1.create',['sidebarMenu'=>$sidebarMenu,'menuListByRole'=>$menuListByRole,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
         }else{
             return redirect('role1');   
         }
@@ -57,8 +57,15 @@ class RoleController extends Controller
         return redirect('role1');
     }
     public function edit($id){
-        $sidebarMenu=Role::getMenu();
-        return view('roleconfig.role1.edit',['sidebarMenu'=>$sidebarMenu]);
+        $rh=new RoleHelper();
+        $sidebarMenu=$rh->getMenu();
+        $menuid=$rh->getMenuId('role1');
+        $permission=$rh->getPermission($menuid);
+        if($permission[4]==1){
+            return view('roleconfig.role1.edit',['sidebarMenu'=>$sidebarMenu]);
+        }else{
+            return redirect('role1');
+        }
     }
     public function update(Request $request, $id){
     	
