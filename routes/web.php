@@ -18,8 +18,7 @@ Route::get('/', 'HomeController@index')->middleware('auth')->name('home');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::resource('role','RoleController');
-Route::resource('role1','role\RoleController');
+Route::resource('role','role\RoleController');
 Route::resource('permission','role\PermissionController');
 Route::resource('user','UserController');
 // 	General Settings

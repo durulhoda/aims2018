@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
+use App\role\RoleHelper;
 use App\institutesettings\Unit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,25 +13,21 @@ class UnitController extends Controller
         $this->middleware('auth');
     }
     public function index(){
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        $accessStatus=Role::getAccessStatus();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('unit');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $result=\DB::table('units')
         ->join('institute','units.instituteid','=','institute.id')
         ->select('units.*','institute.name as instituteName')->get();
-        return view('institutesettings.unit.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.unit.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
     }
     public function create(){
-        $accessStatus=Role::getAccessStatus();
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        if($accessStatus[2]==1){
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('unit');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
             $institutes=\DB::table('institute')->get();
             return view('institutesettings.unit.create',['sidebarMenu'=>$sidebarMenu,'institutes'=>$institutes]);
         }else{
@@ -48,13 +44,11 @@ class UnitController extends Controller
         return redirect('unit');
     }
     public function edit($id){
-      $accessStatus=Role::getAccessStatus();
-      if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    if($accessStatus[4]==1){
+      $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('unit');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
      $aBean=Unit::findOrfail($id);
      $institutes=\DB::table('institute')->get();
      return view('institutesettings.unit.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'institutes'=>$institutes]);

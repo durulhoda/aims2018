@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\settings;
-use App\Role;
+use App\role\RoleHelper;
 use App\settings\ProgramLevel;
 use App\settings\Group;
 use App\settings\SubjectCode;

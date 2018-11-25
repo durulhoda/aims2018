@@ -5,7 +5,7 @@
  	<div class="row">
  		<div class="col-lg-12">
  			<div class="">
- 				<h4>Create Employee Typee</h4>
+ 				<h4>New Institute Type</h4>
  				<a href="{{URL::to('/employeeType')}}">All</a>
  			</div>
  		</div>

@@ -20,42 +20,24 @@
  						<label for="name">Role  :</label>
  						<input type="text" class="form-control" id="name" name="name">
  					</div>
- 					<?php
- 					        $option=array();
- 					        $option[1]="Read";
- 					        $option[2]="create";
- 					        $option[4]="Up";
- 					        $option[8]="del";
- 					        $option[16]="Print";
- 					        $option[32]="Down";
- 						 ?>
  					<div class="form-group col-sm-3">
  						<label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
  						<select onchange="createRolePower()" name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
- 							<option value="{{$rolecreatorid}}">Select</option>
- 							@foreach($roleCreators as $aObj)
- 								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
- 							@endforeach
+ 						 @foreach($successorRole as $aObj)			
+ 							<option value="{{$aObj->id}}">{{$aObj->name}}</option>
+ 						 @endforeach	
  						</select>
  					</div>
  				</div>
  				<div class="row" id="output">
- 					<div class="form-group col-sm-12">
- 						<label>Access power  :</label><br/>
- 						@foreach($rolepower['accessPower'] as $val)
- 						 <input type="checkbox" name="accesspower[]" value="{{$val}}">{{$option[$val]}} &nbsp;&nbsp;
- 						@endforeach
- 					</div>
- 					<div class=" col-sm-12">
- 						<label>Menu Access  :</label><br/>
- 					</div>
- 					@foreach($rolepower['menusAccess'] as $aObj)
- 					 <div class="form-group col-sm-3">
-                        <div class="checkbox">
-                            <label><input type="checkbox" name="menu_id[]" value="{{$aObj->id}}">{{$aObj->menuName}}</label>
-                        </div>
+ 					 @foreach($menuListByRole as $aObj)
+ 					 <div class="form-group col-sm-4">
+                            <label style="color: red"><input type="checkbox" name="menu_id[]" value="{{$aObj['item']->menu_id}}">{{$aObj['item']->menuName}}</label><br>
+                             @foreach($aObj['binaryPositionValue'] as $bpv)
+                             <label><input type="checkbox" name="permissionvalue_{{$aObj['item']->menu_id}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
+                             @endforeach
                     </div>	
-                    @endforeach				
+                    @endforeach	
  				</div>
  				<button type="submit" class="btn btn-default">Save</button>
  			</form>

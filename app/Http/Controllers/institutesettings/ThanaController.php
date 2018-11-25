@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
+use App\role\RoleHelper;
 use App\institutesettings\District;
 use App\institutesettings\Thana;
 use Illuminate\Http\Request;
@@ -15,18 +15,22 @@ class ThanaController extends Controller
     }
     public function index()
     {
-     $accessStatus=Role::getAccessStatus();
-    $sidebarMenu=Role::getMenu();
+      $rh=new RoleHelper();
+      $menuid=$rh->getMenuId('thana');
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
     $result=\DB::table('thanas')
     ->join('districts','thanas.districtid','=','districts.id')
     ->join('divisions','districts.divisionid','=','divisions.id')
     ->select('thanas.*','divisions.name as divisionName','districts.name as districtName')->get();
-    return view('institutesettings.thana.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+    return view('institutesettings.thana.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 }
 public function create(){
-     $accessStatus=Role::getAccessStatus();
-    $sidebarMenu=Role::getMenu();
-    if($accessStatus[2]==1){
+      $rh=new RoleHelper();
+      $menuid=$rh->getMenuId('thana');
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
         $divisions=\DB::table('divisions')->get();
         return view('institutesettings.thana.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
     }else{
@@ -43,9 +47,11 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-     $accessStatus=Role::getAccessStatus();
-     $sidebarMenu=Role::getMenu();
-    if($accessStatus[4]==1){
+     $rh=new RoleHelper();
+      $menuid=$rh->getMenuId('thana');
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
        $result=\DB::table('thanas')
        ->join('districts','thanas.districtid','=','districts.id')
        ->join('divisions','districts.divisionid','=','divisions.id')

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\settings;
 
-use App\Role;
+use App\role\RoleHelper;
 use App\settings\Medium;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

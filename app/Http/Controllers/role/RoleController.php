@@ -12,24 +12,24 @@ class RoleController extends Controller
     public function index(){
     	$rh=new RoleHelper();
         $sidebarMenu=$rh->getMenu();
-        $menuid=$rh->getMenuId('role1');
+        $menuid=$rh->getMenuId('role');
         $permission=$rh->getPermission($menuid);
         $roleid=$rh->getRoleId();
-        $roleList=$rh->getOnlySuccessorRole();
-    	return view('roleconfig.role1.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$roleList]);
+        $roleList=$rh->getExcludeSuccessorRole();
+    	return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$roleList]);
     }
     public function create(){
     	$rh=new RoleHelper();
         $sidebarMenu=$rh->getMenu();
-        $menuid=$rh->getMenuId('role1');
+        $menuid=$rh->getMenuId('role');
         $permission=$rh->getPermission($menuid);
-        $successorRole=$rh->getSuccessorRole();
+        $successorRole=$rh->getIncludeSuccessorRole();
         $menuListByRole=$rh->getMenuListByRole();
         $permissionNameList=$rh->getPermissionNamebyLevel();
         if($permission[2]==1){
-           return view('roleconfig.role1.create',['sidebarMenu'=>$sidebarMenu,'menuListByRole'=>$menuListByRole,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
+           return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'menuListByRole'=>$menuListByRole,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
         }else{
-            return redirect('role1');   
+            return redirect('role');   
         }
     }
     public function store(Request $request){
@@ -54,20 +54,47 @@ class RoleController extends Controller
             }
           }
         }
-        return redirect('role1');
+        return redirect('role');
     }
     public function edit($id){
         $rh=new RoleHelper();
         $sidebarMenu=$rh->getMenu();
-        $menuid=$rh->getMenuId('role1');
+        $menuid=$rh->getMenuId('role');
         $permission=$rh->getPermission($menuid);
+        $successorRole=$rh->getIncludeSuccessorRole();
+        $aRole=Role::findOrfail($id);
+        $parentid=$aRole->rolecreatorid;
+        $result=$rh->getRoleEditMenuList($parentid,$id);
+        $permissionNameList=$rh->getPermissionNamebyLevel();
         if($permission[4]==1){
-            return view('roleconfig.role1.edit',['sidebarMenu'=>$sidebarMenu]);
+            return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'bean'=>$aRole,'result'=>$result,'permissionNameList'=>$permissionNameList]);
         }else{
-            return redirect('role1');
+            return redirect('role');
         }
     }
     public function update(Request $request, $id){
-    	
+        $aRole=Role::findOrfail($id);
+    	$aRole->name=$request->name;
+        $aRole->rolecreatorid=$request->rolecreatorid;
+        $aRole->update();
+        \DB::select('DELETE  FROM `role_menu` WHERE role_id=?',[$id]);
+        $selectmenu=$request->menu_id;
+        if($selectmenu!=null){
+        foreach ($selectmenu as $item) {
+            $aRoleMenu=new RoleMenu();
+            $aRoleMenu->role_id=$id;
+            $aRoleMenu->menu_id=$item;
+            if(isset($_POST["permissionvalue_".$item])){
+                 $permissionvalue=$_POST["permissionvalue_".$item];
+                 $sum=0;
+                foreach ($permissionvalue as $key => $value) {
+                   $sum=$sum+$value;
+                }
+                $aRoleMenu->permissionvalue=$sum;
+                $aRoleMenu->save();
+            }
+          }
+        }
+        return redirect('role');
     }
 }

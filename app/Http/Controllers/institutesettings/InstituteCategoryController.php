@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
 use App\institutesettings\InstituteCatagory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\role\RoleHelper;
 class InstituteCategoryController extends Controller
 {
     public function __construct()
@@ -14,23 +13,19 @@ class InstituteCategoryController extends Controller
     }
     public function index()
     {
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        $accessStatus=Role::getAccessStatus();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('institutecategory');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $result=InstituteCatagory::all();
-        return view('institutesettings.institutecategory.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.institutecategory.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
     }
     public function create(){
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        $accessStatus=Role::getAccessStatus();
-        if($accessStatus[2]==1){
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('institutecategory');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
             return view('institutesettings.institutecategory.create',['sidebarMenu'=>$sidebarMenu]);
         }else{
             return redirect('institutecategory');
@@ -45,13 +40,11 @@ class InstituteCategoryController extends Controller
     }
     public function edit($id)
     {
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        $accessStatus=Role::getAccessStatus();
-        if($accessStatus[4]==1){
+         $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('institutecategory');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[4]==1){
             $aBean=InstituteCatagory::findOrfail($id);
             return view('institutesettings.institutecategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
         }else{

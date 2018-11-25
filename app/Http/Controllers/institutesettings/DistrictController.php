@@ -45,9 +45,11 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-     $accessStatus=Role::getAccessStatus();
-    $sidebarMenu=Role::getMenu();
-    if($accessStatus[4]==1){
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('district');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
        $aBean=District::findOrfail($id);
        $divisions=\DB::table('divisions')->get();
        return view('institutesettings.district.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'divisions'=>$divisions]);

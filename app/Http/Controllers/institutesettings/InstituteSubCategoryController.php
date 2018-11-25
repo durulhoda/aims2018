@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
+use App\role\RoleHelper;
 use App\institutesettings\InstituteSubCatagory;
 use App\institutesettings\InstituteCatagory;
 use Illuminate\Http\Request;
@@ -15,28 +15,24 @@ class InstituteSubCategoryController extends Controller
     }
     public function index()
     {
-     if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    $accessStatus=Role::getAccessStatus();
+      $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('institutesubcategory');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     $result=\DB::table('institutesubcategory')
     ->join('institutecategory','institutesubcategory.categoryid','=','institutecategory.id')
     ->select('institutesubcategory.*','institutecategory.name As categoryName')
     ->get();
-    return view('institutesettings.institutesubcategory.index',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'result'=>$result]);
+    return view('institutesettings.institutesubcategory.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$result]);
 }
 public function create(){
-    $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    if($accessStatus[2]==1){
-     $categories=InstituteCatagory::all();
-     return view('institutesettings.institutesubcategory.create',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'categories'=>$categories]);
+   $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('institutesubcategory');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
+     $categoriesList=InstituteCatagory::all();
+     return view('institutesettings.institutesubcategory.create',['sidebarMenu'=>$sidebarMenu,'categories'=>$categoriesList]);
  }else{
      return redirect('institutesubcategory'); 
  }
@@ -51,17 +47,14 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-  $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-   if($accessStatus[4]==1){
-       $sidebarMenu=Role::getMenu();
+   $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('institutesubcategory');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+   if($permission[4]==1){
        $categories=InstituteCatagory::all();
        $aBean=InstituteSubCatagory::findOrfail($id);
-       return view('institutesettings.institutesubcategory.edit',['sidebarMenu'=>$sidebarMenu,'accessStatus'=>$accessStatus,'bean'=>$aBean,'categories'=>$categories]);
+       return view('institutesettings.institutesubcategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'categories'=>$categories]);
    }else{
     return redirect('institutesubcategory');
 }

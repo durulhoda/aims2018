@@ -37,8 +37,8 @@
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
-							<td>{{$aObj->roleCreatorName}}</td>
-							<td>{{$aObj->institueName}}</td>
+							<td>{{$aObj->rolecreatorid}}</td>
+							<td>{{$aObj->instituteid}}</td>
 							@if($permission[4]==1)
 							<td> 
 								<a href="{{URL::to('/role')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">

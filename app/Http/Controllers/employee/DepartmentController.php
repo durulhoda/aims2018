@@ -7,11 +7,17 @@ use App\Http\Controllers\Controller;
 use App\employee\Department;
 class DepartmentController extends Controller
 {
+	public function __construct()
+	{
+	    $this->middleware('auth');
+	}
 	public function index(){
-		$sidebarMenu=Role::getMenu();
-        $accessStatus=Role::getAccessStatus();
+		$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('menu');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
 		$result=Department::all();
-		return view('employeesettings.department.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+		return view('employeesettings.department.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
 	public function create(){
 		$accessStatus=Role::getAccessStatus();

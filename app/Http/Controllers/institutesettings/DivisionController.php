@@ -25,9 +25,9 @@ public function index()
 }
 public function create(){
     $rh=new RoleHelper();
-       $menuid=$rh->getMenuId('menu');
-       $sidebarMenu=$rh->getMenu();
-       $permission=$rh->getPermission($menuid);
+    $menuid=$rh->getMenuId('division');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
         return view('institutesettings.division.create',['sidebarMenu'=>$sidebarMenu]);
     }else{
@@ -43,13 +43,11 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-    $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-     }else{
-        $sidebarMenu=Role::getMenu();
-     }
-    if($accessStatus[4]==1){
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('division');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
        $aBean=Division::findOrfail($id);
        return view('institutesettings.division.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
    }else{

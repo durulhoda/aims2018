@@ -6,7 +6,7 @@
 		<div class="col-lg-12">
 			<div class="">
 				<h4>All Groups</h4>
-				@if($accessStatus[2]==1)
+				@if($permission[2]==1)
 					<a href="{{URL::to('/group')}}/{{'create'}}">New</a>
 				@endif
 			</div>
@@ -22,10 +22,10 @@
 							<th>Sl No.</th>
 							<th>Program Level</th>
 							<th>Group Name</th>
-							@if($accessStatus[4]==1)
+							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
-							@if($accessStatus[8]==1)
+							@if($permission[8]==1)
 							<th width="10px">Del</th>
 							@endif
 						</tr>
@@ -36,7 +36,7 @@
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->levelName}}</td>
 							<td>{{$aObj->name}}</td>
-							@if($accessStatus[4]==1)
+							@if($permission[4]==1)
 							<td> 
 								<a href="{{URL::to('/group')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
@@ -45,7 +45,7 @@
 								</a>
 							</td>
 							@endif
-							@if($accessStatus[8]==1)
+							@if($permission[8]==1)
 							<td>
 								<a href="" class="tooltip-error" data-rel="tooltip" title="Delete">
 									<span class="red">

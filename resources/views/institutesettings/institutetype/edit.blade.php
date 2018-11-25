@@ -5,7 +5,7 @@
  	<div class="row">
  		<div class="col-lg-12">
  			<div class="">
- 				<h4>Edit Class</h4>
+ 				<h4>Edit Institute Type</h4>
  				<a href="{{URL::to('/institutetype')}}">All</a>
  			</div>
  		</div>

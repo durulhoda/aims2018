@@ -5,7 +5,7 @@
  	<div class="row">
  		<div class="col-lg-12">
  			<div class="">
- 				<h4>Edit Class</h4>
+ 				<h4>Edit Employee</h4>
  				<a href="{{URL::to('/employeeType')}}">All</a>
  			</div>
  		</div>

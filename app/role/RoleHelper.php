@@ -32,10 +32,11 @@ public function getRoleCreatorId(){
  $aRole=\DB::select('select * from roles where id=?',[$this->getRoleId()])[0];
  return $aRole->rolecreatorid;
 }
-public function getOnlySuccessorRole(){
+
+public function getExcludeSuccessorRole(){
    return $this->getRoleCreator($this->getRoleId(),0);
 }
-public function getSuccessorRole(){
+public function getIncludeSuccessorRole(){
      return $this->getRoleCreator($this->getRoleCreatorId(),0);
 }
 private function getRoleCreator($roleid,$i){
@@ -86,6 +87,39 @@ WHERE role_menu.role_id=?",[$id]);
         $i++;
     }
     return $menuitems;
+}
+public function getRoleEditMenuList($parentroleid,$chileroleid){
+    $result=\DB::select("SELECT vprmenu.menu_id AS pmenuid,
+vprmenu.name as menuName,
+vprmenu.permissionvalue AS ppermissionvalue,
+IFNULL(vchrmenu.menu_id,0) AS cmenuid,
+IFNULL(vchrmenu.permissionvalue,0) as cpermissionvalue 
+from (SELECT role_menu.*,menus.name
+FROM role_menu
+INNER JOIN menus ON role_menu.menu_id=menus.id
+WHERE role_menu.role_id=?) as vprmenu
+LEFT JOIN
+(SELECT role_menu.*,menus.name
+FROM role_menu
+INNER JOIN menus ON role_menu.menu_id=menus.id
+WHERE role_menu.role_id=?) as vchrmenu ON vprmenu.menu_id=vchrmenu.menu_id ORDER BY pmenuid",[$parentroleid,$chileroleid]);
+    $menuitems=array();
+    $i=0;
+    foreach ($result as $item) {
+      $parentPositionValue=$this->getBinaryPositionValue($item->ppermissionvalue);
+      $childPositionValue=$this->getBinaryPositionValue($item->cpermissionvalue);
+      $meargeResult=$this->meargechildPositionValue($parentPositionValue,$childPositionValue);
+      $menuitems[$i]=['item'=>$item,'parentPositionValue'=>$parentPositionValue,'meargeResult'=>$meargeResult];
+        $i++;
+    }
+    return $menuitems;
+}
+private function meargechildPositionValue($parentPositionValue,$childPositionValue){
+      $meargeResult=array();
+      foreach ($parentPositionValue as $item) {
+        $meargeResult[$item]=isset($childPositionValue[$item])?$childPositionValue[$item]:0;
+      }
+      return $meargeResult;
 }
 public function getPermitedMenus(){
     $permitedMenus=\DB::select("SELECT role_menu.menu_id FROM `role_menu`

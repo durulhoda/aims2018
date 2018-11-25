@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers\settings;
-use App\Role;
+use App\role\RoleHelper;
 use App\Http\Controllers\Controller;
 use App\settings\Session;
 use Illuminate\Http\Request;

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
+use App\role\RoleHelper;
 use App\institutesettings\InstituteType;
 use App\institutesettings\InstituteCatagory;
 use App\institutesettings\InstituteSubCatagory;
@@ -17,12 +17,10 @@ class InstituteController extends Controller
     }
     public function index()
     {
-       if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    $accessStatus=Role::getAccessStatus();
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('institute');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     $result=\DB::table('institute')
     ->join('institutetype','institute.institutetypeid','=','institutetype.id')
     ->join('institutecategory','institute.institutecategoryid','=','institutecategory.id')
@@ -32,16 +30,14 @@ class InstituteController extends Controller
     ->join('localgovs','institute.localgovid','=','localgovs.id')
     ->select('institute.*','institutetype.name as typeName','institutecategory.name as categoryName','institutesubcategory.name as subcatName','thanas.name as thanaName','postoffices.name as postofficeName','localgovs.name as localgovsName')
     ->get();
-    return view('institutesettings.institute.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+    return view('institutesettings.institute.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 }
 public function create(){
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    $accessStatus=Role::getAccessStatus();
-    if($accessStatus[2]==1){
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('institute');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
         $instituteTypes=InstituteType::all();
         $instituteCategory=InstituteCatagory::all();
         $instituteSubCategory=InstituteSubCatagory::all();
@@ -68,13 +64,11 @@ public function store(Request $request){
     return redirect('institute');
 }
 public function edit($id){
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    $accessStatus=Role::getAccessStatus();
-    if($accessStatus[4]==1){
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('institute');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
         $result=\DB::table('institute')
         ->join('institutetype','institute.institutetypeid','=','institutetype.id')
         ->join('institutecategory','institute.institutecategoryid','=','institutecategory.id')

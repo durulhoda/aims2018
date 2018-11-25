@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
+use App\role\RoleHelper;
 use App\institutesettings\Division;
 use App\institutesettings\LocalGov;
 use Illuminate\Http\Request;
@@ -15,28 +15,24 @@ class LocalGovController extends Controller
     }
     public function index()
     {
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        $accessStatus=Role::getAccessStatus();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('localgov');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $result=\DB::table('localgovs')
         ->join('thanas','localgovs.thanaid','=','thanas.id')
         ->join('districts','thanas.districtid','=','districts.id')
         ->join('divisions','districts.divisionid','=','divisions.id')
         ->select('localgovs.*','divisions.name as divisionName','districts.name as districtName','thanas.name as thanaName')
         ->get();
-        return view('institutesettings.localgov.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.localgov.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
     }
     public function create(){
-       $accessStatus=Role::getAccessStatus();
-       if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    if($accessStatus[2]==1){
+       $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('localgov');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
         $divisions=\DB::table('divisions')->get();
         return view('institutesettings.localgov.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
     }else{
@@ -53,13 +49,11 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-    $accessStatus=Role::getAccessStatus();
-    if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-    }else{
-        $sidebarMenu=Role::getMenu();
-    }
-    if($accessStatus[4]==1){
+    $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('localgov');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
         $result=\DB::table('localgovs')
         ->join('thanas','localgovs.thanaid','=','thanas.id')
         ->join('districts','thanas.districtid','=','districts.id')

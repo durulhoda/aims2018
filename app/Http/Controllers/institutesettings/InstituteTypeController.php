@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\institutesettings;
-use App\Role;
+use App\role\RoleHelper;
 use App\institutesettings\InstituteType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,23 +14,19 @@ class InstituteTypeController extends Controller
     }
     public function index()
     {
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        $accessStatus=Role::getAccessStatus();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('institutetype');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $result=InstituteType::all();
-        return view('institutesettings.institutetype.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('institutesettings.institutetype.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
     }
     public function create(){
-        $accessStatus=Role::getAccessStatus();
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        if($accessStatus[2]==1){
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('institutetype');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
             return view('institutesettings.institutetype.create',['sidebarMenu'=>$sidebarMenu]);
         }else{
             return redirect('institutetype');
@@ -45,13 +41,11 @@ class InstituteTypeController extends Controller
     }
     public function edit($id)
     {
-        $accessStatus=Role::getAccessStatus();
-        if(Role::checkAdmin()==1){
-            $sidebarMenu=Role::getAllMenu();
-        }else{
-            $sidebarMenu=Role::getMenu();
-        }
-        if($accessStatus[4]==1){
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('institutetype');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[4]==1){
             $aObj=InstituteType::findOrfail($id);
             return view('institutesettings.institutetype.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aObj]);
         }else{

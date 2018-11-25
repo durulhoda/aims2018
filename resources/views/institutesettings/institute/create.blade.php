@@ -7,7 +7,6 @@
  			<div class="heading">
  				<h4>New Institue</h4>
  				<a href="{{URL::to('/institute')}}">All</a>
- 				
  			</div>
  		</div>
  	</div>
