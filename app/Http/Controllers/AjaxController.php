@@ -76,9 +76,11 @@ class AjaxController extends Controller
    }
    echo "<option value=\"\">Select</option>" . $prglvlList;
   }
-  public function index1(Request $request){
+  public function getOwnRole(Request $request){
     $id = $request->id;
     dd($id);
+    $output="<div>Hello</div>";
+    echo  $output;
 }
 public function createRolePower(Request $request){
    $rolecreatorid=$request->rolecreatorid;

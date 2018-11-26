@@ -17,6 +17,10 @@ class LocalGovController extends Controller
     {
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('localgov');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=\DB::table('localgovs')
@@ -51,6 +55,10 @@ public function edit($id)
 {
     $rh=new RoleHelper();
         $menuid=$rh->getMenuId('localgov');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
     if($permission[4]==1){

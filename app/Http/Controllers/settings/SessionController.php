@@ -12,16 +12,20 @@ class SessionController extends Controller
     $this->middleware('auth');
 }
     public function index(){
-        $dmenu=Role::getMenu();
-        $accessStatus=Role::getAccessStatus();
-        $result=Session::all();
-        return view('settings.session.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('session');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        $sessionList=Session::all();
+        return view('settings.session.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$sessionList]);
     }
     public function create(){
-        $accessStatus=Role::getAccessStatus();
-        if($accessStatus[2]==1){
-          $dmenu=Role::getMenu();
-            return view('settings.session.create',['dmenu'=>$dmenu]);
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('session');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
+            return view('settings.session.create',['sidebarMenu'=>$sidebarMenu]);
         }else{
            return redirect('session');
        }
@@ -29,19 +33,20 @@ class SessionController extends Controller
 
    }
    public function store(Request $request){
-    $aBean=new Session();
-    $aBean->name=$request->name;
-    $aBean->save();
+    $aSession=new Session();
+    $aSession->name=$request->name;
+    $aSession->save();
     return redirect('session');
 }
 public function edit($id)
 {
-
-    $accessStatus=Role::getAccessStatus();
-    if($accessStatus[4]==1){
-       $dmenu=Role::getMenu();
-       $aBean=Session::findOrfail($id);
-       return view('settings.session.edit',['dmenu'=>$dmenu,'bean'=>$aBean]);
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('session');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
+       $aSession=Session::findOrfail($id);
+       return view('settings.session.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aSession]);
    }else{
       return redirect('session');
   }
@@ -49,9 +54,9 @@ public function edit($id)
 }
 public function update(Request $request, $id)
 {
-    $aBean=Session::findOrfail($id);
-    $aBean->name=$request->name;
-    $aBean->update();
+    $aSession=Session::findOrfail($id);
+    $aSession->name=$request->name;
+    $aSession->update();
     return redirect('session');
 }
 }

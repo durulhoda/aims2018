@@ -18,6 +18,10 @@ public function index()
 {
     $rh=new RoleHelper();
     $menuid=$rh->getMenuId('division');
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+        return redirect('error');
+    }
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
     $result=Division::all();
@@ -26,6 +30,10 @@ public function index()
 public function create(){
     $rh=new RoleHelper();
     $menuid=$rh->getMenuId('division');
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+        return redirect('error');
+    }
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
@@ -45,6 +53,10 @@ public function edit($id)
 {
     $rh=new RoleHelper();
     $menuid=$rh->getMenuId('division');
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+        return redirect('error');
+    }
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
     if($permission[4]==1){

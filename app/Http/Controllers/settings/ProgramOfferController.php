@@ -19,8 +19,10 @@ class ProgramOfferController extends Controller
     $this->middleware('auth');
 }
   public function index(){
-    $dmenu=Role::getMenu();
-    $accessStatus=Role::getAccessStatus();
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('programoffer');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.name as groupName,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
       INNER JOIN sessions ON programoffer.sessionid=sessions.id
       INNER JOIN programs ON programoffer.programid=programs.id
@@ -28,18 +30,20 @@ class ProgramOfferController extends Controller
       INNER JOIN programlevels ON groups.programLevelid=programlevels.id
       INNER JOIN mediums ON programoffer.mediumid=mediums.id
       INNER JOIN shifts ON programoffer.shiftid=shifts.id');
-    return view('settings.programoffer.index',['dmenu'=>$dmenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+    return view('settings.programoffer.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$result]);
   }
   public function create(){
-    $accessStatus=Role::getAccessStatus();
-    if($accessStatus[2]==1){
-        $dmenu=Role::getMenu();
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('programoffer');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
         $sessions=Session::all();
         $levels=ProgramLevel::all();
         $mediums=Medium::all();
         $shifts=Shift::all();
         $msg="";
-        return view('settings.programoffer.create',['dmenu'=>$dmenu,'sessions'=>$sessions,'levels'=>$levels,'mediums'=>$mediums,'shifts'=>$shifts]);
+        return view('settings.programoffer.create',['sidebarMenu'=>$sidebarMenu,'sessions'=>$sessions,'levels'=>$levels,'mediums'=>$mediums,'shifts'=>$shifts]);
     }else{
       return redirect('programoffer');
     }
@@ -65,9 +69,11 @@ class ProgramOfferController extends Controller
  }
  public function edit($id)
  {
-   $accessStatus=Role::getAccessStatus();
-   if($accessStatus[4]==1){
-       $dmenu=Role::getMenu();
+    $rh=new RoleHelper();
+    $menuid=$rh->getMenuId('programoffer');
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+   if($permission[4]==1){
        $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.id as groupid,groups.name as groupName,programlevels.id As programLevelid,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
     INNER JOIN sessions ON programoffer.sessionid=sessions.id
     INNER JOIN programs ON programoffer.programid=programs.id
@@ -84,7 +90,7 @@ class ProgramOfferController extends Controller
    $programs=\DB::select('SELECT programs.* FROM programs where groupid=?',[$aBean->groupid]);
    $mediums=Medium::all();
     $shifts=Shift::all();
-   return view('settings.programoffer.edit',['dmenu'=>$dmenu,'bean'=>$aBean,'sessions'=>$sessions,'levels'=>$levels,'groups'=>$groups,'programs'=>$programs,'mediums'=>$mediums,'shifts'=>$shifts]);
+   return view('settings.programoffer.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'sessions'=>$sessions,'levels'=>$levels,'groups'=>$groups,'programs'=>$programs,'mediums'=>$mediums,'shifts'=>$shifts]);
    }else{
       return redirect('programoffer');
    }

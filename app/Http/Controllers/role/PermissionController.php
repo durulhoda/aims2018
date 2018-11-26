@@ -14,6 +14,10 @@ class PermissionController extends Controller
     public function index(){
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('permission');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $permissionList=Permission::all();
@@ -22,6 +26,10 @@ class PermissionController extends Controller
     public function create(){
     	$rh=new RoleHelper();
         $menuid=$rh->getMenuId('permission');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         return view('roleconfig.permission.create',['sidebarMenu'=>$sidebarMenu]);
@@ -45,6 +53,10 @@ class PermissionController extends Controller
     public function edit($id){
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('permission');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $aPermission=Permission::findOrfail($id);

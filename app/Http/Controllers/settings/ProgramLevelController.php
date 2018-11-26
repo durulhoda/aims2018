@@ -15,15 +15,21 @@ class ProgramLevelController extends Controller
 }
     public function index()
     {
-        $accessStatus=Role::getAccessStatus();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('programLevel');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $result=ProgramLevel::all();
-        return view('settings.programLevle.index',compact('result','accessStatus'));
+        return view('settings.programLevel.index',compact('sidebarMenu','result','permission'));
     }
     public function create()
     {
-        $accessStatus=Role::getAccessStatus();
-        if($accessStatus[2]==1){
-             return view('settings.programLevle.create');
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('programLevel');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
+             return view('settings.programLevel.create',['sidebarMenu'=>$sidebarMenu]);
         }else{
              return redirect('programLevel');
         }
@@ -41,10 +47,13 @@ class ProgramLevelController extends Controller
 
     public function edit($id)
     {
-        $accessStatus=Role::getAccessStatus();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('programLevel');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $aBean=ProgramLevel::findOrfail($id);
-        if($accessStatus[4]==1){
-            return view('settings.programLevle.edit',['bean'=>$aBean]);
+        if($permission[4]==1){
+            return view('settings.programLevel.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
         }else{
             return redirect('programLevel');
         }
@@ -53,7 +62,7 @@ class ProgramLevelController extends Controller
 
     public function update(Request $request,$id)
     {
-        $aBean = aBean::findOrfail($id);
+        $aBean = ProgramLevel::findOrfail($id);
         $aBean->name=$request->name;
         $aBean->update();
         return redirect('programLevel');

@@ -20,8 +20,8 @@
 					<thead>
 						<tr>
 							<th>Sl No.</th>
-							<th><span style="margin-right: 25px;">Role Created By</span><label class="radio-inline"><input type="radio" name="creator" checked value="1" onchange="go(this)">Own</label>
-<label class="radio-inline"><input type="radio" name="creator" value="2" onchange="go(this)">Successor</label></th>
+							<th><span style="margin-right: 25px;">Role Created By</span><label class="radio-inline"><input type="radio" name="creator"  value="1" onchange="getOwnRole(this)">Own</label>
+<label class="radio-inline"><input type="radio" name="creator" checked value="2" onchange="getOwnRole(this)">Successor</label></th>
 							<th>Role Creator</th>
 							<th>Institute</th>
 							@if($permission[4]==1)
@@ -32,7 +32,7 @@
 							@endif
 						</tr>
 					</thead>
-					 <tbody id="datalist">
+					 <tbody id="datalist" id="output">
 						@foreach($result as $aObj)
 						<tr>
 							<td>{{$aObj->id}}</td>

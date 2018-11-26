@@ -14,6 +14,10 @@ public function __construct()
 public function index(){
        $rh=new RoleHelper();
        $menuid=$rh->getMenuId('menu');
+       $hasMenu=$rh->hasMenu($menuid);
+       if($hasMenu==false){
+              return redirect('error');
+        }
        $sidebarMenu=$rh->getMenu();
        $permission=$rh->getPermission($menuid);
        $result=\DB::select("SELECT vmenus.id as childid,vmenus.name as child,menus.name as parent,vmenus.url,vmenus.menuorder 
@@ -35,6 +39,10 @@ WHERE menus.parentid=0 order by childid");
    public function create(){
        $rh=new RoleHelper();
        $menuid=$rh->getMenuId('menu');
+       $hasMenu=$rh->hasMenu($menuid);
+       if($hasMenu==false){
+              return redirect('error');
+        }
        $sidebarMenu=$rh->getMenu();
        $permission=$rh->getPermission($menuid);
        $parents=Menu::all();
@@ -64,6 +72,10 @@ public function store(Request $request){
 public function edit($id){
        $rh=new RoleHelper();
        $menuid=$rh->getMenuId('menu');
+       $hasMenu=$rh->hasMenu($menuid);
+       if($hasMenu==false){
+              return redirect('error');
+        }
        $sidebarMenu=$rh->getMenu();
        $permission=$rh->getPermission($menuid);
         $aMenu=Menu::findOrfail($id);

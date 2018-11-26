@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\employee;
-use App\Role;
+use App\role\RoleHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\employee\Department;
@@ -13,20 +13,26 @@ class DepartmentController extends Controller
 	}
 	public function index(){
 		$rh=new RoleHelper();
-        $menuid=$rh->getMenuId('menu');
+        $menuid=$rh->getMenuId('department');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+              return redirect('error');
+         }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
 		$result=Department::all();
 		return view('employeesettings.department.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
 	public function create(){
-		$accessStatus=Role::getAccessStatus();
-		if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-     }else{
-        $sidebarMenu=Role::getMenu();
-     }
-		if($accessStatus[2]==1){
+		$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('department');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+              return redirect('error');
+         }
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+		if($permission[2]==1){
 			return view('employeesettings.department.create',['sidebarMenu'=>$sidebarMenu]);
 		}else{
 			return redirect('department');
@@ -41,13 +47,15 @@ class DepartmentController extends Controller
 	}
 	public function edit($id)
 	{
-		$accessStatus=Role::getAccessStatus();
-		if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-     }else{
-        $sidebarMenu=Role::getMenu();
-     }
-		if($accessStatus[4]==1){
+		$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('department');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+              return redirect('error');
+         }
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+		if($permission[4]==1){
 			$aBean=Department::findOrfail($id);
 			return view('employeesettings.department.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
 		}else{

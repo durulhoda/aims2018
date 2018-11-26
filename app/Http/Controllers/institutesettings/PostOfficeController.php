@@ -17,6 +17,10 @@ class PostOfficeController extends Controller
     {
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('postoffice');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=\DB::table('postoffices')
@@ -30,6 +34,10 @@ class PostOfficeController extends Controller
     public function create(){
        $rh=new RoleHelper();
         $menuid=$rh->getMenuId('postoffice');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
@@ -51,6 +59,10 @@ public function edit($id)
 {
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('postoffice');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
     if($permission[4]==1){

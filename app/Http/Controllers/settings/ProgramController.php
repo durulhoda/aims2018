@@ -16,25 +16,26 @@ class ProgramController extends Controller
 }
 	public function index()
 	{
-		if(Role::checkAdmin()==1){
-        $sidebarMenu=Role::getAllMenu();
-     }else{
-        $sidebarMenu=Role::getMenu();
-     }
-		$accessStatus=Role::getAccessStatus();
+		$rh=new RoleHelper();
+      	$menuid=$rh->getMenuId('program');
+      	$sidebarMenu=$rh->getMenu();
+      	$permission=$rh->getPermission($menuid);
 		$result=\DB::table('programs')
 		->join('groups','programs.groupid','=','groups.id')
 		->join('programlevels','groups.programLevelid','=','programlevels.id')
 		->select('programs.*', 'programlevels.name as lavelName','groups.name as groupName')
 		->get();
-		return view('settings.program.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'accessStatus'=>$accessStatus]);
+		return view('settings.program.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
 	public function create()
 	{
-		$accessStatus=Role::getAccessStatus();
-		if($accessStatus[2]==1){
+		$rh=new RoleHelper();
+      	$menuid=$rh->getMenuId('program');
+      	$sidebarMenu=$rh->getMenu();
+      	$permission=$rh->getPermission($menuid);
+		if($permission[2]==1){
 			$levels=ProgramLevel::all();
-			return view('settings.program.create',compact('levels'));
+			return view('settings.program.create',compact('sidebarMenu','levels'));
 		}else{
 			return redirect('program');
 		}
@@ -50,8 +51,11 @@ class ProgramController extends Controller
 	}
 	public function edit($id)
     {
-    	$accessStatus=Role::getAccessStatus();
-    	if($accessStatus[4]==1){
+    	$rh=new RoleHelper();
+      	$menuid=$rh->getMenuId('program');
+      	$sidebarMenu=$rh->getMenu();
+      	$permission=$rh->getPermission($menuid);
+    	if($permission[4]==1){
     		 $levels=ProgramLevel::all();
 	    	 $aBean=\DB::table('programs')
 	    	 ->join('programlevels','programs.groupid','=','programlevels.id')
@@ -62,7 +66,7 @@ class ProgramController extends Controller
 	    	 ->select('groups.*')
 	    	 ->where('groups.programLevelid',$aBean->programLevelid)
 	    	 ->get();
-	         return view('settings.program.edit',['bean'=>$aBean,'levels'=>$levels,'groups'=>$groups]);
+	         return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'levels'=>$levels,'groups'=>$groups]);
     	}else{
     		return redirect('program');
     	}

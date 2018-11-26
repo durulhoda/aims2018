@@ -15,6 +15,10 @@ class UnitController extends Controller
     public function index(){
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('unit');
+        $hasMenu=$rh->hasMenu($menuid);
+          if($hasMenu==false){
+              return redirect('error');
+          }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=\DB::table('units')
@@ -25,6 +29,10 @@ class UnitController extends Controller
     public function create(){
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('unit');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+              return redirect('error');
+          }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         if($permission[2]==1){
@@ -46,6 +54,9 @@ class UnitController extends Controller
     public function edit($id){
       $rh=new RoleHelper();
         $menuid=$rh->getMenuId('unit');
+        if($hasMenu==false){
+              return redirect('error');
+          }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
     if($permission[4]==1){

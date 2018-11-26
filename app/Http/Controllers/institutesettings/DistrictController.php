@@ -17,6 +17,10 @@ class DistrictController extends Controller
     {
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('district');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=\DB::table('districts')
@@ -27,6 +31,10 @@ class DistrictController extends Controller
     public function create(){
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('district');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
@@ -47,6 +55,10 @@ public function edit($id)
 {
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('district');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
     if($permission[4]==1){

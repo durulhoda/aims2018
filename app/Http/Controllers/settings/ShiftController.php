@@ -14,18 +14,24 @@ class ShiftController extends Controller
     $this->middleware('auth');
 }
 	public function index(){
-		$accessStatus=Role::getAccessStatus();
+		$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('shift');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
 		$result=Shift::all();
 		foreach ($result as $aBean) {
 			$aBean->startTime=date("g:i a", strtotime($aBean->startTime));
 			$aBean->endTime=date("g:i a", strtotime($aBean->endTime));
 		}
-		return view('settings.shift.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+		return view('settings.shift.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
 	public function create(){
-		$accessStatus=Role::getAccessStatus();
-		if($accessStatus[2]==1){
-			return view('settings.shift.create');
+		$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('shift');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+		if($permission[2]==1){
+			return view('settings.shift.create',['sidebarMenu'=>$sidebarMenu]);
 		}else{
 			return redirect('shift');
 		}
@@ -44,12 +50,15 @@ class ShiftController extends Controller
 	}
 	public function edit($id)
 	{
-		$accessStatus=Role::getAccessStatus();
-		if($accessStatus[4]==1){
+		$rh=new RoleHelper();
+        $menuid=$rh->getMenuId('shift');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+		if($permission[4]==1){
 			$aBean=Shift::findOrfail($id);
 			$aBean->startTime=date("g:i a", strtotime($aBean->startTime));
 			$aBean->endTime=date("g:i a", strtotime($aBean->endTime));
-			return view('settings.shift.edit',['bean'=>$aBean]);
+			return view('settings.shift.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
 		}else{
 			return redirect('shift');
 		}

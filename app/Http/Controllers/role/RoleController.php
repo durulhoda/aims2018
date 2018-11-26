@@ -11,17 +11,25 @@ class RoleController extends Controller
 {
     public function index(){
     	$rh=new RoleHelper();
-        $sidebarMenu=$rh->getMenu();
         $menuid=$rh->getMenuId('role');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
+        $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
-        $roleid=$rh->getRoleId();
         $roleList=$rh->getExcludeSuccessorRole();
+        // $roleList=$rh->getOwnRoleList();
     	return view('roleconfig.role.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$roleList]);
     }
     public function create(){
     	$rh=new RoleHelper();
-        $sidebarMenu=$rh->getMenu();
         $menuid=$rh->getMenuId('role');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
+        $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $successorRole=$rh->getIncludeSuccessorRole();
         $menuListByRole=$rh->getMenuListByRole();
@@ -58,8 +66,12 @@ class RoleController extends Controller
     }
     public function edit($id){
         $rh=new RoleHelper();
-        $sidebarMenu=$rh->getMenu();
         $menuid=$rh->getMenuId('role');
+         $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
+        $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $successorRole=$rh->getIncludeSuccessorRole();
         $aRole=Role::findOrfail($id);

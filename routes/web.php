@@ -14,6 +14,9 @@
 // })->middleware('auth');
 
 Route::get('/', 'HomeController@index')->middleware('auth')->name('home');
+Route::get('/error', function(){
+return view('errorpage');
+});
 // Role Settings
 Auth::routes();
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
@@ -70,7 +73,7 @@ Route::get('/getdistrict/','AjaxController@getDistbydivision');
 Route::get('/getthana/','AjaxController@getThanabydistrict');
 Route::get('/getpostoffice/','AjaxController@getPostOfficebyThana');
 Route::get('/getunion/','AjaxController@getUnionbyThana');
-Route::get('/index1/','AjaxController@index1');
+Route::get('/getOwnRole/','AjaxController@getOwnRole');
 Route::get('/editRolePower/','AjaxController@editRolePower');
 Route::get('/createRolePower/','AjaxController@createRolePower');
 

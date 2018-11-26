@@ -13,9 +13,12 @@ class SectionController extends Controller
     $this->middleware('auth');
 }
 	public function index(){
-		$accessStatus=Role::getAccessStatus();
+		$rh=new RoleHelper();
+	    $menuid=$rh->getMenuId('section');
+	    $sidebarMenu=$rh->getMenu();
+	    $permission=$rh->getPermission($menuid);
 		$result=Section::all();
-		return view('settings.section.index',['result'=>$result]);
+		return view('settings.section.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$result]);
 	}
 	public function create(){
 		$accessStatus=Role::getAccessStatus();

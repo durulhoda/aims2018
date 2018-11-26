@@ -41,7 +41,7 @@
 							<td>{{$aObj->name}}</td>
 							@if($permission[4]==1)
 							<td> 
-								<a href="{{URL::to('/role')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
+								<a href="{{URL::to('/program')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>

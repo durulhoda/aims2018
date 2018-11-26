@@ -14,15 +14,21 @@ class MediumController extends Controller
 }
     public function index()
     {
-        $accessStatus=Role::getAccessStatus();
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('medium');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
         $result=Medium::all();
-        return view('settings.medium.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+        return view('settings.medium.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
     }
     public function create()
     {
-        $accessStatus=Role::getAccessStatus();
-        if($accessStatus[2]==1){
-         return view('settings.medium.create');
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('medium');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[2]==1){
+         return view('settings.medium.create',['sidebarMenu'=>$sidebarMenu]);
         }else{
             return redirect('medium');
         }
@@ -36,10 +42,13 @@ class MediumController extends Controller
     }
     public function edit($id)
     {
-        $accessStatus=Role::getAccessStatus();
-        if($accessStatus[4]==1){
-         $aBean=Medium::findOrfail($id);
-         return view('settings.medium.edit',['bean'=>$aBean]);
+        $rh=new RoleHelper();
+        $menuid=$rh->getMenuId('medium');
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
+        if($permission[4]==1){
+         $aMedium=Medium::findOrfail($id);
+         return view('settings.medium.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aMedium]);
         }else{
             return redirect('medium');
         }

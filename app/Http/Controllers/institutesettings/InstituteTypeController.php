@@ -16,6 +16,10 @@ class InstituteTypeController extends Controller
     {
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('institutetype');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=InstituteType::all();
@@ -24,6 +28,10 @@ class InstituteTypeController extends Controller
     public function create(){
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('institutetype');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         if($permission[2]==1){
@@ -43,6 +51,10 @@ class InstituteTypeController extends Controller
     {
         $rh=new RoleHelper();
         $menuid=$rh->getMenuId('institutetype');
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         if($permission[4]==1){

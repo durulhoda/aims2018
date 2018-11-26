@@ -17,20 +17,26 @@ class SubjectCodeController extends Controller
     $this->middleware('auth');
 }
    public function index(){
-    $accessStatus=Role::getAccessStatus();
+      $rh=new RoleHelper();
+      $menuid=$rh->getMenuId('subjectcode');
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
     $result=\DB::select('SELECT subjectcodes.*,programlevels.name as levelName,groups.name as groupName,programs.name as programName,courses.name as courseName FROM `subjectcodes` 
         INNER JOIN courses ON subjectcodes.courseid=courses.id 
         INNER join programs on subjectcodes.programid=programs.id
         INNER join groups on programs.groupid=groups.id
         INNER join programlevels on groups.programLevelid=programlevels.id');
-    return view('settings.subjectcode.index',['result'=>$result,'accessStatus'=>$accessStatus]);
+    return view('settings.subjectcode.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 }
 public function create(){
-    $accessStatus=Role::getAccessStatus();
-    if($accessStatus[2]==1){
+      $rh=new RoleHelper();
+      $menuid=$rh->getMenuId('subjectcode');
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
+    if($permission[2]==1){
         $levels=ProgramLevel::all();
         $courses=Course::all();
-        return view('settings.subjectcode.create',['levels'=>$levels,'courses'=>$courses]);
+        return view('settings.subjectcode.create',['sidebarMenu'=>$sidebarMenu,'levels'=>$levels,'courses'=>$courses]);
     }else{
         return redirect('subjectcode');
     }
