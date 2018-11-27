@@ -57,18 +57,20 @@ public function create(){
     
 }
 public function store(Request $request){
-    $aBean=new Institute();
-    $aBean->name=$request->name;
-    $aBean->institutetypeid=$request->institutetypeid;
-    $aBean->institutecategoryid=$request->institutecategoryid;
-    $aBean->institutesubcategoryid=$request->institutesubcategoryid;
-    $aBean->thanaid=$request->thanaid;
-    $aBean->postofficeid=$request->postofficeid;
-    $aBean->localgovid=$request->localgovid;
-    $aBean->wordno=$request->wordno;
-    $aBean->cluster=$request->cluster;
-    $aBean->ein=$request->ein;
-    $aBean->save();
+    $aInstitute=new Institute();
+    $aInstitute->name=$request->name;
+    $aInstitute->institutetypeid=$request->institutetypeid;
+    $aInstitute->institutecategoryid=$request->institutecategoryid;
+    $aInstitute->institutesubcategoryid=$request->institutesubcategoryid;
+    $aInstitute->divisionid=$request->divisionid;
+    $aInstitute->districtid=$request->districtid;
+    $aInstitute->thanaid=$request->thanaid;
+    $aInstitute->postofficeid=$request->postofficeid;
+    $aInstitute->localgovid=$request->localgovid;
+    $aInstitute->wordno=$request->wordno;
+    $aInstitute->cluster=$request->cluster;
+    $aInstitute->ein=$request->ein;
+    $aInstitute->save();
     return redirect('institute');
 }
 public function edit($id){

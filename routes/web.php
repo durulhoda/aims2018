@@ -13,7 +13,7 @@
 //     return view('home');
 // })->middleware('auth');
 
-Route::get('/', 'HomeController@index')->middleware('auth')->name('home');
+Route::get('/', 'frontController@index');
 Route::get('/error', function(){
 return view('errorpage');
 });
