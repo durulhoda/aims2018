@@ -18,7 +18,7 @@
         <h3 style="margin-top: 27px;">Aims 2018</h3>
       </div>
       <div class="col-md-6">
-        <form style="float: right;">
+        <form action="" method="post">
           <div class="form-row">
             <div class="form-group col-md-5">
               <label for="inputEmail4">Email</label>
@@ -43,10 +43,31 @@
       <!--  <div class="col-md-6"></div> -->
       <div class="col-md-6 offset-md-6">
         <h4 style="text-align: center;">Create an account</h4>
-        
-     </div>
-   </div>
- </div>
+        <form action="{{URL::to('instituteReg')}}" method="post">
+          {{csrf_field()}}
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="username">User Name</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="username">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="email">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

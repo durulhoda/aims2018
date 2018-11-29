@@ -20,6 +20,9 @@ class RoleHelper extends Model
   } 
   return $totalValue;  	
 }
+public function getUserId(){
+  return Auth::user()->id;
+}
 public function getRoleId(){
  $userid = Auth::user()->id;
  $aRole=\DB::select('SELECT roles.id ,roles.name FROM users
@@ -40,23 +43,35 @@ public function getExcludeSuccessorRole(){
  return $this->getRoleList($this->getRoleId(),0);
 }
 public function getIncludeSuccessorRole(){
- return $this->getRoleList($this->getRoleCreatorId(),0);
-}
-private function getRoleList($roleid,$i){
-  $result=\DB::select('select * from roles where rolecreatorid=?', [$roleid]);
-  foreach ($result as $item) {
+  $result=\DB::select('select * from roles where id=?', [$this->getRoleId()]);
+  $list[0]=$result[0];
+  $items=$this->getRoleList($this->getRoleId(),0);
+  $i=1;
+  foreach ($items as $item){
     $list[$i]=$item;
     $i++;
-    $hasItem=$this->hasItem($item->id);
-    if($hasItem){
-      $iresult=$this->getRoleList($item->id,$i);
-      foreach ($iresult as $value) {
-       $list[$i]=$value;
-       $i++;
+  }
+  return $list;
+}
+// private function get
+private function getRoleList($roleid,$i){
+  $result=\DB::select('select * from roles where rolecreatorid=?', [$roleid]);
+  if(count($result)>0){
+    foreach ($result as $item) {
+      $list[$i]=$item;
+      $i++;
+      $hasItem=$this->hasItem($item->id);
+      if($hasItem){
+        $iresult=$this->getRoleList($item->id,$i);
+        foreach ($iresult as $value) {
+         $list[$i]=$value;
+         $i++;
+       }
      }
    }
+   return $list;
  }
- return $list;
+ return $result;
 }
 private  function hasItem($roleid){
   $result=\DB::select('select * from roles where rolecreatorid=?',[$roleid]);
@@ -200,6 +215,7 @@ private function getBinaryPositionValue($permissionvalue){
 }
 // For Dynamic Sidebar Menu=======================================
 public function getMenu(){
+  // dd($this->adminmenu(0));
   return $this->adminmenu(0);
 }
 private function adminmenu($parentid){
@@ -210,6 +226,7 @@ private function adminmenu($parentid){
     INNER JOIN menus on role_menu.menu_id=menus.id
     WHERE role_menu.role_id=? AND menus.parentid=?
     ORDER by menus.menuorder ASC',[$this->getRoleId(),$parentid]);
+
   foreach ($result as $key => $value) {
     $isTrue=$this->hasChild($value->id);
     if($isTrue){
