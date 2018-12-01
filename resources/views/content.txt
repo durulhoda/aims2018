@@ -96,21 +96,44 @@ transaction is Applied on Student Registration
                     SELECT GROUP_CONCAT(`id`) as childid,`rolecreatorid`  FROM `roles` WHERE rolecreatorid=1  GROUP BY `rolecreatorid`
 
 
-SELECT vprmenu.menu_id AS pmenuid,
-vprmenu.name as menuName,
-vprmenu.permissionvalue AS ppermissionvalue,
-IFNULL(vchrmenu.menu_id,0) AS cmenuid,
-IFNULL(vchrmenu.permissionvalue,0) as cpermissionvalue 
-from (SELECT role_menu.*,menus.name
-FROM role_menu
-INNER JOIN menus ON role_menu.menu_id=menus.id
-WHERE role_menu.role_id=2) as vprmenu
-LEFT JOIN
-(SELECT role_menu.*,menus.name
-FROM role_menu
-INNER JOIN menus ON role_menu.menu_id=menus.id
-WHERE role_menu.role_id=3) as vchrmenu ON vprmenu.menu_id=vchrmenu.menu_id ORDER BY pmenuid
+ @foreach($menuListByRole as $aObj)
+                     <div class="form-group col-sm-4">
+                            <label style="color: red"><input type="checkbox" name="menu_id[]" value="{{$aObj['item']->menu_id}}">{{$aObj['item']->menuName}}</label><br>
+                             @foreach($aObj['binaryPositionValue'] as $bpv)
+                             <label><input type="checkbox" name="permissionvalue_{{$aObj['item']->menu_id}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
+                             @endforeach
+                    </div>  
+                    @endforeach 
 
+                    SELECT menus.id as menu_id,menus.name menuName,role_menu.permissionvalue
+    FROM `role_menu`
+    INNER JOIN menus ON role_menu.menu_id=menus.id
+    WHERE role_menu.role_id=?
+
+
+        @foreach($menuListByRole as $aObj)
+                            @if($aObj['item']->parentid==0)
+                            <li><label><input type="checkbox" name="" value="">{{$aObj['item']->menuName}}</label>
+                                <ul>
+                                    <li><div class="menu"><label><input type="checkbox" name="" value="">Division Setup</label></div><div class="permission"><label><input type="checkbox" name="" value="">Red</label><label><input type="checkbox" name="" value="">Create</label><label ><input type="checkbox" name="" value="">Edit</label><label><input type="checkbox" name="" value="">Del</label><label><input type="checkbox" name="" value="">Print</label><label><input type="checkbox" name="" value="">Down</label></div></li>
+                                </ul>
+                            </li>
+                            @endif
+                           @endforeach 
+
+
+                           SELECT vmmenus1.id AS menu_id,vmmenus1.name AS menuName,
+IFNULL(vmmenus1.parentid,0) AS parentid,
+vmmenus1.permissionvalue 
+from (SELECT menus.id,menus.name,menus.parentid,role_menu.permissionvalue                                                                            
+    FROM `role_menu`
+    INNER JOIN menus ON role_menu.menu_id=menus.id
+    WHERE role_menu.role_id=2) AS vmmenus1
+    LEFT JOIN
+    (SELECT menus.id,menus.name,menus.parentid,role_menu.permissionvalue
+    FROM `role_menu`
+    INNER JOIN menus ON role_menu.menu_id=menus.id
+    WHERE role_menu.role_id=2) AS vmmenus2 ON vmmenus1.parentid=vmmenus2.id
 
 
 

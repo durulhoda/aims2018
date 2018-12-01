@@ -34,8 +34,9 @@ class RoleController extends Controller
         $successorRole=$rh->getIncludeSuccessorRole();
         $menuListByRole=$rh->getMenuListByRole();
         $permissionNameList=$rh->getPermissionNamebyLevel();
+        // dd($menuListByRole);
         if($permission[2]==1){
-           return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'menuListByRole'=>$menuListByRole,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
+           return view('roleconfig.role.create1',['sidebarMenu'=>$sidebarMenu,'menuListByRole'=>$menuListByRole,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
         }else{
             return redirect('role');   
         }
@@ -78,6 +79,7 @@ class RoleController extends Controller
         $parentid=$aRole->rolecreatorid;
         $result=$rh->getRoleEditMenuList($parentid,$id);
         $permissionNameList=$rh->getPermissionNamebyLevel();
+        // dd($result);
         if($permission[4]==1){
             return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'bean'=>$aRole,'result'=>$result,'permissionNameList'=>$permissionNameList]);
         }else{

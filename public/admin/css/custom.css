@@ -63,3 +63,29 @@ legend.scheduler-border {
 .section #sectionid{
     width: 100%;
 }
+.role_menu{
+    padding: 0px;
+}
+.role_menu li{
+    
+}
+.role_menu >li{
+    border-bottom: 1px solid #000;
+    padding: 10px 0px;
+}
+.role_menu  li ul{
+    padding-left: 25px;
+}
+.role_menu  li ul li{}
+.role_menu  li ul li .menu{
+    width: 20%;
+    float: left;
+}
+.role_menu  li ul li .permission{}
+.role_menu  li ul li .permission label{
+    color: green !important;
+    margin-right: 15px;
+}
+.role_menu  li ul li .menu label{
+    color: blue;
+}
