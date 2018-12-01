@@ -9,6 +9,9 @@ use App\role\RoleMenu;
 use App\role\Role;
 class RoleController extends Controller
 {
+    public function __construct(){
+      $this->middleware('auth');
+    }
     public function index(){
     	$rh=new RoleHelper();
         $menuid=$rh->getMenuId('role');

@@ -32,27 +32,26 @@
  				<div class="row" id="output">
  					<div class="col-md-12">
  						<ul class="role_menu">
- 							<li><label><input type="checkbox" name="" value="">Menu Settings</label>
- 								<ul>
- 									<li><div class="menu"><label><input type="checkbox" name="" value="">Menu Setup</label></div><div class="permission"><label><input type="checkbox" name="" value="">Red</label><label><input type="checkbox" name="" value="">Create</label><label ><input type="checkbox" name="" value="">Edit</label><label><input type="checkbox" name="" value="">Del</label><label><input type="checkbox" name="" value="">Print</label><label><input type="checkbox" name="" value="">Down</label></div></li>
- 								</ul>
+ 							@foreach($menuListByRole as $x)
+ 							@if($x['item']->parentid==0)
+ 							<li><label><input type="checkbox" name="menu_id[]" value="{{$x['item']->menu_id}}">{{$x['item']->menuName}}</label>
+ 							<ul>
+ 								@foreach($menuListByRole as $y)
+ 								  @if($x['item']->menu_id==$y['item']->parentid)
+ 									<li>
+ 										<div class="menu"><label><input type="checkbox" name="menu_id[]" value="{{$y['item']->menu_id}}">{{$y['item']->menuName}}</label>
+ 										</div>
+ 										<div class="permission">
+ 										@foreach($y['binaryPositionValue'] as $bpv)
+ 										<label><input type="checkbox" name="permissionvalue_{{$y['item']->menu_id}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
+ 										@endforeach
+ 									</div></li>
+ 								   @endif
+ 								@endforeach
+ 							</ul>
  							</li>
- 							<li><label><input type="checkbox" name="" value="">Role Settings</label>
- 								<ul>
- 									<li><div class="menu"><label><input type="checkbox" name="" value="">Division Setup</label></div><div class="permission"><label><input type="checkbox" name="" value="">Red</label><label><input type="checkbox" name="" value="">Create</label><label ><input type="checkbox" name="" value="">Edit</label><label><input type="checkbox" name="" value="">Del</label><label><input type="checkbox" name="" value="">Print</label><label><input type="checkbox" name="" value="">Down</label></div></li>
- 								</ul>
- 							</li>
- 							<li><label><input type="checkbox" name="" value="">General Settings</label>
- 								<ul>
- 									<li><div class="menu"><label><input type="checkbox" name="" value="">Division Setup</label></div><div class="permission"><label><input type="checkbox" name="" value="">Red</label><label><input type="checkbox" name="" value="">Create</label><label ><input type="checkbox" name="" value="">Edit</label><label><input type="checkbox" name="" value="">Del</label><label><input type="checkbox" name="" value="">Print</label><label><input type="checkbox" name="" value="">Down</label></div></li>
-
- 									<li><div class="menu"><label><input type="checkbox" name="" value="">Division Setup</label></div><div class="permission"><label><input type="checkbox" name="" value="">Red</label><label><input type="checkbox" name="" value="">Create</label><label ><input type="checkbox" name="" value="">Edit</label><label><input type="checkbox" name="" value="">Del</label><label><input type="checkbox" name="" value="">Print</label><label><input type="checkbox" name="" value="">Down</label></div></li>
-
- 									<li><div class="menu"><label><input type="checkbox" name="" value="">Division Setup</label></div><div class="permission"><label><input type="checkbox" name="" value="">Red</label><label><input type="checkbox" name="" value="">Create</label><label ><input type="checkbox" name="" value="">Edit</label><label><input type="checkbox" name="" value="">Del</label><label><input type="checkbox" name="" value="">Print</label><label><input type="checkbox" name="" value="">Down</label></div></li>
-
- 									<li><div class="menu"><label><input type="checkbox" name="" value="">Division Setup</label></div><div class="permission"><label><input type="checkbox" name="" value="">Red</label><label><input type="checkbox" name="" value="">Create</label><label ><input type="checkbox" name="" value="">Edit</label><label><input type="checkbox" name="" value="">Del</label><label><input type="checkbox" name="" value="">Print</label><label><input type="checkbox" name="" value="">Down</label></div></li>
- 								</ul>
- 							</li>
+ 							@endif
+ 							@endforeach
  						</ul>
  					</div>
  				</div>
