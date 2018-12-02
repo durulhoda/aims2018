@@ -26,8 +26,8 @@ public function getUserId(){
 public function getRoleId(){
  $userid = Auth::user()->id;
  $aRole=\DB::select('SELECT roles.id ,roles.name FROM users
-  INNER JOIN user_role ON users.id=user_role.user_id
-  INNER JOIN roles ON user_role.role_id=roles.id
+  INNER JOIN user_role ON users.id=user_role.userid
+  INNER JOIN roles ON user_role.roleid=roles.id
   WHERE users.id=?',[$userid])[0];
  return $aRole->id;
 }
@@ -86,7 +86,7 @@ public function getMenuId($url){
  return $aMenus->id;
 }
 public function hasMenu($munuid){
-  $result=\DB::select('SELECT * FROM role_menu WHERE role_id=? AND menu_id=?',[$this->getRoleId(),$munuid]);
+  $result=\DB::select('SELECT * FROM role_menu WHERE roleid=? AND menuid=?',[$this->getRoleId(),$munuid]);
   if($result){
     return true;
   }else{
@@ -96,8 +96,8 @@ public function hasMenu($munuid){
 public function getMenuListByRole(){
   $menuListByRole=\DB::select("SELECT menus.id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder,role_menu.permissionvalue
     FROM `role_menu`
-    INNER JOIN menus ON role_menu.menu_id=menus.id
-    WHERE role_menu.role_id=? ORDER BY menus.menuorder",[$this->getRoleId()]);
+    INNER JOIN menus ON role_menu.menuid=menus.id
+    WHERE role_menu.roleid=? ORDER BY menus.menuorder",[$this->getRoleId()]);
   $menuitemList=array();
   $i=0;
   foreach ($menuListByRole as $x) {
@@ -120,8 +120,8 @@ return $menuitemList;
 public function getFilterMenuListByRole($id){
   $menuListByRole=\DB::select("SELECT menus.id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder,role_menu.permissionvalue
     FROM `role_menu`
-    INNER JOIN menus ON role_menu.menu_id=menus.id
-    WHERE role_menu.role_id=? ORDER BY menus.menuorder",[$id]);
+    INNER JOIN menus ON role_menu.menuid=menus.id
+    WHERE role_menu.roleid=? ORDER BY menus.menuorder",[$id]);
   $menuitemList=array();
   $i=0;
   foreach ($menuListByRole as $x) {
@@ -141,20 +141,31 @@ public function getFilterMenuListByRole($id){
 return $menuitemList;
 }
 public function getRoleEditMenuList($parentroleid,$chileroleid){
-  $result=\DB::select("SELECT vprmenu.menu_id AS pmenuid, vprmenu.name as menuName,vprmenu.parentid AS pparentid, vprmenu.permissionvalue AS ppermissionvalue, IFNULL(vchrmenu.menu_id,0) AS cmenuid, IFNULL(vchrmenu.permissionvalue,0) as cpermissionvalue , vchrmenu.parentid AS cparentid from (SELECT role_menu.*,menus.name,menus.parentid FROM role_menu INNER JOIN menus ON role_menu.menu_id=menus.id WHERE role_menu.role_id=?) as vprmenu LEFT JOIN (SELECT role_menu.*,menus.name,menus.parentid FROM role_menu INNER JOIN menus ON role_menu.menu_id=menus.id WHERE role_menu.role_id=?) as vchrmenu ON vprmenu.menu_id=vchrmenu.menu_id ORDER BY `pmenuid` DESC",[$parentroleid,$chileroleid]);
-  // dd($result);
+  $result=\DB::select("SELECT parentrole.id,
+parentrole.name AS menuName,
+parentrole.parentid,
+parentrole.permissionvalue,
+IFNULL(childrole.id,0) AS cmenuid,
+IFNULL(childrole.permissionvalue,0) AS cpermissionvalue
+FROM(SELECT menus.*,role_menu.permissionvalue FROM role_menu
+INNER JOIN menus ON role_menu.menuid=menus.id
+WHERE roleid=?) AS parentrole
+LEFT JOIN 
+(SELECT menus.*,role_menu.permissionvalue FROM role_menu
+INNER JOIN menus ON role_menu.menuid=menus.id
+WHERE roleid=?) AS childrole ON childrole.id=parentrole.id ORDER BY parentrole.menuorder",[$parentroleid,$chileroleid]);
   $menuitemList=array();
   $i=0;
   foreach ($result as $x) {
-    if($x->pparentid==0){
-      $parentPositionValue=$this->getBinaryPositionValue($x->ppermissionvalue);
+    if($x->parentid==0){
+      $parentPositionValue=$this->getBinaryPositionValue($x->permissionvalue);
       $childPositionValue=$this->getBinaryPositionValue($x->cpermissionvalue);
       $meargeResult=$this->meargechildPositionValue($parentPositionValue,$childPositionValue);
       $menuitemList[$i]=['item'=>$x,'parentPositionValue'=>$parentPositionValue,'meargeResult'=>$meargeResult];
       $i++;
       foreach ($result as $y) {
-       if($x->pmenuid==$y->pparentid){
-        $parentPositionValue=$this->getBinaryPositionValue($y->ppermissionvalue);
+       if($x->id==$y->parentid){
+        $parentPositionValue=$this->getBinaryPositionValue($y->permissionvalue);
         $childPositionValue=$this->getBinaryPositionValue($y->cpermissionvalue);
         $meargeResult=$this->meargechildPositionValue($parentPositionValue,$childPositionValue);
         $menuitemList[$i]=['item'=>$y,'parentPositionValue'=>$parentPositionValue,'meargeResult'=>$meargeResult];
@@ -173,14 +184,14 @@ private function meargechildPositionValue($parentPositionValue,$childPositionVal
   return $meargeResult;
 }
 public function getPermitedMenus(){
-  $permitedMenus=\DB::select("SELECT role_menu.menu_id FROM `role_menu`
-    WHERE role_id=?",[$this->getRoleId()]);
+  $permitedMenus=\DB::select("SELECT role_menu.menuid FROM `role_menu`
+    WHERE roleid=?",[$this->getRoleId()]);
   return $permitedMenus;
 }
 private function getMenuPermissionValue($menuid){
   $aItem = \DB::table('role_menu')
-  ->where('role_id',$this->getRoleId())
-  ->where('menu_id',$menuid)
+  ->where('roleid',$this->getRoleId())
+  ->where('menuid',$menuid)
   ->first();
   return $aItem->permissionvalue;
 }
@@ -241,8 +252,8 @@ private function adminmenu($parentid){
   $menu = "";
   $result=\DB::select('SELECT menus.id,menus.name as menuName,menus.parentid,menus.url,menus.menuorder
     FROM `role_menu`
-    INNER JOIN menus on role_menu.menu_id=menus.id
-    WHERE role_menu.role_id=? AND menus.parentid=?
+    INNER JOIN menus on role_menu.menuid=menus.id
+    WHERE role_menu.roleid=? AND menus.parentid=?
     ORDER by menus.menuorder ASC',[$this->getRoleId(),$parentid]);
 
   foreach ($result as $key => $value) {

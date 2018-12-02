@@ -37,9 +37,8 @@ class RoleController extends Controller
         $successorRole=$rh->getIncludeSuccessorRole();
         $menuListByRoleId=$rh->getMenuListByRole();
         $permissionNameList=$rh->getPermissionNamebyLevel();
-        // dd($menuListByRole);
         if($permission[2]==1){
-           return view('roleconfig.role.create1',['sidebarMenu'=>$sidebarMenu,'menuListByRoleId'=>$menuListByRoleId,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
+           return view('roleconfig.role.create',['sidebarMenu'=>$sidebarMenu,'menuListByRoleId'=>$menuListByRoleId,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
         }else{
             return redirect('role');   
         }
@@ -49,12 +48,12 @@ class RoleController extends Controller
         $rolecreatorid=$request->rolecreatorid;
         $instituteid=0;
         $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>$rolecreatorid,'instituteid'=>$instituteid]);
-        $selectmenu=$request->menu_id;
+        $selectmenu=$request->menuid;
         if($selectmenu!=null){
         foreach ($selectmenu as $item) {
             $aRoleMenu=new RoleMenu();
-            $aRoleMenu->role_id=$newRoleId;
-            $aRoleMenu->menu_id=$item;
+            $aRoleMenu->roleid=$newRoleId;
+            $aRoleMenu->menuid=$item;
             if(isset($_POST["permissionvalue_".$item])){
                  $permissionvalue=$_POST["permissionvalue_".$item];
                  $sum=0;
@@ -80,11 +79,11 @@ class RoleController extends Controller
         $successorRole=$rh->getIncludeSuccessorRole();
         $aRole=Role::findOrfail($id);
         $parentid=$aRole->rolecreatorid;
-        $result=$rh->getRoleEditMenuList($parentid,$id);
+        $menuListByRoleId=$rh->getRoleEditMenuList($parentid,$id);
         $permissionNameList=$rh->getPermissionNamebyLevel();
-        // dd($result);
+        // dd($menuListByRoleId);
         if($permission[4]==1){
-            return view('roleconfig.role.edit1',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'bean'=>$aRole,'result'=>$result,'permissionNameList'=>$permissionNameList]);
+            return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'bean'=>$aRole,'menuListByRoleId'=>$menuListByRoleId,'permissionNameList'=>$permissionNameList]);
         }else{
             return redirect('role');
         }
@@ -94,13 +93,13 @@ class RoleController extends Controller
     	$aRole->name=$request->name;
         $aRole->rolecreatorid=$request->rolecreatorid;
         $aRole->update();
-        \DB::select('DELETE  FROM `role_menu` WHERE role_id=?',[$id]);
-        $selectmenu=$request->menu_id;
+        \DB::select('DELETE  FROM `role_menu` WHERE roleid=?',[$id]);
+        $selectmenu=$request->menuid;
         if($selectmenu!=null){
         foreach ($selectmenu as $item) {
             $aRoleMenu=new RoleMenu();
-            $aRoleMenu->role_id=$id;
-            $aRoleMenu->menu_id=$item;
+            $aRoleMenu->roleid=$id;
+            $aRoleMenu->menuid=$item;
             if(isset($_POST["permissionvalue_".$item])){
                  $permissionvalue=$_POST["permissionvalue_".$item];
                  $sum=0;

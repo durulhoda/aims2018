@@ -62,8 +62,8 @@ public function store(Request $request){
     // last inserted value is avilable in $aMenu
     // if($aMenu->url!=null){
         $aRoleMenu=new RoleMenu();
-        $aRoleMenu->role_id=$rh->getRoleId();
-        $aRoleMenu->menu_id=$aMenu->id;
+        $aRoleMenu->roleid=$rh->getRoleId();
+        $aRoleMenu->menuid=$aMenu->id;
         $aRoleMenu->permissionvalue=$rh->getPermissionValue();
         $aRoleMenu->save();
     // }
