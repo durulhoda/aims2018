@@ -138,5 +138,51 @@ from (SELECT menus.id,menus.name,menus.parentid,role_menu.permissionvalue
 
 
 
+    @foreach($menuListByRole as $x)
+                            @if($x['item']->parentid==0)
+                            <li><label><input type="checkbox" name="menu_id[]" value="{{$x['item']->menu_id}}">{{$x['item']->menuName}}</label>
+                            <ul>
+                                @foreach($menuListByRole as $y)
+                                  @if($x['item']->menu_id==$y['item']->parentid)
+                                    <li>
+                                        <div class="menu"><label><input type="checkbox" name="menu_id[]" value="{{$y['item']->menu_id}}">{{$y['item']->menuName}}</label>
+                                        </div>
+                                        <div class="permission">
+                                        @foreach($y['binaryPositionValue'] as $bpv)
+                                        <label><input type="checkbox" name="permissionvalue_{{$y['item']->menu_id}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
+                                        @endforeach
+                                    </div></li>
+                                   @endif
+                                @endforeach
+                            </ul>
+                            </li>
+                            @endif
+                            @endforeach
+
+                                 @foreach($result as $y)
+                                      @if($x['item']->pmenuid==$y['item']->pparentid)
+                                        <li>
+                                           @if($y['item']->cmenuid==0)
+                                            <div class="menu"><label><input type="checkbox" name="menu_id[]" value="{{$y['item']->pmenuid}}">{{$y['item']->menuName}}</label>
+                                            </div>
+                                            @else
+                                            <div class="menu"><label><input type="checkbox" checked name="menu_id[]" value="{{$y['item']->pmenuid}}">{{$y['item']->menuName}}</label>
+                                            </div>
+                                            @endif
+                                            <div class="permission">
+                                            @foreach($y['parentPositionValue'] as $bpv)
+                                                @if($y['meargeResult'][$bpv]!=0)
+                                                 <label><input checked="" type="checkbox" name="permissionvalue_{{$y['item']->pmenuid}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
+                                                 @else
+                                                  <label><input  type="checkbox" name="permissionvalue_{{$y['item']->pmenuid}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
+                                                @endif
+                                            @endforeach
+                                        </div></li>
+                                       @endif
+                                    @endforeach
+
+
+
+
 
 

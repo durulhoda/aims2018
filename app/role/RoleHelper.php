@@ -94,7 +94,7 @@ public function hasMenu($munuid){
   }
 }
 public function getMenuListByRole(){
-  $menuListByRole=\DB::select("SELECT menus.id as menu_id,menus.name as menuName,menus.parentid,role_menu.permissionvalue
+  $menuListByRole=\DB::select("SELECT menus.id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder,role_menu.permissionvalue
     FROM `role_menu`
     INNER JOIN menus ON role_menu.menu_id=menus.id
     WHERE role_menu.role_id=? ORDER BY menus.menuorder",[$this->getRoleId()]);
@@ -106,60 +106,64 @@ public function getMenuListByRole(){
       $menuitemList[$i]=['item'=>$x,'binaryPositionValue'=>$binaryPositionValue];
       $i++;
       foreach ($menuListByRole as $y) {
-         if($x->menu_id==$y->parentid){
-            $binaryPositionValue=$this->getBinaryPositionValue($y->permissionvalue);
-            $menuitemList[$i]=['item'=>$y,'binaryPositionValue'=>$binaryPositionValue];
-            $i++;
-         }
+       if($x->id==$y->parentid){
+        $binaryPositionValue=$this->getBinaryPositionValue($y->permissionvalue);
+        $menuitemList[$i]=['item'=>$y,'binaryPositionValue'=>$binaryPositionValue];
+        $i++;
       }
     }
-    // $binaryPositionValue=$this->getBinaryPositionValue($item->permissionvalue);
-    // $menuitems[$i]=['item'=>$item,'binaryPositionValue'=>$binaryPositionValue];
-    // $i++;
   }
-//dd($menuitemList);
-  return $menuitemList;
+}
+return $menuitemList;
 }
 
 public function getFilterMenuListByRole($id){
-  $menuListByRole=\DB::select("SELECT menus.id as menu_id,menus.name menuName,role_menu.permissionvalue
+  $menuListByRole=\DB::select("SELECT menus.id,menus.name AS menuName,menus.url,menus.parentid,menus.menuorder,role_menu.permissionvalue
     FROM `role_menu`
     INNER JOIN menus ON role_menu.menu_id=menus.id
-    WHERE role_menu.role_id=?",[$id]);
-  $menuitems=array();
+    WHERE role_menu.role_id=? ORDER BY menus.menuorder",[$id]);
+  $menuitemList=array();
   $i=0;
-  foreach ($menuListByRole as $item) {
-    $binaryPositionValue=$this->getBinaryPositionValue($item->permissionvalue);
-    $menuitems[$i]=['item'=>$item,'binaryPositionValue'=>$binaryPositionValue];
-    $i++;
+  foreach ($menuListByRole as $x) {
+    if($x->parentid==0){
+      $binaryPositionValue=$this->getBinaryPositionValue($x->permissionvalue);
+      $menuitemList[$i]=['item'=>$x,'binaryPositionValue'=>$binaryPositionValue];
+      $i++;
+      foreach ($menuListByRole as $y) {
+       if($x->id==$y->parentid){
+        $binaryPositionValue=$this->getBinaryPositionValue($y->permissionvalue);
+        $menuitemList[$i]=['item'=>$y,'binaryPositionValue'=>$binaryPositionValue];
+        $i++;
+      }
+    }
   }
-  return $menuitems;
+}
+return $menuitemList;
 }
 public function getRoleEditMenuList($parentroleid,$chileroleid){
-  $result=\DB::select("SELECT vprmenu.menu_id AS pmenuid,
-    vprmenu.name as menuName,
-    vprmenu.permissionvalue AS ppermissionvalue,
-    IFNULL(vchrmenu.menu_id,0) AS cmenuid,
-    IFNULL(vchrmenu.permissionvalue,0) as cpermissionvalue 
-    from (SELECT role_menu.*,menus.name
-    FROM role_menu
-    INNER JOIN menus ON role_menu.menu_id=menus.id
-    WHERE role_menu.role_id=?) as vprmenu
-    LEFT JOIN
-    (SELECT role_menu.*,menus.name
-    FROM role_menu
-    INNER JOIN menus ON role_menu.menu_id=menus.id
-    WHERE role_menu.role_id=?) as vchrmenu ON vprmenu.menu_id=vchrmenu.menu_id ORDER BY pmenuid",[$parentroleid,$chileroleid]);
-  $menuitems=array();
+  $result=\DB::select("SELECT vprmenu.menu_id AS pmenuid, vprmenu.name as menuName,vprmenu.parentid AS pparentid, vprmenu.permissionvalue AS ppermissionvalue, IFNULL(vchrmenu.menu_id,0) AS cmenuid, IFNULL(vchrmenu.permissionvalue,0) as cpermissionvalue , vchrmenu.parentid AS cparentid from (SELECT role_menu.*,menus.name,menus.parentid FROM role_menu INNER JOIN menus ON role_menu.menu_id=menus.id WHERE role_menu.role_id=?) as vprmenu LEFT JOIN (SELECT role_menu.*,menus.name,menus.parentid FROM role_menu INNER JOIN menus ON role_menu.menu_id=menus.id WHERE role_menu.role_id=?) as vchrmenu ON vprmenu.menu_id=vchrmenu.menu_id ORDER BY `pmenuid` DESC",[$parentroleid,$chileroleid]);
+  // dd($result);
+  $menuitemList=array();
   $i=0;
-  foreach ($result as $item) {
-    $parentPositionValue=$this->getBinaryPositionValue($item->ppermissionvalue);
-    $childPositionValue=$this->getBinaryPositionValue($item->cpermissionvalue);
-    $meargeResult=$this->meargechildPositionValue($parentPositionValue,$childPositionValue);
-    $menuitems[$i]=['item'=>$item,'parentPositionValue'=>$parentPositionValue,'meargeResult'=>$meargeResult];
-    $i++;
+  foreach ($result as $x) {
+    if($x->pparentid==0){
+      $parentPositionValue=$this->getBinaryPositionValue($x->ppermissionvalue);
+      $childPositionValue=$this->getBinaryPositionValue($x->cpermissionvalue);
+      $meargeResult=$this->meargechildPositionValue($parentPositionValue,$childPositionValue);
+      $menuitemList[$i]=['item'=>$x,'parentPositionValue'=>$parentPositionValue,'meargeResult'=>$meargeResult];
+      $i++;
+      foreach ($result as $y) {
+       if($x->pmenuid==$y->pparentid){
+        $parentPositionValue=$this->getBinaryPositionValue($y->ppermissionvalue);
+        $childPositionValue=$this->getBinaryPositionValue($y->cpermissionvalue);
+        $meargeResult=$this->meargechildPositionValue($parentPositionValue,$childPositionValue);
+        $menuitemList[$i]=['item'=>$y,'parentPositionValue'=>$parentPositionValue,'meargeResult'=>$meargeResult];
+        $i++;
+      }
+    }
   }
-  return $menuitems;
+}
+return $menuitemList;
 }
 private function meargechildPositionValue($parentPositionValue,$childPositionValue){
   $meargeResult=array();

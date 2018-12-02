@@ -35,11 +35,11 @@ class RoleController extends Controller
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $successorRole=$rh->getIncludeSuccessorRole();
-        $menuListByRole=$rh->getMenuListByRole();
+        $menuListByRoleId=$rh->getMenuListByRole();
         $permissionNameList=$rh->getPermissionNamebyLevel();
         // dd($menuListByRole);
         if($permission[2]==1){
-           return view('roleconfig.role.create1',['sidebarMenu'=>$sidebarMenu,'menuListByRole'=>$menuListByRole,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
+           return view('roleconfig.role.create1',['sidebarMenu'=>$sidebarMenu,'menuListByRoleId'=>$menuListByRoleId,'successorRole'=>$successorRole,'permissionNameList'=>$permissionNameList]);
         }else{
             return redirect('role');   
         }
@@ -84,7 +84,7 @@ class RoleController extends Controller
         $permissionNameList=$rh->getPermissionNamebyLevel();
         // dd($result);
         if($permission[4]==1){
-            return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'bean'=>$aRole,'result'=>$result,'permissionNameList'=>$permissionNameList]);
+            return view('roleconfig.role.edit1',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'bean'=>$aRole,'result'=>$result,'permissionNameList'=>$permissionNameList]);
         }else{
             return redirect('role');
         }
@@ -107,6 +107,7 @@ class RoleController extends Controller
                 foreach ($permissionvalue as $key => $value) {
                    $sum=$sum+$value;
                 }
+                 // dd($sum);
                 $aRoleMenu->permissionvalue=$sum;
                 $aRoleMenu->save();
             }

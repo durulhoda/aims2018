@@ -32,18 +32,19 @@
  				<div class="row" id="output">
  					<div class="col-md-12">
  						<ul class="role_menu">
- 							@foreach($menuListByRole as $x)
+ 							@foreach($menuListByRoleId as $x)
  							@if($x['item']->parentid==0)
- 							<li><label><input type="checkbox" name="menu_id[]" value="{{$x['item']->menu_id}}">{{$x['item']->menuName}}</label>
+ 							<li><label><input type="checkbox" name="menuid[]" value="{{$x['item']->id}}">{{$x['item']->menuName}}</label>
  							<ul>
- 								@foreach($menuListByRole as $y)
- 								  @if($x['item']->menu_id==$y['item']->parentid)
+ 								@foreach($menuListByRoleId as $y)
+ 								  @if($x['item']->id==$y['item']->parentid)
  									<li>
- 										<div class="menu"><label><input type="checkbox" name="menu_id[]" value="{{$y['item']->menu_id}}">{{$y['item']->menuName}}</label>
+ 										<div class="menu">
+ 											<label><input type="checkbox" name="menuid[]" value="{{$y['item']->id}}">{{$y['item']->menuName}}</label>
  										</div>
  										<div class="permission">
  										@foreach($y['binaryPositionValue'] as $bpv)
- 										<label><input type="checkbox" name="permissionvalue_{{$y['item']->menu_id}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
+ 										<label><input type="checkbox" name="permissionvalue_{{$y['item']->id}}[]" value="{{$bpv}}">{{$permissionNameList[$bpv]}} &nbsp;&nbsp;</label>
  										@endforeach
  									</div></li>
  								   @endif
