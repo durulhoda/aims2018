@@ -54,15 +54,15 @@ class RoleController extends Controller
             $aRoleMenu=new RoleMenu();
             $aRoleMenu->roleid=$newRoleId;
             $aRoleMenu->menuid=$item;
+            $sum=0;
             if(isset($_POST["permissionvalue_".$item])){
                  $permissionvalue=$_POST["permissionvalue_".$item];
-                 $sum=0;
                 foreach ($permissionvalue as $key => $value) {
                    $sum=$sum+$value;
                 }
-                $aRoleMenu->permissionvalue=$sum;
-                $aRoleMenu->save();
             }
+            $aRoleMenu->permissionvalue=$sum;
+            $aRoleMenu->save();
           }
         }
         return redirect('role');
@@ -100,16 +100,15 @@ class RoleController extends Controller
             $aRoleMenu=new RoleMenu();
             $aRoleMenu->roleid=$id;
             $aRoleMenu->menuid=$item;
+            $sum=0;
             if(isset($_POST["permissionvalue_".$item])){
-                 $permissionvalue=$_POST["permissionvalue_".$item];
-                 $sum=0;
+                $permissionvalue=$_POST["permissionvalue_".$item];
                 foreach ($permissionvalue as $key => $value) {
                    $sum=$sum+$value;
                 }
-                 // dd($sum);
-                $aRoleMenu->permissionvalue=$sum;
-                $aRoleMenu->save();
             }
+            $aRoleMenu->permissionvalue=$sum;
+            $aRoleMenu->save();
           }
         }
         return redirect('role');

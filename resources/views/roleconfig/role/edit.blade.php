@@ -78,7 +78,7 @@
                         </ul>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-default">Save</button>
+                <button type="submit" class="btn btn-default">Update</button>
             </form>
         </div>
     </div>
