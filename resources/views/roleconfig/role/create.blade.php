@@ -34,7 +34,7 @@
  						<ul class="role_menu">
  							@foreach($menuListByRoleId as $x)
  							@if($x['item']->parentid==0)
- 							<li><label><input type="checkbox" name="menuid[]" value="{{$x['item']->id}}">{{$x['item']->menuName}}</label>
+ 							<li><label><input type="checkbox" onclick="" name="menuid[]" value="{{$x['item']->id}}">{{$x['item']->menuName}}</label>
  							<ul>
  								@foreach($menuListByRoleId as $y)
  								  @if($x['item']->id==$y['item']->parentid)

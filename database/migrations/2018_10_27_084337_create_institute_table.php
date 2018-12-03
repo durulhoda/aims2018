@@ -16,7 +16,7 @@ class CreateInstituteTable extends Migration
         Schema::create('institute', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',50);
-            $table->integer('user_id')->length(11);
+            $table->integer('userid')->length(11);
             $table->integer('institutetypeid')->length(20)->nullable($value = true);
             $table->integer('institutecategoryid')->length(20)->nullable($value = true);
             $table->integer('institutesubcategoryid')->length(20)->nullable($value = true);

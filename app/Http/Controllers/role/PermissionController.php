@@ -46,7 +46,7 @@ class PermissionController extends Controller
         }
         $aPermission->save();
         \DB::table('role_menu')
-                ->where('role_id',1)
+                ->where('roleid',1)
                 ->update(['permissionvalue' =>$rh->getPermissionValue()]);
         return redirect('permission');
     }

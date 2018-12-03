@@ -58,15 +58,17 @@ public function store(Request $request){
     if($aMenu->menuorder==''){
       $aMenu->menuorder=100;
     }
-    $aMenu->save();
-    // last inserted value is avilable in $aMenu
-    // if($aMenu->url!=null){
-        $aRoleMenu=new RoleMenu();
-        $aRoleMenu->roleid=$rh->getRoleId();
-        $aRoleMenu->menuid=$aMenu->id;
-        $aRoleMenu->permissionvalue=$rh->getPermissionValue();
-        $aRoleMenu->save();
-    // }
+    // $aMenu->save();
+    $aRoleMenu=new RoleMenu();
+    $aRoleMenu->roleid=$rh->getRoleId();
+    $aRoleMenu->menuid=$aMenu->id;
+    $aRoleMenu->permissionvalue=$rh->getPermissionValue();
+    // $aRoleMenu->save();
+    \DB::transaction(function() use($aMenu,$aRoleMenu) {
+      $aMenu->save();
+      $aRoleMenu->menuid=$aMenu->id;
+      $aRoleMenu->save();
+    });
     return redirect('menu');
 }
 public function edit($id){

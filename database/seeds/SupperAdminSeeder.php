@@ -26,12 +26,12 @@ class SupperAdminSeeder extends Seeder
 
         DB::table('user_role')->insert([
         	[
-            'user_id' => '1',
-            'role_id' => '1',
+            'userid' => '1',
+            'roleid' => '1',
         	],
         	[
-            'user_id' => '2',
-            'role_id' => '1',
+            'userid' => '2',
+            'roleid' => '1',
         	]
         ]);
         DB::table('permissions')->insert([
@@ -45,8 +45,8 @@ class SupperAdminSeeder extends Seeder
             'menuorder'=>'100'
         ]);
         DB::table('role_menu')->insert([
-            'role_id' => '1',
-            'menu_id' => '1',
+            'roleid' => '1',
+            'menuid' => '1',
             'permissionvalue' => '1',
         ]);
     }

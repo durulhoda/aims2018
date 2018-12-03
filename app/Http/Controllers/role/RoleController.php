@@ -76,12 +76,11 @@ class RoleController extends Controller
         }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
-        $successorRole=$rh->getIncludeSuccessorRole();
+        $successorRole=$rh->getPredecessorRole($id);
         $aRole=Role::findOrfail($id);
         $parentid=$aRole->rolecreatorid;
         $menuListByRoleId=$rh->getRoleEditMenuList($parentid,$id);
         $permissionNameList=$rh->getPermissionNamebyLevel();
-        // dd($menuListByRoleId);
         if($permission[4]==1){
             return view('roleconfig.role.edit',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'bean'=>$aRole,'menuListByRoleId'=>$menuListByRoleId,'permissionNameList'=>$permissionNameList]);
         }else{

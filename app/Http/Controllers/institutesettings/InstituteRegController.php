@@ -21,11 +21,11 @@ class InstituteRegController extends Controller
         $password=bcrypt($pasw);
         \DB::transaction(function() use ($name,$username,$email,$password) {
             $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
-            $newInstituteId=\DB::table('institute')->insertGetId(['name'=>$name,'user_id'=>$newUserId]);
+            $newInstituteId=\DB::table('institute')->insertGetId(['name'=>$name,'userid'=>$newUserId]);
             $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>1,'instituteid'=>$newInstituteId]);
-            \DB::table('user_role')->insertGetId(['user_id'=>$newUserId,'role_id'=>$newRoleId]);
-            \DB::table('role_menu')->insert(['role_id'=>$newRoleId,'menu_id'=>3,'permissionvalue'=>7]);
-            \DB::table('role_menu')->insert(['role_id'=>$newRoleId,'menu_id'=>4,'permissionvalue'=>7]);
+            \DB::table('user_role')->insertGetId(['userid'=>$newUserId,'roleid'=>$newRoleId]);
+            \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>3,'permissionvalue'=>7]);
+            \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>4,'permissionvalue'=>7]);
         });
         return redirect('/');
     }

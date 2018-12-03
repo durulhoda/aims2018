@@ -87,56 +87,93 @@ public function createRolePower(Request $request){
  $rh=new RoleHelper();
  $menuListByRoleId=$rh->getFilterMenuListByRole($rolecreatorid);
  $permissionNameList=$rh->getPermissionNamebyLevel();
-    $output="<div class='col-md-12'>";
-    $output.="<ul class='role_menu'>";
-              foreach($menuListByRoleId as $x){
-              if($x['item']->parentid==0){
-                $id=$x['item']->id;
-                $name=$x['item']->menuName;
-            $output.= "<li><label><input type='checkbox' name='menuid[]' value='$id'>$name</label>";
-             $output.="<ul>";
-                foreach($menuListByRoleId as $y){
-                  if($x['item']->id==$y['item']->parentid){
-                   $output.="<li>";
-                    $output.="<div class='menu'>";
-                    $yid=$y['item']->id;
-                     $yname=$y['item']->menuName;
-                     $output.="<li><label><input type='checkbox' name='menuid[]' value='$yid'>$yname</label>";
-                     $output.="</div>";
-                     $output.="<div class='permission'>";
-                    foreach($y['binaryPositionValue'] as $bpv){
-                      $permissionvalue="permissionvalue_".$yid."[]";
-                     $output.="<label><input type='checkbox' name='$permissionvalue' value='$bpv'>$permissionNameList[$bpv] &nbsp;&nbsp;</label>";
-                   }
-                  $output.="</div></li>";
-                  }
-               }
-              $output.="</ul>";
-              $output.="</li>";
-              }
-             }
-            $output.="</ul>";
+ // dd($menuListByRoleId);
+ $output="<div class='col-md-12'>";
+  $output.="<ul class='role_menu'>";
+  foreach($menuListByRoleId as $x){
+     if($x['item']->parentid==0){
+        $output.="<li>";
+          $xid=$x['item']->id;
+          $xname=$x['item']->menuName;
+          $output.="<label><input type='checkbox' name='menuid[]' value='$xid'>$xname</label>";
+        $output.="<ul>";
+        foreach($menuListByRoleId as $y){
+          if($x['item']->id==$y['item']->parentid){
+          $yid=$y['item']->id;
+          $yname=$y['item']->menuName;
+          $output.="<li>";
+          $output.="<div class='menu'>";
+          $output.="<label><input type='checkbox' name='menuid[]' value='$yid'>$yname</label>";
           $output.="</div>";
- echo  $output;
+          $output.="<div class='permission'>";
+             foreach($y['binaryPositionValue'] as $bpv){
+               $permissionvalue="permissionvalue_".$y['item']->id."[]";
+               $output.="<label><input type='checkbox'  name='$permissionvalue' value='$bpv'>$permissionNameList[$bpv] &nbsp;&nbsp;</label>";
+             }
+          $output.="</div>";
+          $output.=" <div style='clear: both;''></div>";
+          $output.="</li>";
+        }
+        }
+        $output.="</ul>";
+        $output.="</li>";
+     }
+  }
+  $output.="</ul>";
+  $output.="</div>"; 
+  echo  $output;
 }
 public function editRolePower(Request $request){
   $id=$request->id;
-  $rolecreatorid=$request->rolecreatorid;
+  $parentid=$request->rolecreatorid;
   $rh=new RoleHelper();
-  $menuFilterListByRole=$rh->getFilterMenuListByRole($rolecreatorid);
+  $menuListByRoleId=$rh->getRoleEditMenuList($parentid,$id);
   $permissionNameList=$rh->getPermissionNamebyLevel();
-  $output="";
-  foreach ($menuFilterListByRole as $aObj) {
-    $output.="<div class='form-group col-sm-4'>";
-    $t=$aObj['item']->menu_id;
-    $tn=$aObj['item']->menuName;
-    $output.="<label style='color: red'><input type='checkbox' name='menu_id[]' value='$t'>$tn</label><br>";
-    foreach ($aObj['binaryPositionValue'] as $bpv) {
-      $tt=$aObj['item']->menu_id;
-      $output.="<label><input type='checkbox' name='permissionvalue_".$tt."[]' value='$bpv'>$permissionNameList[$bpv] &nbsp;&nbsp;</label>";
-    }
-    $output.="</div>";
+  $output="<div class='col-md-12'>";
+  $output.="<ul class='role_menu'>";
+  foreach($menuListByRoleId as $x){
+     if($x['item']->parentid==0){
+        $output.="<li>";
+          $xid=$x['item']->id;
+          $xname=$x['item']->menuName;
+        if($x['item']->cmenuid!=0){
+           $output.="<label><input type='checkbox' checked name='menuid[]' value='$xid'>$xname</label>";
+        }else{
+          $output.="<label><input type='checkbox' name='menuid[]' value='$xid'>$xname</label>";
+        }
+        $output.="<ul>";
+        foreach($menuListByRoleId as $y){
+          if($x['item']->id==$y['item']->parentid){
+          $yid=$y['item']->id;
+          $yname=$y['item']->menuName;
+          $output.="<li>";
+           $output.="<div class='menu'>";
+           if($y['item']->cmenuid!=0){
+              $output.="<label><input type='checkbox' checked name='menuid[]' value='$yid'>$yname</label>";
+           }else{
+              $output.="<label><input type='checkbox' name='menuid[]' value='$yid'>$yname</label>";
+           }
+          $output.="</div>";
+          $output.="<div class='permission'>";
+             foreach($y['parentPositionValue'] as $bpv){
+               $permissionvalue="permissionvalue_".$y['item']->id."[]";
+               if($y['meargeResult'][$bpv]!=0){
+                  $output.="<label><input type='checkbox' checked name='$permissionvalue' value='$bpv'>$permissionNameList[$bpv] &nbsp;&nbsp;</label>";
+               }else{
+                  $output.="<label><input type='checkbox' name='$permissionvalue' value='$bpv'>$permissionNameList[$bpv] &nbsp;&nbsp;</label>";
+               }
+             }
+          $output.="</div>";
+          $output.=" <div style='clear: both;''></div>";
+          $output.="</li>";
+        }
+        }
+        $output.="</ul>";
+        $output.="</li>";
+     }
   }
+  $output.="</ul>";
+  $output.="</div>"; 
   echo  $output;
-}
+ }
 }

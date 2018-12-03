@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="">
-                <h4>New Role</h4>
+                <h4>Edit Role</h4>
                 <a href="{{URL::to('/role')}}">All</a>
             </div>
         </div>
@@ -17,6 +17,7 @@
                 @method('PUT')
                 {{csrf_field()}}
                 <div class="row">
+                  <input type="hidden" class="form-control" id="id" name="id" value="{{$bean->id}}">
                     <div class="form-group col-sm-3">
                         <label for="name">Role  :</label>
                         <input type="text" class="form-control" id="name" name="name" value="{{$bean->name}}">
@@ -24,14 +25,12 @@
                     <div class="form-group col-sm-3">
                         <label class="control-label" for="rolecreatorid">Role Creator  &nbsp; </label>
                         <select onchange="editRolePower()" name="rolecreatorid" required="1" class="form-control" id="rolecreatorid">
-                            @foreach($successorRole as $aObj)           
-                             @if($aObj->id!=$bean->id)          
+                            @foreach($successorRole as $aObj)               
                              @if($bean->rolecreatorid==$aObj->id)
                              <option selected="" value="{{$aObj->id}}">{{$aObj->name}}</option>
                              @else
                              <option value="{{$aObj->id}}">{{$aObj->name}}</option>
                              @endif
-                            @endif
                             @endforeach 
                         </select>
                     </div>
@@ -41,10 +40,11 @@
                         <ul class="role_menu">
                             @foreach($menuListByRoleId as $x)
                             @if($x['item']->parentid==0)
+                            <li>
                              @if($x['item']->cmenuid!=0)
-                             <li><label><input type="checkbox" checked="" name="menuid[]" value="{{$x['item']->id}}">{{$x['item']->menuName}}</label>
+                             <label><input type="checkbox" checked="" name="menuid[]" value="{{$x['item']->id}}">{{$x['item']->menuName}}</label>
                              @else
-                             <li><label><input type="checkbox" name="menuid[]" value="{{$x['item']->id}}">{{$x['item']->menuName}}</label>
+                             <label><input type="checkbox" name="menuid[]" value="{{$x['item']->id}}">{{$x['item']->menuName}}</label>
                              @endif
                             <ul>
                                 @foreach($menuListByRoleId as $y)
@@ -68,6 +68,7 @@
                                         @endif
                                         @endforeach
                                        </div>
+                                       <div style="clear: both;"></div>
                                    </li>
                                    @endif
                                 @endforeach

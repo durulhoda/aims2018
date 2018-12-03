@@ -43,9 +43,12 @@ public function getExcludeSuccessorRole(){
  return $this->getRoleList($this->getRoleId(),0);
 }
 public function getIncludeSuccessorRole(){
-  $result=\DB::select('select * from roles where id=?', [$this->getRoleId()]);
+  return $this->ownAndSuccessorRole($this->getRoleId());
+}
+private function ownAndSuccessorRole($id){
+  $result=\DB::select('select * from roles where id=?', [$id]);
   $list[0]=$result[0];
-  $items=$this->getRoleList($this->getRoleId(),0);
+  $items=$this->getRoleList($id,0);
   $i=1;
   foreach ($items as $item){
     $list[$i]=$item;
@@ -53,7 +56,29 @@ public function getIncludeSuccessorRole(){
   }
   return $list;
 }
-// private function get
+public function getPredecessorRole($id){
+  $list1=$this->getIncludeSuccessorRole();
+  $list2=$this->ownAndSuccessorRole($id);
+  $isExist=true;
+  $i=0;
+  $list=array();
+  foreach ($list1 as $item) {
+     $isExist=$this->check($list2,$item->id);
+     if($isExist==false){
+         $list[$i]=$item;
+         $i++;
+     }
+  }
+  return $list;
+}
+private function check($list,$id){
+   foreach ($list as $item) {
+     if($item->id==$id){
+       return true;
+     }
+   }
+   return false;
+}
 private function getRoleList($roleid,$i){
   $result=\DB::select('select * from roles where rolecreatorid=?', [$roleid]);
   if(count($result)>0){
