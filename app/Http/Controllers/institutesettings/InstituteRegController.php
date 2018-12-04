@@ -4,7 +4,7 @@ namespace App\Http\Controllers\institutesettings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\role\RoleHelper;
 class InstituteRegController extends Controller
 {
    	public function index(){
@@ -20,13 +20,15 @@ class InstituteRegController extends Controller
         $pasw=$request->password;
         $password=bcrypt($pasw);
         \DB::transaction(function() use ($name,$username,$email,$password) {
+            $rh=new RoleHelper();
             $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
             $newInstituteId=\DB::table('institute')->insertGetId(['name'=>$name,'userid'=>$newUserId]);
             $rolecreatorid=\DB::table('roles')->where('rolecreatorid',0)->first()->id;
             $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>$rolecreatorid,'instituteid'=>$newInstituteId]);
             \DB::table('user_role')->insertGetId(['userid'=>$newUserId,'roleid'=>$newRoleId]);
             //Have to Work here
-            
+            $list=$rh->ownAndSuccessorMenu('role');
+             dd($list);
             \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>3,'permissionvalue'=>7]);
             \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>4,'permissionvalue'=>7]);
         });

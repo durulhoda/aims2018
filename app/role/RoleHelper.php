@@ -267,6 +267,22 @@ private function getBinaryPositionValue($permissionvalue){
  }
  return $access;
 }
+public function ownAndSuccessorMenu($url){
+    $i=0;
+    $aMenu=\DB::table('menus')->where('url',$url)->first();
+    $list[$i]=$aMenu;
+    return $this->next($list,$aMenu,$i);
+}
+private function next($list,$aMenu,$i){
+    // $aMenu=\DB::table('menus')->where('id',$aMenu->parentid)->first();
+    // if($aMenu!=null){
+    //   $i++;
+    //    $list[$i]=$aMenu;
+    //    $this->next($list,$aMenu,$i);
+    // }
+    // dd($list);
+    return $list;
+}
 // For Dynamic Sidebar Menu=======================================
 public function getMenu(){
   return $this->adminmenu(0);
