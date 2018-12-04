@@ -16,6 +16,7 @@
  			<form action="{{URL::to('domain')}}" method="POST">
  				{{csrf_field()}}
  				<div class="row">
+ 					@if($roleid==1)
  					<div class="col-xs-10 col-sm-4">
  						<label class="control-label" for="instituteid">Institute  &nbsp; </label>
  						<select name="instituteid" required="1" class="form-control" id="instituteid">
@@ -24,6 +25,9 @@
  							@endforeach
  						</select>
  					</div>
+ 					@else
+ 					<input type="hidden" class="form-control" id="instituteid" name="instituteid" value="{{$instituteList[0]->id}}">
+ 					@endif
  					<div class="form-group col-sm-4">
  						<label for="name">Domain Name  :</label>
  						<input type="text" class="form-control" id="name" name="name">

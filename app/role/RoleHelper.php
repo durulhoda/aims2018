@@ -24,11 +24,14 @@ public function getUserId(){
   return Auth::user()->id;
 }
 public function getRoleId(){
- $userid = Auth::user()->id;
  $aRole=\DB::select('SELECT roles.id ,roles.name FROM users
   INNER JOIN user_role ON users.id=user_role.userid
   INNER JOIN roles ON user_role.roleid=roles.id
-  WHERE users.id=?',[$userid])[0];
+  WHERE users.id=?',[$this->getUserId()])[0];
+ return $aRole->id;
+}
+public function getInstituteId(){
+ $aRole=\DB::select('SELECT * FROM institute WHERE userid=?',[$this->getUserId()])[0];
  return $aRole->id;
 }
 public function getRoleCreatorId(){
@@ -107,8 +110,8 @@ private  function hasItem($roleid){
   }
 }
 public function getMenuId($url){
- $aMenus = \DB::table('menus')->where('url',$url)->first();
- return $aMenus->id;
+ $aMenu = \DB::table('menus')->where('url',$url)->first();
+ return $aMenu;
 }
 public function hasMenu($munuid){
   $result=\DB::select('SELECT * FROM role_menu WHERE roleid=? AND menuid=?',[$this->getRoleId(),$munuid]);
@@ -248,9 +251,6 @@ public function getPermissionNamebyLevel(){
 }
 return $permissionNameList;
 }
-public function getRolePower(){
-
-}
 private function getBinaryPositionValue($permissionvalue){
   $bina=base_convert($permissionvalue,10,2);
   $m=1;
@@ -269,7 +269,6 @@ private function getBinaryPositionValue($permissionvalue){
 }
 // For Dynamic Sidebar Menu=======================================
 public function getMenu(){
-  // dd($this->adminmenu(0));
   return $this->adminmenu(0);
 }
 private function adminmenu($parentid){

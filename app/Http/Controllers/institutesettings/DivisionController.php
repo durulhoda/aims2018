@@ -17,7 +17,11 @@ public function __construct()
 public function index()
 {
     $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('division');
+    $aMenu=$rh->getMenuId('division');
+    if($aMenu==null){
+        return redirect('error');
+    }
+    $menuid=$aMenu->id;
     $hasMenu=$rh->hasMenu($menuid);
     if($hasMenu==false){
         return redirect('error');
@@ -29,7 +33,11 @@ public function index()
 }
 public function create(){
     $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('division');
+    $aMenu=$rh->getMenuId('division');
+    if($aMenu==null){
+        return redirect('error');
+    }
+    $menuid=$aMenu->id;
     $hasMenu=$rh->hasMenu($menuid);
     if($hasMenu==false){
         return redirect('error');
@@ -52,7 +60,11 @@ public function store(Request $request){
 public function edit($id)
 {
     $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('division');
+    $aMenu=$rh->getMenuId('division');
+    if($aMenu==null){
+        return redirect('error');
+    }
+    $menuid=$aMenu->id;
     $hasMenu=$rh->hasMenu($menuid);
     if($hasMenu==false){
         return redirect('error');

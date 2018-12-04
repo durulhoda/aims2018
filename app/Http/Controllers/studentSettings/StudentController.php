@@ -14,15 +14,31 @@ class StudentController extends Controller
 
    public function index(){
       $rh=new RoleHelper();
-      $menuid=$rh->getMenuId('student');
+      $aMenu=$rh->getMenuId('student');
+      if($aMenu==null){
+        return redirect('error');
+      }
+      $menuid=$aMenu->id;
+      $hasMenu=$rh->hasMenu($menuid);
+      if($hasMenu==false){
+        return redirect('error');
+      }
       $sidebarMenu=$rh->getMenu();
       $permission=$rh->getPermission($menuid);
       $result=Student::all();
       return view('studentsettings.student.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
   }
   public function create(){
-    $rh=new RoleHelper();
-      $menuid=$rh->getMenuId('student');
+     $rh=new RoleHelper();
+      $aMenu=$rh->getMenuId('student');
+      if($aMenu==null){
+        return redirect('error');
+      }
+      $menuid=$aMenu->id;
+      $hasMenu=$rh->hasMenu($menuid);
+      if($hasMenu==false){
+        return redirect('error');
+      }
       $sidebarMenu=$rh->getMenu();
       $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
@@ -40,17 +56,27 @@ public function store(Request $request){
     \DB::transaction(function() use ($name,$registrationid,$email,$password) {
        $username=$name;
        $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
-       $user_id=$newUserId;
-       \DB::table('students')->insert(['name'=>$name,'registrationid'=>$registrationid,'user_id'=>$user_id]);
-       $role_id=2;
-       \DB::table('user_role')->insert(['user_id'=>$user_id,'role_id'=>$role_id]);
+       $userid=$newUserId;
+       \DB::table('students')->insert(['name'=>$name,'registrationid'=>$registrationid,'userid'=>$userid]);
+       $roleid=2;
+       \DB::table('user_role')->insert(['userid'=>$userid,'roleid'=>$roleid]);
     });
     return redirect('student');
 }
 public function edit($id){
-    $accessStatus=Role::getAccessStatus();
-    if($accessStatus[4]==1){
+    $rh=new RoleHelper();
+      $aMenu=$rh->getMenuId('student');
+      if($aMenu==null){
+        return redirect('error');
+      }
+      $menuid=$aMenu->id;
+      $hasMenu=$rh->hasMenu($menuid);
+      if($hasMenu==false){
+        return redirect('error');
+      }
       $sidebarMenu=Role::getMenu();
+      $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
       $aBean=Student::findOrfail($id);
       return view('studentsettings.student.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
   }else{

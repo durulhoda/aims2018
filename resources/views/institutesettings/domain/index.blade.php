@@ -21,7 +21,9 @@
 						<tr>
 							<th>Sl No.</th>
 							<th>Domain Name</th>
+							@if($roleid==1)
 							<th>Institute Name</th>
+							@endif
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -35,7 +37,9 @@
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
+							@if($roleid==1)
 							<td>{{$aObj->instituteid}}</td>
+							@endif
 							@if($permission[4]==1)
 							<td> 
 								<a href="{{URL::to('/domain')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">

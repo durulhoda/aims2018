@@ -22,6 +22,7 @@ class InstituteRegController extends Controller
         \DB::transaction(function() use ($name,$username,$email,$password) {
             $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
             $newInstituteId=\DB::table('institute')->insertGetId(['name'=>$name,'userid'=>$newUserId]);
+            $rolecreatorid=\DB::table('roles')->where('rolecreatorid',0)->first()->id;
             $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>1,'instituteid'=>$newInstituteId]);
             \DB::table('user_role')->insertGetId(['userid'=>$newUserId,'roleid'=>$newRoleId]);
             \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>3,'permissionvalue'=>7]);

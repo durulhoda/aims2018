@@ -13,7 +13,11 @@ class PermissionController extends Controller
     }
     public function index(){
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('permission');
+        $aMenu=$rh->getMenuId('permission');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
@@ -25,7 +29,11 @@ class PermissionController extends Controller
     }
     public function create(){
     	$rh=new RoleHelper();
-        $menuid=$rh->getMenuId('permission');
+        $aMenu=$rh->getMenuId('permission');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
@@ -51,8 +59,12 @@ class PermissionController extends Controller
         return redirect('permission');
     }
     public function edit($id){
-        $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('permission');
+       $rh=new RoleHelper();
+        $aMenu=$rh->getMenuId('permission');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');

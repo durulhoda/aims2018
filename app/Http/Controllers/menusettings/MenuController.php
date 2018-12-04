@@ -13,7 +13,11 @@ public function __construct()
 }
 public function index(){
        $rh=new RoleHelper();
-       $menuid=$rh->getMenuId('menu');
+       $aMenu=$rh->getMenuId('menu');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
        $hasMenu=$rh->hasMenu($menuid);
        if($hasMenu==false){
               return redirect('error');
@@ -38,7 +42,11 @@ WHERE menus.parentid=0 order by childid");
    }
    public function create(){
        $rh=new RoleHelper();
-       $menuid=$rh->getMenuId('menu');
+        $aMenu=$rh->getMenuId('menu');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
        $hasMenu=$rh->hasMenu($menuid);
        if($hasMenu==false){
               return redirect('error');
@@ -73,7 +81,11 @@ public function store(Request $request){
 }
 public function edit($id){
        $rh=new RoleHelper();
-       $menuid=$rh->getMenuId('menu');
+       $aMenu=$rh->getMenuId('menu');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
        $hasMenu=$rh->hasMenu($menuid);
        if($hasMenu==false){
               return redirect('error');

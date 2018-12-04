@@ -14,11 +14,15 @@ class UnitController extends Controller
     }
     public function index(){
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('unit');
+        $aMenu=$rh->getMenuId('unit');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
-          if($hasMenu==false){
-              return redirect('error');
-          }
+        if($hasMenu==false){
+          return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=\DB::table('units')
@@ -28,7 +32,11 @@ class UnitController extends Controller
     }
     public function create(){
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('unit');
+        $aMenu=$rh->getMenuId('unit');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
               return redirect('error');
@@ -40,8 +48,7 @@ class UnitController extends Controller
             return view('institutesettings.unit.create',['sidebarMenu'=>$sidebarMenu,'institutes'=>$institutes]);
         }else{
             return redirect('unit');
-        }
-        
+        } 
     }
     public function store(Request $request){
     	$aBean=new Unit();
@@ -53,19 +60,24 @@ class UnitController extends Controller
     }
     public function edit($id){
       $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('unit');
-        if($hasMenu==false){
-              return redirect('error');
-          }
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
-    if($permission[4]==1){
-     $aBean=Unit::findOrfail($id);
-     $institutes=\DB::table('institute')->get();
-     return view('institutesettings.unit.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'institutes'=>$institutes]);
- }else{
-    return redirect('unit');
-}
+      $aMenu=$rh->getMenuId('unit');
+      if($aMenu==null){
+        return redirect('error');
+      }
+      $menuid=$aMenu->id;
+      $hasMenu=$rh->hasMenu($menuid);
+      if($hasMenu==false){
+         return redirect('error');
+      }
+      $sidebarMenu=$rh->getMenu();
+      $permission=$rh->getPermission($menuid);
+      if($permission[4]==1){
+      $aBean=Unit::findOrfail($id);
+      $institutes=\DB::table('institute')->get();
+      return view('institutesettings.unit.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'institutes'=>$institutes]);
+       }else{
+          return redirect('unit');
+      }
 }
 public function update(Request $request, $id){
    $aBean=Unit::findOrfail($id);

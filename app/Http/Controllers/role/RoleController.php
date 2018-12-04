@@ -14,7 +14,11 @@ class RoleController extends Controller
     }
     public function index(){
     	$rh=new RoleHelper();
-        $menuid=$rh->getMenuId('role');
+        $aMenu=$rh->getMenuId('role');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
@@ -27,7 +31,11 @@ class RoleController extends Controller
     }
     public function create(){
     	$rh=new RoleHelper();
-        $menuid=$rh->getMenuId('role');
+        $aMenu=$rh->getMenuId('role');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
@@ -46,7 +54,8 @@ class RoleController extends Controller
     public function store(Request $request){
         $name=$request->name;
         $rolecreatorid=$request->rolecreatorid;
-        $instituteid=0;
+        $instituteid=\DB::table('roles')->where('id',$rolecreatorid)->first()->instituteid;
+        // dd($instituteid);
         $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>$rolecreatorid,'instituteid'=>$instituteid]);
         $selectmenu=$request->menuid;
         if($selectmenu!=null){
@@ -69,8 +78,12 @@ class RoleController extends Controller
     }
     public function edit($id){
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('role');
-         $hasMenu=$rh->hasMenu($menuid);
+        $aMenu=$rh->getMenuId('role');
+        if($aMenu==null){
+          return redirect('error');
+        }
+        $menuid=$aMenu->id;
+        $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
         }
@@ -91,6 +104,7 @@ class RoleController extends Controller
         $aRole=Role::findOrfail($id);
     	$aRole->name=$request->name;
         $aRole->rolecreatorid=$request->rolecreatorid;
+        $aRole->instituteid=\DB::table('roles')->where('id',$request->rolecreatorid)->first()->instituteid;
         $aRole->update();
         \DB::select('DELETE  FROM `role_menu` WHERE roleid=?',[$id]);
         $selectmenu=$request->menuid;
