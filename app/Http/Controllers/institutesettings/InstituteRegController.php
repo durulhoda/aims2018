@@ -23,8 +23,10 @@ class InstituteRegController extends Controller
             $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
             $newInstituteId=\DB::table('institute')->insertGetId(['name'=>$name,'userid'=>$newUserId]);
             $rolecreatorid=\DB::table('roles')->where('rolecreatorid',0)->first()->id;
-            $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>1,'instituteid'=>$newInstituteId]);
+            $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>$rolecreatorid,'instituteid'=>$newInstituteId]);
             \DB::table('user_role')->insertGetId(['userid'=>$newUserId,'roleid'=>$newRoleId]);
+            //Have to Work here
+            
             \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>3,'permissionvalue'=>7]);
             \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>4,'permissionvalue'=>7]);
         });
