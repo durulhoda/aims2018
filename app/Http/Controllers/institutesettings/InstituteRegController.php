@@ -26,11 +26,13 @@ class InstituteRegController extends Controller
             $rolecreatorid=\DB::table('roles')->where('rolecreatorid',0)->first()->id;
             $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>$rolecreatorid,'instituteid'=>$newInstituteId]);
             \DB::table('user_role')->insertGetId(['userid'=>$newUserId,'roleid'=>$newRoleId]);
-            //Have to Work here
-            $list=$rh->ownAndSuccessorMenu('role');
-             dd($list);
-            \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>3,'permissionvalue'=>7]);
-            \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>4,'permissionvalue'=>7]);
+            //Default Menu List For School Role
+            $urlList=['role','institute','menu','permission'];
+            $list=$rh->setDefaultMenus($urlList);
+            dd($list);
+            foreach ($list as $item) {
+                \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>$item->id,'permissionvalue'=>7]);
+            }
         });
         return redirect('/');
     }

@@ -267,21 +267,67 @@ private function getBinaryPositionValue($permissionvalue){
  }
  return $access;
 }
-public function ownAndSuccessorMenu($url){
+public function setDefaultMenus($urlList){
+  $i=0;
+  $list=array();
+  foreach ($urlList as $url) {
+     if($list!=null){
+        $tempList=$list;
+        $newList=$this->getUniqueList($url);
+        foreach ($newList as $item) {
+           $isTrue=$this->checkList($tempList,$item);
+           if(!$isTrue){
+              $list[$i]=$item;
+              $i++;
+           }
+        }
+     }else{
+       $newList=$this->getUniqueList($url);
+       foreach ($newList as $item) {
+           $list[$i]=$item;
+           $i++;
+       }
+     }
+  }
+  return $list;
+}
+private function checkList($list,$item){
+    foreach ($list as $x) {
+       if($x->id==$item->id){
+          return true;
+       }
+    }
+    return false;
+}
+private function getUniqueList($url){
     $i=0;
+    $list=array();
     $aMenu=\DB::table('menus')->where('url',$url)->first();
     $list[$i]=$aMenu;
-    return $this->next($list,$aMenu,$i);
-}
-private function next($list,$aMenu,$i){
-    // $aMenu=\DB::table('menus')->where('id',$aMenu->parentid)->first();
-    // if($aMenu!=null){
-    //   $i++;
-    //    $list[$i]=$aMenu;
-    //    $this->next($list,$aMenu,$i);
-    // }
-    // dd($list);
+    $isTrue=true;
+    while ($isTrue) {
+       $hasM=$this->nextHas($aMenu->parentid);
+       if($hasM==true){
+          $aMenu=$this->getAMenu($aMenu->parentid);
+          $i++;
+          $list[$i]=$aMenu;
+       }else{
+          $isTrue=false;
+       }
+    }
     return $list;
+}
+private function getAMenu($id){
+    $aMenu=\DB::table('menus')->where('id',$id)->first();
+    return $aMenu;
+}
+private function nextHas($id){
+   $aMenu=\DB::table('menus')->where('id',$id)->first();
+   if($aMenu!=null){
+      return true;
+   }else{
+    return false;
+   }
 }
 // For Dynamic Sidebar Menu=======================================
 public function getMenu(){
