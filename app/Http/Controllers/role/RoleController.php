@@ -55,7 +55,6 @@ class RoleController extends Controller
         $name=$request->name;
         $rolecreatorid=$request->rolecreatorid;
         $instituteid=\DB::table('roles')->where('id',$rolecreatorid)->first()->instituteid;
-        // dd($instituteid);
         $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>$rolecreatorid,'instituteid'=>$instituteid]);
         $selectmenu=$request->menuid;
         if($selectmenu!=null){
@@ -65,7 +64,7 @@ class RoleController extends Controller
             $aRoleMenu->menuid=$item;
             $sum=0;
             if(isset($_POST["permissionvalue_".$item])){
-                 $permissionvalue=$_POST["permissionvalue_".$item];
+                $permissionvalue=$_POST["permissionvalue_".$item];
                 foreach ($permissionvalue as $key => $value) {
                    $sum=$sum+$value;
                 }
@@ -104,7 +103,10 @@ class RoleController extends Controller
         $aRole=Role::findOrfail($id);
     	$aRole->name=$request->name;
         $aRole->rolecreatorid=$request->rolecreatorid;
-        $aRole->instituteid=\DB::table('roles')->where('id',$request->rolecreatorid)->first()->instituteid;
+        $instituteid=\DB::table('roles')->where('id',$request->rolecreatorid)->first()->instituteid;
+        if($instituteid!=0){
+            $aRole->instituteid=$instituteid;
+        }
         $aRole->update();
         \DB::select('DELETE  FROM `role_menu` WHERE roleid=?',[$id]);
         $selectmenu=$request->menuid;

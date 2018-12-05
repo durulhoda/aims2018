@@ -17,21 +17,26 @@ class InstituteRegController extends Controller
         $name = $request->name;
         $username=$request->username;
         $email=$request->email;
-        $pasw=$request->password;
-        $password=bcrypt($pasw);
+        $passw=$request->password;
+        $password=bcrypt($passw);
         \DB::transaction(function() use ($name,$username,$email,$password) {
             $rh=new RoleHelper();
             $newUserId=\DB::table('users')->insertGetId(['name'=>$username,'email'=>$email,'password'=>$password]);
             $newInstituteId=\DB::table('institute')->insertGetId(['name'=>$name,'userid'=>$newUserId]);
+            // dd($newInstituteId);
             $rolecreatorid=\DB::table('roles')->where('rolecreatorid',0)->first()->id;
             $newRoleId=\DB::table('roles')->insertGetId(['name'=>$name,'rolecreatorid'=>$rolecreatorid,'instituteid'=>$newInstituteId]);
             \DB::table('user_role')->insertGetId(['userid'=>$newUserId,'roleid'=>$newRoleId]);
             //Default Menu List For School Role
-            $urlList=['role','institute','menu','permission'];
+            $urlList=['role','menu'];
             $list=$rh->setDefaultMenus($urlList);
-            dd($list);
             foreach ($list as $item) {
-                \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>$item->id,'permissionvalue'=>7]);
+                if($item->parentid!=0){
+                    $pv=7;
+                }else{
+                    $pv=0;
+                }
+                \DB::table('role_menu')->insert(['roleid'=>$newRoleId,'menuid'=>$item->id,'permissionvalue'=>$pv]);
             }
         });
         return redirect('/');
