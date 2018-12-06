@@ -1,0 +1,21 @@
+.small-device-logo {
+    display: none;
+}
+
+#header {}
+
+#header .small-device {}
+
+#header .small-device-logo {}
+
+#header .small-device-logo a {}
+
+#header .small-device-logo img {}
+
+#header .large-device-logo {}
+
+#header .large-device-logo a {}
+
+#header .large-device-logo img {}
+
+#header #header-top {}
