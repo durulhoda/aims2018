@@ -80,3 +80,8 @@ Route::get('/editRolePower/','AjaxController@editRolePower');
 Route::get('/createRolePower/','AjaxController@createRolePower');
 
 
+// Api Controllers
+Route::get('aimsapi/read/','AimsApiController@read');
+Route::post('aimsapi/insert/','AimsApiController@insert');
+
+

@@ -110,4 +110,5 @@ public function update(Request $request, $id){
    $aBean->update();
    return redirect('menu');
 }
+
 }
