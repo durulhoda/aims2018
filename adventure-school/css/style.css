@@ -1,29 +1,45 @@
 body {}
 
-.small-device-logo {
-    display: none;
-}
-
 #header {}
 
-#header .small-device-menu {
-    display: none;
+#header .small-device-menu{
+    display: block;
+    width: 30px;
+    height: 26px;
+    position: absolute;
+    top: 28px;
+    left: 15px;
+}
+#header .small-device-menu span{
+    width: 30px;
+    height: 5px;
+     background: #ffffff;
+    display: block;
+    margin-bottom: 5px;
 }
 
-#header .small-device-logo {}
-
-#header .small-device-logo a {}
-
-#header .small-device-logo img {}
-
 #header #header-top {
-    background: #37A000;
+    background: #495457;
+    padding-top: 1px;
 }
 
 #header #header-top::after {
     content: "";
     display: block;
     clear: both;
+}
+
+#header #header-top .small-device-logo {
+    width: 105px;
+    background: #fff;
+    margin: 0px auto;
+    margin-top: 5px;
+}
+
+#header #header-top .small-device-logo a {}
+
+#header #header-top .small-device-logo img {
+    width: 100%;
 }
 
 #header #header-top div {
@@ -37,6 +53,7 @@ body {}
     background: #fff;
     top: 0px;
     left: 0px;
+    display: none;
 }
 
 #header #header-top .large-device-logo a {}
@@ -46,14 +63,14 @@ body {}
 }
 
 #header #header-top .institute-name {
-    margin-left: 130px;
+    margin-left: 0px;
     float: left;
     padding: 10px 0px;
 }
 
 #header #header-top .institute-name h1 {
     color: #ffffff;
-    font-size: 25px;
+    font-size: 22px;
 }
 
 #header #header-top .institute-name p {
@@ -64,6 +81,7 @@ body {}
 #header #header-top .mini-menu {
     float: right;
     margin-top: 25px;
+    display: none;
 }
 
 #header #header-top .mini-menu ul {
@@ -80,6 +98,7 @@ body {}
 #header #header-bottom {
     background: #ffffff;
     border-bottom: 1px solid #37A000;
+    display: none;
 }
 
 
@@ -253,24 +272,17 @@ body {}
 }
 
 #instituteinfo #inst-bg {
-    /*
     position: absolute;
     display: block;
-    background: url(../img/National_Martyrs.jpg)left center no-repeat;
+    background: url(../img/shohidminar.png)right top no-repeat;
+    background-size: 100% 100%;
     height: 100%;
-    left: 50%;
-    z-index: 5;
+    right: 0;
     content: "";
-    width: 50%;
-*/
+    width: 40%;
+    z-index: -55;
+    display: none;
 }
-
-/*
-#instituteinfo #inst-bg img {
-    width: 130%;
-}
-*/
-
 #instituteinfo .left {
     padding: 25px 0px 25px;
 }
@@ -304,10 +316,7 @@ body {}
     color: #37A000;
 }
 
-#instituteinfo .right {
-    padding: 25px 0px 0px 35px;
-    width: 70%;
-}
+#instituteinfo .right {}
 
 #instituteinfo .right .title {
     margin-bottom: 25px;
@@ -328,11 +337,12 @@ body {}
     position: relative;
     padding: 50px 0px;
     background: url(../img/slider1.jpg)left center no-repeat;
-    
+
 }
-#aims-counter::after{
+
+#aims-counter::after {
     content: "";
-   background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.4);
     position: absolute;
     display: block;
     top: 0px;
@@ -341,28 +351,44 @@ body {}
     right: 0px;
     z-index: 0;
 }
-#aims-counter .counters {}
+
+#aims-counter .counters {
+
+}
 
 #aims-counter .counters .item {
+/*
     float: left;
     width: 20%;
+*/
     text-align: center;
     color: #ffffff;
     position: relative;
     content: "";
     display: block;
 }
-#aims-counter .counters .item span{
+
+#aims-counter .counters .item span {
     color: red;
-/*    position: absolute;*/
     top: 0px;
     left: 0px;
     z-index: 555;
     font-size: 24px;
+    font-weight: 700;
 }
-#aims-counter .counters .item span.name{
+
+#aims-counter .counters .item span.name {
     display: block;
     text-align: center;
+}
+#admission{
+    padding: 25px 0px;
+}
+#admission .heading{}
+#admission .std-form{}
+#admission .std-form .btn{
+    background: #25282a;
+    color: #ffffff;
 }
 /*Footer Top Section*/
 
@@ -415,14 +441,11 @@ body {}
     transform: rotate(-45deg);
 }
 
+/*Footer Section*/
 #footer {
     padding: 15px 0px 10px;
 }
 
-#footer .left {
-    float: left;
-}
+#footer .left {}
 
-#footer .right {
-    float: right;
-}
+#footer .right {}

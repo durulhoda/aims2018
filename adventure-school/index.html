@@ -8,302 +8,393 @@
     <title>Chouddagram Secondary Pilot Girls' High School </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" href="css/jquery.mmenu.all.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mstyle.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/jquery.mmenu.all.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#mmmenu").mmenu();
+            var API = $("#mmmenu").data("mmenu");
+            $("#mmmenu").click(function() {
+                API.open();
+            });
+        });
+
+    </script>
 </head>
 
 <body>
-    <div id="header"> <a class="small-device-menu" href="#menu">Responsive Mobile Menu</a>
-        <div class="small-device-logo">
-            <a href="index.html"><img src="img/school-logo.png" alt=""></a>
-        </div>
-        <div id="header-top">
-            <div class="container">
-                <div class="large-device-logo">
+    <div>
+        <div id="header">
+            <a class="small-device-menu" href="#mmmenu"><span></span><span></span><span></span></a>
+            <div id="header-top">
+                <div class="small-device-logo">
                     <a href="index.html"><img src="img/school-logo.png" alt=""></a>
                 </div>
-                <div class="institute-name">
-                    <h1>Chouddagram Secondary Pilot Girls' High School</h1>
-                    <p>Chouddagram Pourasova, Chauddagram , Comilla</p>
+                <div class="container">
+                    <div class="large-device-logo">
+                        <a href="index.html"><img src="img/school-logo.png" alt=""></a>
+                    </div>
+                    <div class="institute-name">
+                        <h1>Chouddagram Secondary Pilot Girls' High School</h1>
+                        <p>Chouddagram Pourasova, Chauddagram , Comilla</p>
+                    </div>
+                    <div class="mini-menu">
+                        <ul>
+                            <li><a href="#">System Login</a></li>
+                        </ul>
+                    </div>
+                    <div></div>
                 </div>
-                <div class="mini-menu">
-                    <ul>
-                        <li><a href="#">System Login</a></li>
-                    </ul>
+            </div>
+            <div id="header-bottom">
+                <div class="container">
+                    <nav class="main-menu" id="my-menu">
+                        <ul>
+                            <li><a href="#">Menu01</a></li>
+                            <li class="has-sub"><a href="#">Menu02</a>
+                                <ul>
+                                    <li><a href="#">Menu11</a></li>
+                                    <li class="has-sub"><a href="#">Menu12</a>
+                                        <ul>
+                                            <li><a href="#">Menu21</a></li>
+                                            <li class="has-sub"><a href="#">Menu22</a>
+                                                <ul>
+                                                    <li><a href="#">Menu31</a></li>
+                                                    <li class="has-sub"><a href="#">Menu32</a>
+                                                        <ul>
+                                                            <li><a href="#">Menu41</a></li>
+                                                            <li class="has-sub"><a href="#">Menu42</a>
+                                                                <ul>
+                                                                    <li class="has-sub"><a href="#">Menu51</a>
+                                                                        <ul>
+                                                                            <li><a href="#">Menu61</a></li>
+                                                                            <li><a href="#">Menu62</a></li>
+                                                                            <li class="has-sub"><a href="#">Menu63</a>
+                                                                                <ul>
+                                                                                    <li><a href="#">Menu71</a></li>
+                                                                                    <li class="has-sub"><a href="#">Menu72</a>
+                                                                                        <ul>
+                                                                                            <li class="has-sub"><a href="#">Menu81</a>
+                                                                                                <ul>
+                                                                                                    <li><a href="#">Menu91</a></li>
+                                                                                                    <li><a href="#">Menu92</a></li>
+                                                                                                    <li><a href="#">Menu93</a></li>
+                                                                                                    <li><a href="#">Menu94</a></li>
+                                                                                                    <li><a href="#">Menu95</a></li>
+                                                                                                </ul>
+                                                                                            </li>
+                                                                                            <li><a href="#">Menu82</a></li>
+                                                                                            <li><a href="#">Menu83</a></li>
+                                                                                            <li><a href="#">Menu84</a></li>
+                                                                                            <li><a href="#">Menu85</a></li>
+                                                                                        </ul>
+                                                                                    </li>
+                                                                                    <li><a href="#">Menu73</a></li>
+                                                                                    <li><a href="#">Menu74</a></li>
+                                                                                    <li><a href="#">Menu75</a></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                            <li><a href="#">Menu64</a></li>
+                                                                            <li><a href="#">Menu65</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a href="#">Menu52</a>
+
+                                                                    </li>
+                                                                    <li><a href="#">Menu53</a></li>
+                                                                    <li><a href="#">Menu54</a></li>
+                                                                    <li><a href="#">Menu55</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a href="#">Menu43</a></li>
+                                                            <li><a href="#">Menu44</a></li>
+                                                            <li><a href="#">Menu45</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">Menu33</a></li>
+                                                    <li><a href="#">Menu34</a></li>
+                                                    <li><a href="#">Menu35</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Menu23</a></li>
+                                            <li><a href="#">Menu24</a></li>
+                                            <li><a href="#">Menu25</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Menu13</a></li>
+                                    <li><a href="#">Menu14</a></li>
+                                    <li><a href="#">Menu15</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub"><a href="#">Menu03</a></li>
+                            <li class="has-sub">
+                                <a href="#">ADMISSION</a>
+                                <ul>
+                                    <li><a href="#">Admit Card</a></li>
+                                    <li><a href="admission.html">Apply Online</a></li>
+                                    <li><a href="#">Result</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Menu05</a></li>
+                        </ul>
+                    </nav>
                 </div>
-                <div></div>
             </div>
         </div>
-        <div id="header-bottom">
+        <div id="bxslider-section">
+            <div class="slider">
+                <div><img src="img/slider1.jpg" alt="Slede1" title="Slede1"></div>
+                <div><img src="img/slider2.jpg" alt="Slede2" title="Slede1"></div>
+                <div><img src="img/slider2.jpg" alt="Slede3" title="Slede1"></div>
+                <div><img src="img/slider4.jpg" alt="Slede4" title="Slede1"></div>
+            </div>
+        </div>
+        <div id="scrollnews">
             <div class="container">
-                <nav class="main-menu">
-                    <ul>
-                        <li><a href="#">Menu01</a></li>
-                        <li class="has-sub"><a href="#">Menu02</a>
+                <marquee>Admission is going on now</marquee>
+            </div>
+        </div>
+        <div id="instituteinfo">
+            <span id="inst-bg"></span>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="left">
+                            <div class="title">
+                                <h4>Head master speech</h4>
+                            </div>
+                            <div class="pro-pic">
+                                <img src="img/dd7d898287506d05d7b6272e3c21215c.jpg" alt="">
+                                <div class="degination">
+                                    <h3>Professor Dr. Md. Harun-Ur-Rashid Askari</h3>
+                                </div>
+                            </div>
+                            <div class="txt">
+                                <p>We strive for higher standards. That’s our motto. For about three decades and a half, Islamic University, Kushtia Bangladesh has been trying hard to maintain standards on higher education and... <a href="">Read More</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="right">
+                            <div class="title">
+                                <h4>Oxford Noble School: A profile</h4>
+                            </div>
+                            <div class="txt">
+                                <p>Islamic University is ranked as one of the top public universities in Bangladesh as well as the largest seat of higher education in the south-western part of the country. Situated 24 kilometers south of Kushtia and 22 kilometers north of Jhenidah district-town, the university is by-passed by Khulna-Kushtia National Highway which provides its lifeline of connectivity with the rest of the country. The passing of the Islamic University Act in 1980 conferred this institution the permanent prestige of being the first university established after the independence of Bangladesh, reflecting the hope and aspiration of the new nation striving to be on par with other international players through the promotion of science, business, humanities, and interfaith...<a href="">Read More</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="aims-counter">
+            <div class="container">
+                <div class="counters">
+                    <div class="item">
+                        <span class="counter">1,234,567</span>
+                        <span class="name">Text</span>
+                    </div>
+                    <div class="item">
+                        <span class="counter">1,234,567</span>
+                        <span class="name">Text</span>
+                    </div>
+                    <div class="item">
+                        <span class="counter">1,234,567</span>
+                        <span class="name">Text</span>
+                    </div>
+                    <div class="item">
+                        <span class="counter">1,234,567</span>
+                        <span class="name">Text</span>
+                    </div>
+                    <div class="item">
+                        <span class="counter">1,234,567</span>
+                        <span class="name">Text</span>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+        <!--    Footer Top Section-->
+        <div id="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <div class="ft-item">
+                            <h5>ABOUT US</h5>
                             <ul>
                                 <li><a href="#">Menu11</a></li>
-                                <li class="has-sub"><a href="#">Menu12</a>
-                                    <ul>
-                                        <li><a href="#">Menu21</a></li>
-                                        <li class="has-sub"><a href="#">Menu22</a>
-                                            <ul>
-                                                <li><a href="#">Menu31</a></li>
-                                                <li class="has-sub"><a href="#">Menu32</a>
-                                                    <ul>
-                                                        <li><a href="#">Menu41</a></li>
-                                                        <li class="has-sub"><a href="#">Menu42</a>
-                                                            <ul>
-                                                                <li class="has-sub"><a href="#">Menu51</a>
-                                                                    <ul>
-                                                                        <li><a href="#">Menu61</a></li>
-                                                                        <li><a href="#">Menu62</a></li>
-                                                                        <li class="has-sub"><a href="#">Menu63</a>
-                                                                            <ul>
-                                                                                <li><a href="#">Menu71</a></li>
-                                                                                <li class="has-sub"><a href="#">Menu72</a>
-                                                                                    <ul>
-                                                                                        <li class="has-sub"><a href="#">Menu81</a>
-                                                                                            <ul>
-                                                                                                <li><a href="#">Menu91</a></li>
-                                                                                                <li><a href="#">Menu92</a></li>
-                                                                                                <li><a href="#">Menu93</a></li>
-                                                                                                <li><a href="#">Menu94</a></li>
-                                                                                                <li><a href="#">Menu95</a></li>
-                                                                                            </ul>
-                                                                                        </li>
-                                                                                        <li><a href="#">Menu82</a></li>
-                                                                                        <li><a href="#">Menu83</a></li>
-                                                                                        <li><a href="#">Menu84</a></li>
-                                                                                        <li><a href="#">Menu85</a></li>
-                                                                                    </ul>
-                                                                                </li>
-                                                                                <li><a href="#">Menu73</a></li>
-                                                                                <li><a href="#">Menu74</a></li>
-                                                                                <li><a href="#">Menu75</a></li>
-                                                                            </ul>
-                                                                        </li>
-                                                                        <li><a href="#">Menu64</a></li>
-                                                                        <li><a href="#">Menu65</a></li>
-                                                                    </ul>
-                                                                </li>
-                                                                <li><a href="#">Menu52</a>
-
-                                                                </li>
-                                                                <li><a href="#">Menu53</a></li>
-                                                                <li><a href="#">Menu54</a></li>
-                                                                <li><a href="#">Menu55</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li><a href="#">Menu43</a></li>
-                                                        <li><a href="#">Menu44</a></li>
-                                                        <li><a href="#">Menu45</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="#">Menu33</a></li>
-                                                <li><a href="#">Menu34</a></li>
-                                                <li><a href="#">Menu35</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Menu23</a></li>
-                                        <li><a href="#">Menu24</a></li>
-                                        <li><a href="#">Menu25</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="#">Menu12</a></li>
                                 <li><a href="#">Menu13</a></li>
                                 <li><a href="#">Menu14</a></li>
                                 <li><a href="#">Menu15</a></li>
                             </ul>
-                        </li>
-                        <li class="has-sub"><a href="#">Menu03</a></li>
-                        <li><a href="#">Menu04</a></li>
-                        <li><a href="#">Menu05</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-    <div id="bxslider-section">
-        <div class="slider">
-            <div><img src="img/slider1.jpg" alt="Slede1" title="Slede1"></div>
-            <div><img src="img/slider2.jpg" alt="Slede2" title="Slede1"></div>
-            <div><img src="img/slider2.jpg" alt="Slede3" title="Slede1"></div>
-            <div><img src="img/slider4.jpg" alt="Slede4" title="Slede1"></div>
-        </div>
-    </div>
-    <div id="scrollnews">
-        <div class="container">
-            <marquee>This text will scroll from right to left</marquee>
-        </div>
-    </div>
-    <div id="instituteinfo">
-        <span id="inst-bg"></span>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="left">
-                        <div class="title">
-                            <h4>Head master speech</h4>
                         </div>
-                        <div class="pro-pic">
-                            <img src="img/dd7d898287506d05d7b6272e3c21215c.jpg" alt="">
-                            <div class="degination">
-                                <h3>Professor Dr. Md. Harun-Ur-Rashid Askari</h3>
-                            </div>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <div class="ft-item">
+                            <h5>ACADEMIC</h5>
+                            <ul>
+                                <li><a href="#">Menu21</a></li>
+                                <li><a href="#">Menu22</a></li>
+                                <li><a href="#">Menu23</a></li>
+                                <li><a href="#">Menu24</a></li>
+                                <li><a href="#">Menu25</a></li>
+                            </ul>
                         </div>
-                        <div class="txt">
-                            <p>We strive for higher standards. That’s our motto. For about three decades and a half, Islamic University, Kushtia Bangladesh has been trying hard to maintain standards on higher education and... <a href="">Read More</a></p>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <div class="ft-item">
+                            <h5>ADMISSION</h5>
+                            <ul>
+                                <li><a href="#">Download Admit Card</a></li>
+                                <li><a href="admission.html">Apply Online</a></li>
+                                <li><a href="#">Result</a></li>
+                                <li><a href="#">Help Line</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <div class="ft-item">
+                            <h5>OFFICE</h5>
+                            <ul>
+                                <li><a href="#">Menu41</a></li>
+                                <li><a href="#">Menu42</a></li>
+                                <li><a href="#">Menu43</a></li>
+                                <li><a href="#">Menu44</a></li>
+                                <li><a href="#">Menu45</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <div class="ft-item">
+                            <h5>RESEARCH</h5>
+                            <ul>
+                                <li><a href="#">Menu51</a></li>
+                                <li><a href="#">Menu52</a></li>
+                                <li><a href="#">Menu53</a></li>
+                                <li><a href="#">Menu54</a></li>
+                                <li><a href="#">Menu55</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <div class="ft-item">
+                            <h5>CAMPUS LIFE</h5>
+                            <ul>
+                                <li><a href="#">Menu61</a></li>
+                                <li><a href="#">Menu62</a></li>
+                                <li><a href="#">Menu63</a></li>
+                                <li><a href="#">Menu64</a></li>
+                                <li><a href="#">Menu65</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="right">
-                        <div class="title">
-                            <h4>Oxford Noble School: A profile</h4>
-                        </div>
-                        <div class="txt">
-                            <p>Islamic University is ranked as one of the top public universities in Bangladesh as well as the largest seat of higher education in the south-western part of the country. Situated 24 kilometers south of Kushtia and 22 kilometers north of Jhenidah district-town, the university is by-passed by Khulna-Kushtia National Highway which provides its lifeline of connectivity with the rest of the country. The passing of the Islamic University Act in 1980 conferred this institution the permanent prestige of being the first university established after the independence of Bangladesh, reflecting the hope and aspiration of the new nation striving to be on par with other international players through the promotion of science, business, humanities, and interfaith...<a href="">Read More</a></p>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div class="container">
+                <div class="left">
+                    <p>&copy; 2018 Adventure-soft All rights reserved by AIMS</p>
                 </div>
+                <div class="right">
+                    <p>Design &amp; Maintained by Adventure-soft</p>
+                </div>
+                <div style="clear: both"></div>
             </div>
         </div>
     </div>
-    <div id="aims-counter">
-        <div class="container">
-            <div class="counters">
-                <div class="item">
-                    <span class="counter">1,234,567</span>
-                    <span class="name">Text</span>
-                </div>
-                <div class="item">
-                    <span class="counter">1,234,567</span>
-                    <span class="name">Text</span>
-                </div>
-                <div class="item">
-                    <span class="counter">1,234,567</span>
-                    <span class="name">Text</span>
-                </div>
-                <div class="item">
-                    <span class="counter">1,234,567</span>
-                    <span class="name">Text</span>
-                </div>
-                <div class="item">
-                    <span class="counter">1,234,567</span>
-                    <span class="name">Text</span>
-                </div>
-                <div style="clear: both;"></div>
-            </div>
-        </div>
-    </div>
-    <!--    Footer Top Section-->
-    <div id="footer-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="ft-item">
-                        <h5>ABOUT US</h5>
-                        <ul>
-                            <li><a href="#">Menu11</a></li>
-                            <li><a href="#">Menu12</a></li>
-                            <li><a href="#">Menu13</a></li>
-                            <li><a href="#">Menu14</a></li>
-                            <li><a href="#">Menu15</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="ft-item">
-                        <h5>ACADEMIC</h5>
+    <nav class="main-menu" id="mmmenu">
+        <ul>
+            <li><a href="#">Menu01</a></li>
+            <li class="has-sub"><a href="#">Menu02</a>
+                <ul>
+                    <li><a href="#">Menu11</a></li>
+                    <li class="has-sub"><a href="#">Menu12</a>
                         <ul>
                             <li><a href="#">Menu21</a></li>
-                            <li><a href="#">Menu22</a></li>
+                            <li class="has-sub"><a href="#">Menu22</a>
+                                <ul>
+                                    <li><a href="#">Menu31</a></li>
+                                    <li class="has-sub"><a href="#">Menu32</a>
+                                        <ul>
+                                            <li><a href="#">Menu41</a></li>
+                                            <li class="has-sub"><a href="#">Menu42</a>
+                                                <ul>
+                                                    <li class="has-sub"><a href="#">Menu51</a>
+                                                        <ul>
+                                                            <li><a href="#">Menu61</a></li>
+                                                            <li><a href="#">Menu62</a></li>
+                                                            <li class="has-sub"><a href="#">Menu63</a>
+                                                                <ul>
+                                                                    <li><a href="#">Menu71</a></li>
+                                                                    <li class="has-sub"><a href="#">Menu72</a>
+                                                                        <ul>
+                                                                            <li class="has-sub"><a href="#">Menu81</a>
+                                                                                <ul>
+                                                                                    <li><a href="#">Menu91</a></li>
+                                                                                    <li><a href="#">Menu92</a></li>
+                                                                                    <li><a href="#">Menu93</a></li>
+                                                                                    <li><a href="#">Menu94</a></li>
+                                                                                    <li><a href="#">Menu95</a></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                            <li><a href="#">Menu82</a></li>
+                                                                            <li><a href="#">Menu83</a></li>
+                                                                            <li><a href="#">Menu84</a></li>
+                                                                            <li><a href="#">Menu85</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a href="#">Menu73</a></li>
+                                                                    <li><a href="#">Menu74</a></li>
+                                                                    <li><a href="#">Menu75</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a href="#">Menu64</a></li>
+                                                            <li><a href="#">Menu65</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">Menu52</a>
+
+                                                    </li>
+                                                    <li><a href="#">Menu53</a></li>
+                                                    <li><a href="#">Menu54</a></li>
+                                                    <li><a href="#">Menu55</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Menu43</a></li>
+                                            <li><a href="#">Menu44</a></li>
+                                            <li><a href="#">Menu45</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Menu33</a></li>
+                                    <li><a href="#">Menu34</a></li>
+                                    <li><a href="#">Menu35</a></li>
+                                </ul>
+                            </li>
                             <li><a href="#">Menu23</a></li>
                             <li><a href="#">Menu24</a></li>
                             <li><a href="#">Menu25</a></li>
                         </ul>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="ft-item">
-                        <h5>ADMISSION</h5>
-                        <ul>
-                            <li><a href="#">Menu31</a></li>
-                            <li><a href="#">Menu32</a></li>
-                            <li><a href="#">Menu33</a></li>
-                            <li><a href="#">Menu34</a></li>
-                            <li><a href="#">Menu35</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="ft-item">
-                        <h5>OFFICE</h5>
-                        <ul>
-                            <li><a href="#">Menu41</a></li>
-                            <li><a href="#">Menu42</a></li>
-                            <li><a href="#">Menu43</a></li>
-                            <li><a href="#">Menu44</a></li>
-                            <li><a href="#">Menu45</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="ft-item">
-                        <h5>RESEARCH</h5>
-                        <ul>
-                            <li><a href="#">Menu51</a></li>
-                            <li><a href="#">Menu52</a></li>
-                            <li><a href="#">Menu53</a></li>
-                            <li><a href="#">Menu54</a></li>
-                            <li><a href="#">Menu55</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="ft-item">
-                        <h5>CAMPUS LIFE</h5>
-                        <ul>
-                            <li><a href="#">Menu61</a></li>
-                            <li><a href="#">Menu62</a></li>
-                            <li><a href="#">Menu63</a></li>
-                            <li><a href="#">Menu64</a></li>
-                            <li><a href="#">Menu65</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="footer">
-        <div class="container">
-            <div class="left">
-                <p>&copy; 2018 Adventure-soft All rights reserved by by AIMS</p>
-            </div>
-            <div class="right">
-                <p>Design &amp; Maintained by Adventure-soft</p>
-            </div>
-            <div style="clear: both"></div>
-        </div>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+                    </li>
+                    <li><a href="#">Menu13</a></li>
+                    <li><a href="#">Menu14</a></li>
+                    <li><a href="#">Menu15</a></li>
+                </ul>
+            </li>
+            <li class="has-sub"><a href="#">Menu03</a></li>
+            <li><a href="#">Menu04</a></li>
+            <li><a href="#">Menu05</a></li>
+        </ul>
+    </nav>
     <script src="js/jquery.waypoints.min.js"></script>
     <script src="js/jquery.counterup.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
     <script src="js/script.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.slider').bxSlider({
-                mode: 'fade',
-                responsive: true
-            });
-            $('.counter').counterUp({
-                delay: 10,
-                time: 1000
-            });
-        });
-
-    </script>
 
 </body>
 
