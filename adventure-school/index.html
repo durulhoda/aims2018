@@ -11,18 +11,7 @@
     <link rel="stylesheet" href="css/jquery.mmenu.all.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mstyle.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="js/jquery.mmenu.all.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#mmmenu").mmenu();
-            var API = $("#mmmenu").data("mmenu");
-            $("#mmmenu").click(function() {
-                API.open();
-            });
-        });
 
-    </script>
 </head>
 
 <body>
@@ -385,17 +374,35 @@
                     <li><a href="#">Menu15</a></li>
                 </ul>
             </li>
-            <li class="has-sub"><a href="#">Menu03</a></li>
+            <li class="has-sub">
+                <a href="#">ADMISSION</a>
+                <ul>
+                    <li><a href="#">Admit Card</a></li>
+                    <li><a href="admission.html">Apply Online</a></li>
+                    <li><a href="#">Result</a></li>
+                </ul>
+            </li>
             <li><a href="#">Menu04</a></li>
             <li><a href="#">Menu05</a></li>
         </ul>
     </nav>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/jquery.mmenu.all.js"></script>
     <script src="js/jquery.waypoints.min.js"></script>
     <script src="js/jquery.counterup.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#mmmenu").mmenu();
+            var API = $("#mmmenu").data("mmenu");
+            $("#mmmenu").click(function() {
+                API.open();
+            });
+        });
 
+    </script>
 </body>
 
 </html>

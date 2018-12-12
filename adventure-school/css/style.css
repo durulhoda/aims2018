@@ -2,7 +2,7 @@ body {}
 
 #header {}
 
-#header .small-device-menu{
+#header .small-device-menu {
     display: block;
     width: 30px;
     height: 26px;
@@ -10,10 +10,11 @@ body {}
     top: 28px;
     left: 15px;
 }
-#header .small-device-menu span{
+
+#header .small-device-menu span {
     width: 30px;
     height: 5px;
-     background: #ffffff;
+    background: #ffffff;
     display: block;
     margin-bottom: 5px;
 }
@@ -283,6 +284,7 @@ body {}
     z-index: -55;
     display: none;
 }
+
 #instituteinfo .left {
     padding: 25px 0px 25px;
 }
@@ -352,12 +354,10 @@ body {}
     z-index: 0;
 }
 
-#aims-counter .counters {
-
-}
+#aims-counter .counters {}
 
 #aims-counter .counters .item {
-/*
+    /*
     float: left;
     width: 20%;
 */
@@ -381,15 +381,24 @@ body {}
     display: block;
     text-align: center;
 }
-#admission{
+/*Student Admission Section*/
+#admission {
     padding: 25px 0px;
 }
-#admission .heading{}
-#admission .std-form{}
-#admission .std-form .btn{
+
+#admission .formsegment {
+    display: none;
+}
+#admission .heading {
+    margin-bottom: 25px;
+}
+#admission .heading h3 {}
+
+#admission .btn {
     background: #25282a;
     color: #ffffff;
 }
+
 /*Footer Top Section*/
 
 #footer-top {
