@@ -16,7 +16,11 @@ class InstituteSubCategoryController extends Controller
     public function index()
     {
       $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('institutesubcategory');
+      $aMenu=$rh->getMenuId('institutesubcategory');
+      if($aMenu==null){
+        return redirect('error');
+    }
+    $menuid=$aMenu->id;
     $hasMenu=$rh->hasMenu($menuid);
     if($hasMenu==false){
         return redirect('error');
@@ -30,21 +34,25 @@ class InstituteSubCategoryController extends Controller
     return view('institutesettings.institutesubcategory.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$result]);
 }
 public function create(){
-   $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('institutesubcategory');
+  $rh=new RoleHelper();
+      $aMenu=$rh->getMenuId('institutesubcategory');
+      if($aMenu==null){
+        return redirect('error');
+    }
+    $menuid=$aMenu->id;
     $hasMenu=$rh->hasMenu($menuid);
     if($hasMenu==false){
         return redirect('error');
     }
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
-    if($permission[2]==1){
-     $categoriesList=InstituteCatagory::all();
-     return view('institutesettings.institutesubcategory.create',['sidebarMenu'=>$sidebarMenu,'categories'=>$categoriesList]);
- }else{
-     return redirect('institutesubcategory'); 
- }
- 
+if($permission[2]==1){
+ $categoriesList=InstituteCatagory::all();
+ return view('institutesettings.institutesubcategory.create',['sidebarMenu'=>$sidebarMenu,'categories'=>$categoriesList]);
+}else{
+ return redirect('institutesubcategory'); 
+}
+
 }
 public function store(Request $request){
     $aBean=new InstituteSubCatagory();
@@ -56,18 +64,18 @@ public function store(Request $request){
 public function edit($id)
 {
    $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('institutesubcategory');
-    $hasMenu=$rh->hasMenu($menuid);
-    if($hasMenu==false){
-        return redirect('error');
-    }
-    $sidebarMenu=$rh->getMenu();
-    $permission=$rh->getPermission($menuid);
-   if($permission[4]==1){
-       $categories=InstituteCatagory::all();
-       $aBean=InstituteSubCatagory::findOrfail($id);
-       return view('institutesettings.institutesubcategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'categories'=>$categories]);
-   }else{
+   $menuid=$rh->getMenuId('institutesubcategory');
+   $hasMenu=$rh->hasMenu($menuid);
+   if($hasMenu==false){
+    return redirect('error');
+}
+$sidebarMenu=$rh->getMenu();
+$permission=$rh->getPermission($menuid);
+if($permission[4]==1){
+   $categories=InstituteCatagory::all();
+   $aBean=InstituteSubCatagory::findOrfail($id);
+   return view('institutesettings.institutesubcategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'categories'=>$categories]);
+}else{
     return redirect('institutesubcategory');
 }
 

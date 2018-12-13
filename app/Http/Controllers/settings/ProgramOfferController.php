@@ -20,9 +20,17 @@ class ProgramOfferController extends Controller
 }
   public function index(){
     $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('programoffer');
-    $sidebarMenu=$rh->getMenu();
-    $permission=$rh->getPermission($menuid);
+        $aMenu=$rh->getMenuId('programoffer');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
     $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.name as groupName,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
       INNER JOIN sessions ON programoffer.sessionid=sessions.id
       INNER JOIN programs ON programoffer.programid=programs.id
@@ -34,9 +42,17 @@ class ProgramOfferController extends Controller
   }
   public function create(){
     $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('programoffer');
-    $sidebarMenu=$rh->getMenu();
-    $permission=$rh->getPermission($menuid);
+        $aMenu=$rh->getMenuId('programoffer');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
         $sessions=Session::all();
         $levels=ProgramLevel::all();
@@ -70,9 +86,17 @@ class ProgramOfferController extends Controller
  public function edit($id)
  {
     $rh=new RoleHelper();
-    $menuid=$rh->getMenuId('programoffer');
-    $sidebarMenu=$rh->getMenu();
-    $permission=$rh->getPermission($menuid);
+        $aMenu=$rh->getMenuId('programoffer');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
+        $sidebarMenu=$rh->getMenu();
+        $permission=$rh->getPermission($menuid);
    if($permission[4]==1){
        $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.id as groupid,groups.name as groupName,programlevels.id As programLevelid,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
     INNER JOIN sessions ON programoffer.sessionid=sessions.id

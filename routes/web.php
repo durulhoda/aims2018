@@ -46,6 +46,7 @@ Route::resource('program', 'settings\ProgramController');
 Route::resource('medium', 'settings\MediumController');
 Route::resource('shift', 'settings\ShiftController');
 Route::resource('programoffer', 'settings\ProgramOfferController');
+Route::resource('quota', 'settings\QuotaController');
 
 Route::resource('course', 'settings\CourseController');
 Route::post('/getprogramoffer/', 'settings\CourseOfferController@programofferresult');

@@ -14,7 +14,11 @@ class InstituteCategoryController extends Controller
     public function index()
     {
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('institutecategory');
+        $aMenu=$rh->getMenuId('institutecategory');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
@@ -26,7 +30,11 @@ class InstituteCategoryController extends Controller
     }
     public function create(){
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('institutecategory');
+        $aMenu=$rh->getMenuId('institutecategory');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
@@ -48,27 +56,27 @@ class InstituteCategoryController extends Controller
     }
     public function edit($id)
     {
-         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('institutecategory');
-        $hasMenu=$rh->hasMenu($menuid);
-        if($hasMenu==false){
-            return redirect('error');
-        }
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
-        if($permission[4]==1){
-            $aBean=InstituteCatagory::findOrfail($id);
-            return view('institutesettings.institutecategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
-        }else{
-            return redirect('institutecategory');
-        }
-        
+     $rh=new RoleHelper();
+     $menuid=$rh->getMenuId('institutecategory');
+     $hasMenu=$rh->hasMenu($menuid);
+     if($hasMenu==false){
+        return redirect('error');
     }
-    public function update(Request $request, $id)
-    {
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
         $aBean=InstituteCatagory::findOrfail($id);
-        $aBean->name=$request->name;
-        $aBean->update();
+        return view('institutesettings.institutecategory.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
+    }else{
         return redirect('institutecategory');
     }
+
+}
+public function update(Request $request, $id)
+{
+    $aBean=InstituteCatagory::findOrfail($id);
+    $aBean->name=$request->name;
+    $aBean->update();
+    return redirect('institutecategory');
+}
 }

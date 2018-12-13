@@ -16,7 +16,11 @@ class PostOfficeController extends Controller
     public function index()
     {
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('postoffice');
+        $aMenu=$rh->getMenuId('postoffice');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
         $hasMenu=$rh->hasMenu($menuid);
         if($hasMenu==false){
             return redirect('error');
@@ -33,13 +37,17 @@ class PostOfficeController extends Controller
     }
     public function create(){
        $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('postoffice');
-        $hasMenu=$rh->hasMenu($menuid);
-        if($hasMenu==false){
-            return redirect('error');
-        }
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
+       $aMenu=$rh->getMenuId('postoffice');
+       if($aMenu==null){
+        return redirect('error');
+    }
+    $menuid=$aMenu->id;
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+        return redirect('error');
+    }
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
        $divisions=\DB::table('divisions')->get();
        return view('institutesettings.postoffice.create',['sidebarMenu'=>$sidebarMenu,'divisions'=>$divisions]);
@@ -57,40 +65,44 @@ public function store(Request $request){
 }
 public function edit($id)
 {
-        $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('postoffice');
-        $hasMenu=$rh->hasMenu($menuid);
-        if($hasMenu==false){
-            return redirect('error');
-        }
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
+    $rh=new RoleHelper();
+    $aMenu=$rh->getMenuId('postoffice');
+    if($aMenu==null){
+        return redirect('error');
+    }
+    $menuid=$aMenu->id;
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+        return redirect('error');
+    }
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     if($permission[4]==1){
-    $result=\DB::table('postoffices')
-    ->join('thanas','postoffices.thanaid','=','thanas.id')
-    ->join('districts','thanas.districtid','=','districts.id')
-    ->join('divisions','districts.divisionid','=','divisions.id')
-    ->select('postoffices.*','divisions.id as divisionid','districts.id as districtid','thanas.id as thanaid')
-    ->where('postoffices.id','=',$id)
-    ->get();
-    $aBean=$result[0];
-    $divisions=\DB::table('divisions')
-    ->select('divisions.*')
-    ->get();
-    $districts=\DB::table('districts')
-    ->where('districts.divisionid','=',$aBean->divisionid)
-    ->get();
-    $thanas=\DB::table('thanas')
-    ->where('thanas.districtid','=',$aBean->districtid)
-    ->get();
-    return view('institutesettings.postoffice.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
-}else{
-    return redirect('postoffice');
-}
+        $result=\DB::table('postoffices')
+        ->join('thanas','postoffices.thanaid','=','thanas.id')
+        ->join('districts','thanas.districtid','=','districts.id')
+        ->join('divisions','districts.divisionid','=','divisions.id')
+        ->select('postoffices.*','divisions.id as divisionid','districts.id as districtid','thanas.id as thanaid')
+        ->where('postoffices.id','=',$id)
+        ->get();
+        $aBean=$result[0];
+        $divisions=\DB::table('divisions')
+        ->select('divisions.*')
+        ->get();
+        $districts=\DB::table('districts')
+        ->where('districts.divisionid','=',$aBean->divisionid)
+        ->get();
+        $thanas=\DB::table('thanas')
+        ->where('thanas.districtid','=',$aBean->districtid)
+        ->get();
+        return view('institutesettings.postoffice.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'divisions'=>$divisions,'districts'=>$districts,'thanas'=>$thanas]);
+    }else{
+        return redirect('postoffice');
+    }
 }
 public function update(Request $request, $id)
 {
- 
+
     $aBean=PostOffice::findOrfail($id);
     $aBean->name=$request->name;
     $aBean->thanaid=$request->thanaid;

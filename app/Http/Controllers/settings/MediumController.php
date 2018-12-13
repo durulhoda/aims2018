@@ -15,7 +15,15 @@ class MediumController extends Controller
     public function index()
     {
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('medium');
+        $aMenu=$rh->getMenuId('medium');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $result=Medium::all();
@@ -24,7 +32,15 @@ class MediumController extends Controller
     public function create()
     {
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('medium');
+        $aMenu=$rh->getMenuId('medium');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         if($permission[2]==1){
@@ -43,7 +59,15 @@ class MediumController extends Controller
     public function edit($id)
     {
         $rh=new RoleHelper();
-        $menuid=$rh->getMenuId('medium');
+        $aMenu=$rh->getMenuId('medium');
+        if($aMenu==null){
+            return redirect('error');
+        }
+        $menuid=$aMenu->id;
+        $hasMenu=$rh->hasMenu($menuid);
+        if($hasMenu==false){
+            return redirect('error');
+        }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         if($permission[4]==1){

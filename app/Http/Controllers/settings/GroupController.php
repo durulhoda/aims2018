@@ -10,31 +10,39 @@ use App\Http\Controllers\Redirect;
 class GroupController extends Controller
 {
 	public function __construct()
-{
-	$this->middleware('auth');
-}
+	{
+		$this->middleware('auth');
+	}
 	public function index(){
 		$rh=new RoleHelper();
-		$menuid=$rh->getMenuId('group');
+		$aMenu=$rh->getMenuId('group');
+		if($aMenu==null){
+			return redirect('error');
+		}
+		$menuid=$aMenu->id;
 		$hasMenu=$rh->hasMenu($menuid);
 		if($hasMenu==false){
 			return redirect('error');
 		}
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
+		$sidebarMenu=$rh->getMenu();
+		$permission=$rh->getPermission($menuid);
 		$result=\DB::table('groups')
 		->join('programlevels','groups.programLevelid','=','programlevels.id')->select('groups.*','programlevels.name as levelName')->get();
 		return view('settings.group.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
 	public function create(){
 		$rh=new RoleHelper();
-        $menuid=$rh->getMenuId('group');
-        $hasMenu=$rh->hasMenu($menuid);
+		$aMenu=$rh->getMenuId('group');
+		if($aMenu==null){
+			return redirect('error');
+		}
+		$menuid=$aMenu->id;
+		$hasMenu=$rh->hasMenu($menuid);
 		if($hasMenu==false){
 			return redirect('error');
 		}
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
+		$sidebarMenu=$rh->getMenu();
+		$permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
 			$levels=ProgramLevel::all();
 			return view('settings.group.create',['sidebarMenu'=>$sidebarMenu,'levels'=>$levels]);
@@ -53,13 +61,17 @@ class GroupController extends Controller
 	public function edit($id)
 	{	
 		$rh=new RoleHelper();
-        $menuid=$rh->getMenuId('group');
-        $hasMenu=$rh->hasMenu($menuid);
+		$aMenu=$rh->getMenuId('group');
+		if($aMenu==null){
+			return redirect('error');
+		}
+		$menuid=$aMenu->id;
+		$hasMenu=$rh->hasMenu($menuid);
 		if($hasMenu==false){
 			return redirect('error');
 		}
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
+		$sidebarMenu=$rh->getMenu();
+		$permission=$rh->getPermission($menuid);
 		if($permission[4]==1){
 			$levels=ProgramLevel::all();
 			$aGroup=Group::findOrfail($id);
@@ -69,12 +81,12 @@ class GroupController extends Controller
 		}
 		
 	}
-	 public function update(Request $request, $id)
-    {
-    	$aGroup=Group::findOrfail($id);
-    	$aGroup->name=$request->name;
-    	$aGroup->programLevelid=$request->programLevelid;
+	public function update(Request $request, $id)
+	{
+		$aGroup=Group::findOrfail($id);
+		$aGroup->name=$request->name;
+		$aGroup->programLevelid=$request->programLevelid;
 		$aGroup->update();
 		return redirect('group');
-    }
+	}
 }
