@@ -49,9 +49,11 @@ class QuotaController extends Controller
 		}
 	}
 	public function store(Request $request){
-		$aQuota=new Quota();
-		$aQuota->name=$request->name;
-		$aQuota->save();
+		\DB::transaction(function() use ($request) {
+			$rh=new RoleHelper();
+			$newQuotaId=\DB::table('quotas')->insertGetId(['name'=>$request->name]);
+			\DB::table('role_quota')->insert(['roleid'=>$rh->getRoleId(),'quotaid'=>$newQuotaId]);
+		});
 		return redirect('quota');
 	}
 	public function edit($id){

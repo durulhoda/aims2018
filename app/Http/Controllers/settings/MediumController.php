@@ -9,9 +9,9 @@ use App\Http\Controllers\Controller;
 class MediumController extends Controller
 {
     public function __construct()
-{
-    $this->middleware('auth');
-}
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $rh=new RoleHelper();
