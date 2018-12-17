@@ -125,7 +125,6 @@ function editRolePower(){
 }
 function createRolePower(){
 	var rolecreatorid = $("#rolecreatorid").val();
-	console.log(rolecreatorid);
 	$.ajax({
 		type:'get',
 		url: "/createRolePower",
@@ -133,6 +132,31 @@ function createRolePower(){
 		data: {'rolecreatorid':rolecreatorid},
 		success: function( result ) {
 			$( "#output" ).empty().append(result);
+		}
+	});
+}
+function actionForParentRole(){
+	var rolefrom=$("#rolefrom").val();
+	actionForQuota();
+	$.ajax({
+		type:'get',
+		url: "/actionForParentRole",
+		dataType: "html",
+		data: {'roleid':rolefrom},
+		success: function( result ) {
+			$( "#roleid" ).empty().append(result);
+		}
+	});
+}
+function actionForQuota(){
+	var rolefrom=$("#rolefrom").val();
+	$.ajax({
+		type:'get',
+		url: "/actionForQuota",
+		dataType: "html",
+		data: {'roleid':rolefrom},
+		success: function( result ) {
+			$( "#quotaoutput" ).empty().append(result);
 		}
 	});
 }

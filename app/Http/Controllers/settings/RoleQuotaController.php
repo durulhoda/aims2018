@@ -26,7 +26,7 @@ class RoleQuotaController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		$aRoleQuota=new RoleQuota();
-		$result=$aRoleQuota->getIncludeSuccessorQuota();
+		$result=$aRoleQuota->getExcludeSuccessorQuota();
 		return view('settings.rolequota.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
 	public function create(){
@@ -42,13 +42,16 @@ class RoleQuotaController extends Controller
 		}
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
-		$successorRole=$rh->getExcludeSuccessorRole();
+		$fromRole=$rh->getIncludeSuccessorRole();
+		$aRoleQuota=new RoleQuota();
+		$roleList=$aRoleQuota->getIncludeSuccessorWithOutLastOne();
+		$toRole=$rh->getExcludeSuccessorRole();
 		$quotaListByRoleId=\DB::select('SELECT quotas.name AS quotaName,role_quota.* FROM `quotas`
 			INNER JOIN
 			role_quota ON quotas.id=role_quota.quotaid
 			WHERE role_quota.roleid=?',[$rh->getRoleId()]);
 		if($permission[2]==1){
-			return view('settings.rolequota.create',['sidebarMenu'=>$sidebarMenu,'successorRole'=>$successorRole,'quotaListByRoleId'=>$quotaListByRoleId]);
+			return view('settings.rolequota.create',['sidebarMenu'=>$sidebarMenu,'fromRole'=>$fromRole,'toRole'=>$toRole,'quotaListByRoleId'=>$quotaListByRoleId]);
 		}else{
 			return redirect('rolequota');
 		}
@@ -67,7 +70,24 @@ class RoleQuotaController extends Controller
 		return redirect('rolequota');
 	}
 	public function edit($id){
-
+		$rh=new RoleHelper();
+		$aMenu=$rh->getMenuId('rolequota');
+		if($aMenu==null){
+			return redirect('error');
+		}
+		$menuid=$aMenu->id;
+		$hasMenu=$rh->hasMenu($menuid);
+		if($hasMenu==false){
+			return redirect('error');
+		}
+		$sidebarMenu=$rh->getMenu();
+		$permission=$rh->getPermission($menuid);
+		if($permission[4]==1){
+			$aRoleQuota=RoleQuota::findOrfail($id);
+			return view('settings.quota.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aQuota]);
+		}else{
+			return redirect('quota');
+		}
 	}
 	public function update(Request $request, $id){
 

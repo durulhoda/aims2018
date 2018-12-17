@@ -48,6 +48,9 @@ public function getExcludeSuccessorRole(){
 public function getIncludeSuccessorRole(){
   return $this->ownAndSuccessorRole($this->getRoleId());
 }
+public function successorRole($id){
+  return $this->getRoleList($id,0);
+}
 private function ownAndSuccessorRole($id){
   $result=\DB::select('select * from roles where id=?', [$id]);
   $list[0]=$result[0];
@@ -361,5 +364,13 @@ private  function hasChild($parentid){
   }else{
     return false;
   }
+}
+// For Ajax Purpose
+public function getQuotaByRole($roleid){
+  $sql="SELECT * FROM `quotas`
+INNER JOIN role_quota ON quotas.id=role_quota.quotaid
+WHERE role_quota.roleid=?";
+ $result=\DB::select($sql,[$roleid]);
+ return $result;
 }
 }

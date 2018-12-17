@@ -87,7 +87,6 @@ public function createRolePower(Request $request){
  $rh=new RoleHelper();
  $menuListByRoleId=$rh->getFilterMenuListByRole($rolecreatorid);
  $permissionNameList=$rh->getPermissionNamebyLevel();
- // dd($menuListByRoleId);
  $output="<div class='col-md-12'>";
   $output.="<ul class='role_menu'>";
   foreach($menuListByRoleId as $x){
@@ -176,4 +175,30 @@ public function editRolePower(Request $request){
   $output.="</div>"; 
   echo  $output;
  }
+ public function actionForParentRole(Request $request){
+    $rh=new RoleHelper();
+    $roleid=$request->roleid;
+    $toRoleList=$rh->successorRole($roleid);
+    $quotaList=$rh->getQuotaByRole($roleid);
+    // dd($quotaList);
+    $output="";
+    foreach ($toRoleList as $x) {
+      $id=$x->id;
+      $name=$x->name;
+      $output.="<option value='$id'>$name</option>";
+    }
+    echo  $output;
+ }
+  public function actionForQuota(Request $request){
+     $rh=new RoleHelper();
+     $roleid=$request->roleid;
+     $quotaList=$rh->getQuotaByRole($roleid);
+     $output="";
+     foreach ($quotaList as $x) {
+       $id=$x->id;
+       $name=$x->name;
+      $output.="<label><input type='checkbox' name='quotaid[]' value='$id'> &nbsp;&nbsp;$name:</label>&nbsp;&nbsp;";
+     }
+     echo  $output;
+  }
 }

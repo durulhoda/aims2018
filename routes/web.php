@@ -81,6 +81,8 @@ Route::get('/getunion/','AjaxController@getUnionbyThana');
 Route::get('/getOwnRole/','AjaxController@getOwnRole');
 Route::get('/editRolePower/','AjaxController@editRolePower');
 Route::get('/createRolePower/','AjaxController@createRolePower');
+Route::get('/actionForParentRole/','AjaxController@actionForParentRole');
+Route::get('/actionForQuota/','AjaxController@actionForQuota');
 
 
 // Api Controllers
