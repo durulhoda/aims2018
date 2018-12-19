@@ -9,48 +9,51 @@ class RoleQuota extends Model
 	protected $table='role_quota';
 	public $timestamps = false;
 	protected $fillable = ['roleid','quotaid'];
-
-	public function getExcludeSuccessorQuota(){
-		$rh=new RoleHelper();
-		$quotaList=array();
-		$roleList=$rh->getExcludeSuccessorRole();
-		$i=0;
-		foreach ($roleList as $aItem) {
-			$result=\DB::select('SELECT quotas.name AS quotaName,role_quota.* FROM `quotas`
-				INNER JOIN
-				role_quota ON quotas.id=role_quota.quotaid
-				WHERE role_quota.roleid=?',[$aItem->id]);
-			foreach ($result as $aQuota) {
-				$quotaList[$i]=$aQuota;
+	public function checkItem($roleid,$quotaid){
+		$result=\DB::select("SELECT * FROM `role_quota`
+WHERE roleid=? AND quotaid=?",[$roleid,$quotaid]);
+		if($result!=null){
+			return true;
+		}
+		return false;
+	}
+	public function successorQuotaRole($id){
+		return $this->getQuotaRoleList($id,0);
+	}
+	private function getQuotaRoleList($roleid,$i){
+		$result=\DB::select('SELECT * FROM roles
+			INNER JOIN
+			(SELECT role_quota.roleid FROM `role_quota` 
+			GROUP BY role_quota.roleid) AS t1 ON t1.roleid=roles.id
+			WHERE roles.rolecreatorid=?', [$roleid]);
+		if(count($result)>0){
+			foreach ($result as $item) {
+				$list[$i]=$item;
 				$i++;
+				$hasItem=$this->hasItem($item->id);
+				if($hasItem){
+					$iresult=$this->getQuotaRoleList($item->id,$i);
+					foreach ($iresult as $value) {
+						$list[$i]=$value;
+						$i++;
+					}
+				}
 			}
+			return $list;
 		}
-		return $quotaList;
-	}
-	public function getIncludeSuccessorWithOutLastOne(){
-		$rh=new RoleHelper();
-		$roleid=$rh->getRoleId();
-		$list=array();
-		$list=$this->getList($list,$roleid,0);
-		return $list;
-	}
-	private function getList($list,$roleid,$i){
-		$isTrue=true;
-		while ($isTrue) {
-			$isTrue=false;
-		}
-		return $list;
-	}
-	private function getItem($id){
-		$result=\DB::select('select * from roles where id=?',[$id]);
-		return $result[0];
+		return $result;
 	}
 	private  function hasItem($roleid){
-		$result=\DB::select('select * from roles where rolecreatorid=?',[$roleid]);
+		$result=\DB::select('SELECT * FROM roles
+			INNER JOIN
+			(SELECT role_quota.roleid FROM `role_quota` 
+			GROUP BY role_quota.roleid) AS t1 ON t1.roleid=roles.id
+			WHERE roles.rolecreatorid=?',[$roleid]);
 		if($result){
 			return true;
 		}else{
 			return false;
 		}
 	}
+
 }

@@ -20,7 +20,7 @@
 					<thead>
 						<tr>
 							<th>Sl No.</th>
-							<th>Quota</th>
+							
 							<th>Role</th>
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
@@ -34,12 +34,11 @@
 					 	<?php $i=0; ?>
 						@foreach($result as $aObj)
 						<tr>
-							<td>{{++$i}}</td>
-							<td>{{$aObj->quotaName}}</td>
-							<td>{{$aObj->roleid}}</td>
+							<td>{{$aObj->id}}</td>
+							<td>{{$aObj->name}}</td>
 							@if($permission[4]==1)
 							<td> 
-							<a href="{{URL::to('/rolequota')}}/{{$aObj->quotaid}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
+							<a href="{{URL::to('/rolequota')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>
