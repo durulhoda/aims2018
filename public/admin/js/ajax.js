@@ -135,6 +135,18 @@ function createRolePower(){
 		}
 	});
 }
+function actionForQuota(){
+	var rolefrom=$("#rolefrom").val();
+	$.ajax({
+		type:'get',
+		url: "/actionForQuota",
+		dataType: "html",
+		data: {'rolefrom':rolefrom},
+		success: function( result ) {
+			$( "#quotaoutput" ).empty().append(result);
+		}
+	});
+}
 function actionForParentRole(){
 	var rolefrom=$("#rolefrom").val();
 	actionForQuota();
@@ -148,15 +160,39 @@ function actionForParentRole(){
 		}
 	});
 }
-function actionForQuota(){
-	var rolefrom=$("#rolefrom").val();
+// For Role Quota Edit Page
+function quotaActionBetweenRole(rolecreatorid,roleid){
+	console.log(rolecreatorid);
+	console.log(roleid);
 	$.ajax({
 		type:'get',
-		url: "/actionForQuota",
+		url: "/quotaActionBetweenRole",
 		dataType: "html",
-		data: {'roleid':rolefrom},
+		data: {'rolefrom':rolecreatorid,'roleto':roleid},
 		success: function( result ) {
 			$( "#quotaoutput" ).empty().append(result);
 		}
 	});
 }
+function actionFrom(){
+	var rolefrom=$("#rolefrom").val();
+	$.ajax({
+		type:'get',
+		url: "/actionForParentRole",
+		dataType: "html",
+		data: {'roleid':rolefrom},
+		success: function( result ) {
+			$( "#roleid" ).empty().append(result);
+		}
+	});
+	var roleto=$("#roleid").val();
+	quotaActionBetweenRole(rolefrom,roleto);
+}
+function actionTo(){
+	var rolefrom=$("#rolefrom").val();
+	var roleto=$("#roleid").val();
+	quotaActionBetweenRole(rolefrom,roleto);
+}
+
+
+

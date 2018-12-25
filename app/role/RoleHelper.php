@@ -51,7 +51,7 @@ public function getIncludeSuccessorRole(){
 public function successorRole($id){
   return $this->getRoleList($id,0);
 }
-private function ownAndSuccessorRole($id){
+public function ownAndSuccessorRole($id){
   $result=\DB::select('select * from roles where id=?', [$id]);
   $list[0]=$result[0];
   $items=$this->getRoleList($id,0);

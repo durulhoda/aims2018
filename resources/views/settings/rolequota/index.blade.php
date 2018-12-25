@@ -22,6 +22,8 @@
 							<th>Sl No.</th>
 							
 							<th>Role</th>
+							<th>Creator Role</th>
+							<th>Creator Role ID</th>
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -36,6 +38,8 @@
 						<tr>
 							<td>{{$aObj->id}}</td>
 							<td>{{$aObj->name}}</td>
+							<td>{{$aObj->pName}}</td>
+							<td>{{$aObj->pid}}</td>
 							@if($permission[4]==1)
 							<td> 
 							<a href="{{URL::to('/rolequota')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">

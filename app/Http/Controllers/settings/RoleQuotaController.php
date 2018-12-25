@@ -29,6 +29,7 @@ class RoleQuotaController extends Controller
 		$permission=$rh->getPermission($menuid);
 		$roleList=$rh->getExcludeSuccessorRole();
 		$list=$aRoleQuota->successorQuotaRole($rh->getRoleId());
+		// dd($list);
 		return view('settings.rolequota.index',['sidebarMenu'=>$sidebarMenu,'result'=>$list,'permission'=>$permission]);
 	}
 	public function create(){
@@ -57,18 +58,9 @@ class RoleQuotaController extends Controller
 		}
 	}
 	public function store(Request $request){
-		$rh=new RoleHelper();
 		$roleid=$request->roleid;
 		$selectquota=$request->quotaid;
-		$aRoleQuota=new RoleQuota();
-		if($selectquota!=null){
-			foreach ($selectquota as $item){
-				$isTure=$aRoleQuota->checkItem($roleid,$item);
-				if($isTure!=true){
-					\DB::table('role_quota')->insert(['roleid'=>$roleid,'quotaid'=>$item]);
-				}
-			}
-		}
+		$this->saveQuotadata($roleid,$selectquota);
 		return redirect('rolequota');
 	}
 	public function edit($id){
@@ -86,27 +78,50 @@ class RoleQuotaController extends Controller
 		$permission=$rh->getPermission($menuid);
 		$aRole=Role::findOrfail($id);
 		$fromRole=$rh->getIncludeSuccessorRole();
-		$toRole=$rh->successorRole($aRole->id);
-		$quotaListByRoleId=\DB::select('SELECT t1.id AS quotaid,
-t1.name as quotaName,
-IFNULL(t2.id,0) AS checkquotaid 
-from (SELECT role_quota.*,quotas.id,quotas.name FROM `role_quota`
-INNER JOIN
-quotas on quotas.id=role_quota.quotaid
-WHERE role_quota.roleid=?) as t1
-LEFT JOIN
-(SELECT role_quota.*,quotas.id,quotas.name FROM `role_quota`
-INNER JOIN
-quotas on quotas.id=role_quota.quotaid
-WHERE role_quota.roleid=?) as t2 on t1.id=t2.id',[$aRole->rolecreatorid,$aRole->id]);
-		// dd($quotaListByRoleId);
+		$toRole=$rh->ownAndSuccessorRole($aRole->id);
+		$aRoleQuota=new RoleQuota();
+		$quotaListBetweenRole=$aRoleQuota->getQuotaListBetweenRole($aRole->rolecreatorid,$aRole->id);
 		if($permission[2]==1){
-			return view('settings.rolequota.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aRole,'fromRole'=>$fromRole,'toRole'=>$toRole,'quotaListByRoleId'=>$quotaListByRoleId]);
+			return view('settings.rolequota.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aRole,'fromRole'=>$fromRole,'toRole'=>$toRole,'quotaListBetweenRole'=>$quotaListBetweenRole]);
 		}else{
 			return redirect('rolequota');
 		}
 	}
 	public function update(Request $request, $id){
-
+		$roleid=$request->roleid;
+		$selectquota=$request->quotaid;
+		// dd($selectquota);
+		$aRoleQuota=new RoleQuota();
+		$vresult=\DB::select('SELECT role_quota.roleid FROM role_quota  WHERE roleid=? GROUP BY role_quota.roleid',[$roleid]);
+		// dd($vresult);
+		if($vresult!=null){
+			if($vresult[0]->roleid==$id){
+				\DB::select('DELETE  FROM role_quota WHERE roleid=?',[$id]);
+				$this->saveQuotadata($roleid,$selectquota);
+			}else{
+				// This role Already Assign
+			}
+		}else{
+			\DB::select('DELETE  FROM role_quota WHERE roleid=?',[$id]);
+			$this->saveQuotadata($roleid,$selectquota);
+		}
+    	return redirect('rolequota');
+	}
+	private function saveQuotadata($roleid,$selectquota){
+		$aRoleQuota=new RoleQuota();
+		$isTure=$aRoleQuota->checkItem($roleid);
+		if(!$isTure){
+			if($selectquota!=null){
+				foreach ($selectquota as $item){
+					\DB::table('role_quota')->insert(['roleid'=>$roleid,'quotaid'=>$item]);
+				}
+			}else{
+				// Please select Quota
+			}
+		}else{
+			// This role Already Assign
+		}
 	}
 }
+
+// \DB::select('DELETE  FROM role_quota WHERE roleid=?',[$id]);

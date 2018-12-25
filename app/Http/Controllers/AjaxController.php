@@ -5,6 +5,7 @@ use App\Role;
 use App\role\RoleHelper;
 use Illuminate\Http\Request;
 use App\settings\Program;
+use App\settings\RoleQuota;
 class AjaxController extends Controller
 {
 
@@ -180,7 +181,6 @@ public function editRolePower(Request $request){
     $roleid=$request->roleid;
     $toRoleList=$rh->successorRole($roleid);
     $quotaList=$rh->getQuotaByRole($roleid);
-    // dd($quotaList);
     $output="";
     foreach ($toRoleList as $x) {
       $id=$x->id;
@@ -191,8 +191,8 @@ public function editRolePower(Request $request){
  }
   public function actionForQuota(Request $request){
      $rh=new RoleHelper();
-     $roleid=$request->roleid;
-     $quotaList=$rh->getQuotaByRole($roleid);
+     $rolefrom=$request->rolefrom;
+     $quotaList=$rh->getQuotaByRole($rolefrom);
      $output="";
      foreach ($quotaList as $x) {
        $id=$x->id;
@@ -200,5 +200,28 @@ public function editRolePower(Request $request){
       $output.="<label><input type='checkbox' name='quotaid[]' value='$id'> &nbsp;&nbsp;$name:</label>&nbsp;&nbsp;";
      }
      echo  $output;
+  }
+  public function quotaActionBetweenRole(Request $request){
+      $aRoleQuota=new RoleQuota();
+      $rolecreatorid=$request->rolefrom;
+      $roleid=$request->roleto;
+      // dd($roleid);
+       $quotaListBetweenRole=$aRoleQuota->getQuotaListBetweenRole($rolecreatorid,$roleid);
+       $output="";
+       if($quotaListBetweenRole!=null){
+         foreach ($quotaListBetweenRole as $x) {
+           $id=$x->quotaid;
+           $name=$x->quotaName;
+           if($x->checkquotaid!=0){
+             $output.="<label><input checked type='checkbox' name='quotaid[]' value='$id'> &nbsp;&nbsp;$name:</label>&nbsp;&nbsp;";
+           }else{
+             $output.="<label><input type='checkbox' name='quotaid[]' value='$id'> &nbsp;&nbsp;$name:</label>&nbsp;&nbsp;";
+           }
+          
+         }
+       }else{
+          $output.="<p>There are nothing</p>";
+       }
+      echo  $output;
   }
 }

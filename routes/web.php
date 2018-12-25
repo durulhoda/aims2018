@@ -83,6 +83,7 @@ Route::get('/editRolePower/','AjaxController@editRolePower');
 Route::get('/createRolePower/','AjaxController@createRolePower');
 Route::get('/actionForParentRole/','AjaxController@actionForParentRole');
 Route::get('/actionForQuota/','AjaxController@actionForQuota');
+Route::get('/quotaActionBetweenRole/','AjaxController@quotaActionBetweenRole');
 
 
 // Api Controllers
