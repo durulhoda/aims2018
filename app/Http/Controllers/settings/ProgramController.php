@@ -29,9 +29,7 @@ class ProgramController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		$result=\DB::table('programs')
-		->join('groups','programs.groupid','=','groups.id')
-		->join('programlevels','groups.programLevelid','=','programlevels.id')
-		->select('programs.*', 'programlevels.name as lavelName','groups.name as groupName')
+		->select('programs.*')
 		->get();
 		return view('settings.program.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
@@ -61,7 +59,6 @@ class ProgramController extends Controller
 	{ 
 		$aBean=new Program();
 		$aBean->name=$request->name;
-		$aBean->groupid=$request->groupid;
 		$aBean->save();
 		return redirect('program');
 	}
@@ -80,17 +77,10 @@ class ProgramController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
     	if($permission[4]==1){
-    		 $levels=ProgramLevel::all();
 	    	 $aBean=\DB::table('programs')
-	    	 ->join('programlevels','programs.groupid','=','programlevels.id')
-	    	 ->select('programs.*','programlevels.id as programLevelid')
 	    	 ->where('programs.id',$id)
 	    	 ->first();
-	    	 $groups=\DB::table('groups')
-	    	 ->select('groups.*')
-	    	 ->where('groups.programLevelid',$aBean->programLevelid)
-	    	 ->get();
-	         return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'levels'=>$levels,'groups'=>$groups]);
+	         return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
     	}else{
     		return redirect('program');
     	}
@@ -100,7 +90,6 @@ class ProgramController extends Controller
     {
     	$aBean=Program::findOrfail($id);
     	$aBean->name=$request->name;
-		$aBean->groupid=$request->groupid;
 		$aBean->update();
 		return redirect('program');
     }

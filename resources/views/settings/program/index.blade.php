@@ -19,10 +19,8 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th width="15">Sl No.</th>
-							<th width="20%">Class/Program Level</th>
-							<th width="20%">Group</th>
-							<th width="30%">Class/Program</th>
+							<th>Sl No.</th>
+							<th>Program</th>
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -36,8 +34,6 @@
 						@foreach($result as $aObj)
 						<tr>
 							<td>{{++$id}}</td>
-							<td>{{$aObj->lavelName}}</td>
-							<td>{{$aObj->groupName}}</td>
 							<td>{{$aObj->name}}</td>
 							@if($permission[4]==1)
 							<td> 

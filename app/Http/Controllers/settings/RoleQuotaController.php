@@ -94,16 +94,20 @@ class RoleQuotaController extends Controller
 		$aRoleQuota=new RoleQuota();
 		$vresult=\DB::select('SELECT role_quota.roleid FROM role_quota  WHERE roleid=? GROUP BY role_quota.roleid',[$roleid]);
 		// dd($vresult);
-		if($vresult!=null){
+		if($selectquota!=null){
+			if($vresult!=null){
 			if($vresult[0]->roleid==$id){
 				\DB::select('DELETE  FROM role_quota WHERE roleid=?',[$id]);
 				$this->saveQuotadata($roleid,$selectquota);
 			}else{
 				// This role Already Assign
 			}
+			}else{
+				\DB::select('DELETE  FROM role_quota WHERE roleid=?',[$id]);
+				$this->saveQuotadata($roleid,$selectquota);
+			}
 		}else{
-			\DB::select('DELETE  FROM role_quota WHERE roleid=?',[$id]);
-			$this->saveQuotadata($roleid,$selectquota);
+			// Please select Quota 
 		}
     	return redirect('rolequota');
 	}

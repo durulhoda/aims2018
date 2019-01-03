@@ -175,6 +175,7 @@ function quotaActionBetweenRole(rolecreatorid,roleid){
 	});
 }
 function actionFrom(){
+	var roleto;
 	var rolefrom=$("#rolefrom").val();
 	$.ajax({
 		type:'get',
@@ -183,10 +184,10 @@ function actionFrom(){
 		data: {'roleid':rolefrom},
 		success: function( result ) {
 			$( "#roleid" ).empty().append(result);
+			roleto=$("#roleid").val();
+			quotaActionBetweenRole(rolefrom,roleto);
 		}
 	});
-	var roleto=$("#roleid").val();
-	quotaActionBetweenRole(rolefrom,roleto);
 }
 function actionTo(){
 	var rolefrom=$("#rolefrom").val();

@@ -38,6 +38,7 @@ Route::resource('unit', 'institutesettings\UnitController');
 Route::resource('institute', 'institutesettings\InstituteController');
 Route::resource('instituteReg', 'institutesettings\InstituteRegController');
 Route::resource('domain', 'institutesettings\DomainController');
+Route::resource('vprogramlevels', 'institutesettings\VProgramLevelsController');
 // Basic Settings
 Route::resource('session', 'settings\SessionController');
 Route::resource('programLevel', 'settings\ProgramLevelController');
@@ -84,8 +85,6 @@ Route::get('/createRolePower/','AjaxController@createRolePower');
 Route::get('/actionForParentRole/','AjaxController@actionForParentRole');
 Route::get('/actionForQuota/','AjaxController@actionForQuota');
 Route::get('/quotaActionBetweenRole/','AjaxController@quotaActionBetweenRole');
-
-
 // Api Controllers
 Route::get('aimsapi/read/','AimsApiController@read');
 Route::post('aimsapi/insert/','AimsApiController@insert');

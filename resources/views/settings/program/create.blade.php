@@ -17,21 +17,6 @@
  				{{csrf_field()}}
  				<div class="row">
  					<div class="form-group col-sm-4">
- 						<label class="control-label" for="programLevelid">Class/Program Level  &nbsp; </label>
- 						<select onchange="getGroupByLevel()" name="programLevelid" required="1" class="form-control" id="programLevelid">
- 							<option value="">Select</option>
- 							@foreach($levels as $aObj)
- 								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
- 							@endforeach
- 						</select>
- 					</div>
- 					<div class="form-group col-sm-4">
- 						<label class="control-label" for="groupid">Group  &nbsp; </label>
- 						<select name="groupid" required="1" class="form-control" id="groupid">
- 							<option value="">Select</option>
- 						</select>
- 					</div>
- 					<div class="form-group col-sm-4">
  						<label for="name">Class Name :</label>
  						<input type="text" class="form-control" id="name" name="name">
  					</div>
