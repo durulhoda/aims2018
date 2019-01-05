@@ -20,8 +20,7 @@
 					<thead>
 						<tr>
 							<th>Sl No.</th>
-							<th>Program Level</th>
-							<th>Group Name</th>
+							<th>Group</th>
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -34,7 +33,6 @@
 						@foreach($result as $aObj)
 						<tr>
 							<td>{{$aObj->id}}</td>
-							<td>{{$aObj->levelName}}</td>
 							<td>{{$aObj->name}}</td>
 							@if($permission[4]==1)
 							<td> 

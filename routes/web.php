@@ -39,6 +39,7 @@ Route::resource('institute', 'institutesettings\InstituteController');
 Route::resource('instituteReg', 'institutesettings\InstituteRegController');
 Route::resource('domain', 'institutesettings\DomainController');
 Route::resource('vprogramlevels', 'institutesettings\VProgramLevelsController');
+Route::resource('vprogramgroup', 'institutesettings\VProgramGroupController');
 // Basic Settings
 Route::resource('session', 'settings\SessionController');
 Route::resource('programLevel', 'settings\ProgramLevelController');

@@ -27,7 +27,8 @@ class GroupController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		$result=\DB::table('groups')
-		->join('programlevels','groups.programLevelid','=','programlevels.id')->select('groups.*','programlevels.name as levelName')->get();
+		->select('groups.*')
+		->get();
 		return view('settings.group.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
 	}
 	public function create(){
@@ -44,8 +45,7 @@ class GroupController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
-			$levels=ProgramLevel::all();
-			return view('settings.group.create',['sidebarMenu'=>$sidebarMenu,'levels'=>$levels]);
+			return view('settings.group.create',['sidebarMenu'=>$sidebarMenu]);
 		}else{
 			return redirect('group');
 		}
@@ -54,7 +54,6 @@ class GroupController extends Controller
 	public function store(Request $request){
 		$aGroup=new Group();
 		$aGroup->name=$request->name;
-		$aGroup->programLevelid=$request->programLevelid;
 		$aGroup->save();
 		return redirect('group');
 	}
@@ -73,9 +72,8 @@ class GroupController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		if($permission[4]==1){
-			$levels=ProgramLevel::all();
 			$aGroup=Group::findOrfail($id);
-			return view('settings.group.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aGroup,'levels'=>$levels]);
+			return view('settings.group.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aGroup]);
 		}else{
 			return redirect('group');
 		}
@@ -85,7 +83,6 @@ class GroupController extends Controller
 	{
 		$aGroup=Group::findOrfail($id);
 		$aGroup->name=$request->name;
-		$aGroup->programLevelid=$request->programLevelid;
 		$aGroup->update();
 		return redirect('group');
 	}

@@ -30,9 +30,9 @@ public function getRoleId(){
   WHERE users.id=?',[$this->getUserId()])[0];
  return $aRole->id;
 }
-public function getInstituteId(){
- $aRole=\DB::select('SELECT * FROM institute WHERE userid=?',[$this->getUserId()])[0];
- return $aRole->id;
+public function getInstituteId($roleid){
+    $aInstitute=\DB::select('SELECT * FROM `roles` WHERE id=?',[$roleid])[0];
+    return $aInstitute->instituteid;
 }
 public function getRoleCreatorId(){
  $aRole=\DB::select('select * from roles where id=?',[$this->getRoleId()])[0];
@@ -365,6 +365,7 @@ private  function hasChild($parentid){
     return false;
   }
 }
+
 // For Ajax Purpose
 public function getQuotaByRole($roleid){
   $sql="SELECT * FROM `quotas`

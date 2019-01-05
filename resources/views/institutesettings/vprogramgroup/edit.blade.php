@@ -5,15 +5,15 @@
  	<div class="row">
  		<div class="col-lg-12">
  			<div class="">
- 				<h4>Edit Program Level Assign</h4>
- 				<a href="{{URL::to('/vprogramlevels')}}">All</a>
+ 				<h4>Edit Group Assign</h4>
+ 				<a href="{{URL::to('/vprogramgroup')}}">All</a>
  			</div>
  		</div>
  	</div>
  	<!--overview start-->
  	<div class="row">
  		<div class="col-lg-12">
- 			<form action="{{URL::to('vprogramlevels')}}/{{$bean->id}}" method="POST">
+ 			<form action="{{URL::to('vprogramgroup')}}/{{$bean->id}}" method="POST">
  				@method('PUT')
  				{{csrf_field()}}
  				<div class="row">
@@ -61,11 +61,11 @@
  						</select>
  					</div>
  					<div class="form-group col-sm-4">
- 						<label class="control-label" for="programlevelid">Program Level  &nbsp; </label>
- 						<select name="programlevelid" required="1" class="form-control" id="programlevelid">
+ 						<label class="control-label" for="groupid">Program Level  &nbsp; </label>
+ 						<select name="groupid" required="1" class="form-control" id="groupid">
  							<option value="">Select</option>
- 							@foreach($levelList as $aObj)
- 							@if($aObj->id==$bean->programlevelid)
+ 							@foreach($groupList as $aObj)
+ 							@if($aObj->id==$bean->groupid)
  								<option selected value="{{$aObj->id}}">{{$aObj->name}}</option>
  							@else
  								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
