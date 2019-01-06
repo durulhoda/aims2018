@@ -23,7 +23,6 @@
 							@if($roleid==1)
 							<th>Institute Name</th>
 							@endif
-							<th>Session</th>
 							<th>Class</th>
 							<th>Program Level</th>
 							@if($permission[4]==1)
@@ -42,7 +41,6 @@
 							@if($roleid==1)
 							<td>{{$aObj->instituteName}}</td>
 							@endif
-							<td>{{$aObj->sessionName}}</td>
 							<td>{{$aObj->programName}}</td>
 							<td>{{$aObj->levelName}}</td>
 							@if($permission[4]==1)

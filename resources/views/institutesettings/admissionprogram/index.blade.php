@@ -5,9 +5,9 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="">
-				<h4>Group Assign to Program</h4>
+				<h4>Admission Program</h4>
 				@if($permission[2]==1)
-					<a href="{{URL::to('/vprogramgroup')}}/{{'create'}}">New</a>
+					<a href="{{URL::to('/admissionprogram')}}/{{'create'}}">New</a>
 				@endif
 			</div>
 		</div>
@@ -23,8 +23,10 @@
 							@if($roleid==1)
 							<th>Institute Name</th>
 							@endif
+							<th>Session</th>
 							<th>Class</th>
-							<th>Group</th>
+							<th>Medium</th>
+							<th>Shift</th>
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -35,7 +37,7 @@
 					</thead>
 					<tbody id="datalist">
 						<?php $i=0; ?>
-						@foreach($vprogramGroupList as $aObj)
+						@foreach($result as $aObj)
 						<tr>
 							<td>{{++$i}}</td>
 							@if($roleid==1)
@@ -45,7 +47,7 @@
 							<td>{{$aObj->groupName}}</td>
 							@if($permission[4]==1)
 							<td> 
-								<a href="{{URL::to('/vprogramgroup')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
+								<a href="{{URL::to('/admissionprogram')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
 									<span class="green">
 										<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 									</span>

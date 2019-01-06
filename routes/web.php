@@ -40,6 +40,7 @@ Route::resource('instituteReg', 'institutesettings\InstituteRegController');
 Route::resource('domain', 'institutesettings\DomainController');
 Route::resource('vprogramlevels', 'institutesettings\VProgramLevelsController');
 Route::resource('vprogramgroup', 'institutesettings\VProgramGroupController');
+Route::resource('admissionprogram', 'institutesettings\AdmissionProgramController');
 // Basic Settings
 Route::resource('session', 'settings\SessionController');
 Route::resource('programLevel', 'settings\ProgramLevelController');
@@ -89,5 +90,17 @@ Route::get('/quotaActionBetweenRole/','AjaxController@quotaActionBetweenRole');
 // Api Controllers
 Route::get('aimsapi/read/','AimsApiController@read');
 Route::post('aimsapi/insert/','AimsApiController@insert');
+
+
+
+// For school Section
+
+
+Route::get('/school', function () {
+    return view('home1');
+});
+Route::get('/admission', function () {
+    return view('admission');
+});
 
 
