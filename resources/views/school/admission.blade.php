@@ -9,25 +9,24 @@
                     <div class="col-sm-12">
                         <form class="form-horizontal" id="regForm" action="demo.html" method="post">
                             <div class="formsegment">
+                                <input type="hidden" value="{{$instituteId}}" name="instituteid">
                                 <div class="form-group row">
                                     <label class="col-sm-2 control-label" for="sessionid">Session</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="sessionid">
                                             <option value="">SELECT</option>
-                                            <option value="">2</option>
-                                            <option value="">3</option>
-                                            <option value="">4</option>
-                                            <option value="">5</option>
+                                            @foreach($sessionList as $aObj)
+                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
+                                             @endforeach
                                         </select>
                                     </div>
                                     <label class="col-sm-2 control-label" for="programid">Class</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="programid">
                                             <option value="">SELECT</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                             @foreach($programList as $aObj)
+                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
+                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -36,20 +35,18 @@
                                     <div class="col-sm-4">
                                         <select class="form-control" name="groupid">
                                             <option value="">SELECT</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                             @foreach($groupList as $aObj)
+                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
+                                             @endforeach
                                         </select>
                                     </div>
                                     <label class="col-sm-2 control-label" for="mediumid">Medium</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="mediumid">
                                             <option value="">SELECT</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                            @foreach($mediumList as $aObj)
+                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
+                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -58,10 +55,9 @@
                                     <div class="col-sm-4">
                                         <select class="form-control" name="shiftid">
                                             <option value="">SELECT</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                             @foreach($shiftList as $aObj)
+                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
+                                             @endforeach
                                         </select>
                                     </div>
                                 </div>

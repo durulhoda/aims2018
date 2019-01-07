@@ -25,6 +25,7 @@
 							@endif
 							<th>Session</th>
 							<th>Class</th>
+							<th>Group</th>
 							<th>Medium</th>
 							<th>Shift</th>
 							@if($permission[4]==1)
@@ -43,8 +44,11 @@
 							@if($roleid==1)
 							<td>{{$aObj->instituteName}}</td>
 							@endif
+							<td>{{$aObj->sessionName}}</td>
 							<td>{{$aObj->programName}}</td>
 							<td>{{$aObj->groupName}}</td>
+							<td>{{$aObj->mediumName}}</td>
+							<td>{{$aObj->shiftName}}</td>
 							@if($permission[4]==1)
 							<td> 
 								<a href="{{URL::to('/admissionprogram')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">

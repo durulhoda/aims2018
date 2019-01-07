@@ -28,10 +28,20 @@ class ProgramController extends Controller
 		}
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
-		$result=\DB::table('programs')
-		->select('programs.*')
-		->get();
-		return view('settings.program.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
+		if($rh->getRoleId()==1){
+			$result=\DB::table('programs')
+			->join('institute', 'programs.instituteid', '=', 'institute.id')
+			->select('programs.id','institute.name AS instituteName','programs.name')
+			->get();
+		}else{
+			$instituteId=$rh->getInstituteId($rh->getRoleId());
+			$result=\DB::table('programs')
+			->join('institute', 'programs.instituteid', '=', 'institute.id')
+			->select('programs.id','institute.name AS instituteName','programs.name')
+			->where('instituteid',$instituteId)
+			->get();
+		}
+		return view('settings.program.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission,'roleid'=>$rh->getRoleId()]);
 	}
 	public function create()
 	{
@@ -48,8 +58,18 @@ class ProgramController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
-			$levels=ProgramLevel::all();
-			return view('settings.program.create',compact('sidebarMenu','levels'));
+			if($rh->getRoleId()==1){
+	        $instituteList=\DB::table('institute')
+	        ->select('id','name')
+	        ->get();
+	        return view('settings.program.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
+	      	}else{
+	        $aInstitute=\DB::table('institute')
+	        ->select('id','name')
+	        ->where('userid',$rh->getUserId())
+	        ->first();
+	        return view('settings.program.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
+	     	 }
 		}else{
 			return redirect('program');
 		}
@@ -57,9 +77,19 @@ class ProgramController extends Controller
 	}
 	public function store(Request $request)
 	{ 
-		$aBean=new Program();
-		$aBean->name=$request->name;
-		$aBean->save();
+		$aProgram=new Program();
+		$aProgram->instituteid=$request->instituteid;
+		$aProgram->name=$request->name;
+		$hasItem=\DB::table('programs')
+	    ->select('programs.*')
+	    ->where('instituteid',$aProgram->instituteid)
+	    ->where('name',$aProgram->name)
+	    ->exists();
+	     if(!$hasItem){
+       		$aProgram->save();
+	    }else{
+	        // This item already assign
+	    }
 		return redirect('program');
 	}
 	public function edit($id)
@@ -77,10 +107,19 @@ class ProgramController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
     	if($permission[4]==1){
-	    	 $aBean=\DB::table('programs')
-	    	 ->where('programs.id',$id)
-	    	 ->first();
-	         return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
+	    	 $aProgram=Program::findOrfail($id);
+		   if($rh->getRoleId()==1){
+		        $instituteList=\DB::table('institute')
+		        ->select('id','name')
+		        ->get();
+		        return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aProgram,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
+		      }else{
+		        $aInstitute=\DB::table('institute')
+		        ->select('id','name')
+		        ->where('userid',$rh->getUserId())
+		        ->first();
+		        return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aProgram,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
+		      }
     	}else{
     		return redirect('program');
     	}
@@ -88,9 +127,19 @@ class ProgramController extends Controller
     }
     public function update(Request $request, $id)
     {
-    	$aBean=Program::findOrfail($id);
-    	$aBean->name=$request->name;
-		$aBean->update();
+    	$aProgram=Program::findOrfail($id);
+    	$aProgram->instituteid=$request->instituteid;
+    	$aProgram->name=$request->name;
+    	$hasItem=\DB::table('programs')
+	    ->select('programs.*')
+	    ->where('instituteid',$aProgram->instituteid)
+	    ->where('name',$aProgram->name)
+	    ->exists();
+	     if(!$hasItem){
+       		$aProgram->update();
+	    }else{
+	        // This item already assign
+	    }
 		return redirect('program');
     }
 }

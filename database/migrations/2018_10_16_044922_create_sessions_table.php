@@ -15,6 +15,7 @@ class CreateSessionsTable extends Migration
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('instituteid')->length(20);
             $table->string('name',10);
             $table->integer('status')->length(5)->default(0);
             $table->timestamps();

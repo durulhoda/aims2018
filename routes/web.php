@@ -12,7 +12,6 @@
 // Route::get('/', function () {
 //     return view('home');
 // })->middleware('auth');
-
 Route::get('/', 'frontController@index');
 Route::get('/error', function(){
 return view('errorpage');
@@ -24,12 +23,13 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::resource('role','role\RoleController');
 Route::resource('permission','role\PermissionController');
 Route::resource('user','UserController');
-// 	General Settings
+// Common Settings
 Route::resource('division', 'institutesettings\DivisionController')->middleware('auth');
 Route::resource('district', 'institutesettings\DistrictController');
 Route::resource('thana', 'institutesettings\ThanaController');
 Route::resource('localgov', 'institutesettings\LocalGovController');
 Route::resource('postoffice', 'institutesettings\PostOfficeController');
+// 	General Settings
 Route::resource('institutetype', 'institutesettings\InstituteTypeController');
 Route::resource('institutecategory', 'institutesettings\InstituteCategoryController');
 Route::resource('institutesubcategory', 'institutesettings\InstituteSubCategoryController');
@@ -73,6 +73,12 @@ Route::resource('student', 'studentsettings\StudentController');
 
 // Menu Settings
 Route::resource('menu', 'menusettings\MenuController');
+
+// For school Section
+Route::get('/school', function () {
+    return view('school.home');
+});
+Route::resource('admission', 'school\AdmissionController');
 // For Ajax 
 Route::get('/getPrograms/','AjaxController@getPrograms');
 Route::get('/getGroupByLevel/','AjaxController@getGroupByLevel');
@@ -90,17 +96,5 @@ Route::get('/quotaActionBetweenRole/','AjaxController@quotaActionBetweenRole');
 // Api Controllers
 Route::get('aimsapi/read/','AimsApiController@read');
 Route::post('aimsapi/insert/','AimsApiController@insert');
-
-
-
-// For school Section
-
-
-Route::get('/school', function () {
-    return view('home1');
-});
-Route::get('/admission', function () {
-    return view('admission');
-});
 
 

@@ -16,6 +16,19 @@
  			<form action="{{URL::to('program')}}" method="POST">
  				{{csrf_field()}}
  				<div class="row">
+ 					@if($roleid==1)
+ 					<div class="col-xs-10 col-sm-4">
+ 						<label class="control-label" for="instituteid">Institute  &nbsp; </label>
+ 						<select name="instituteid" required="1" class="form-control" id="instituteid">
+ 							<option value="">Select</option>
+ 							@foreach($instituteList as $aObj)
+ 								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
+ 							@endforeach
+ 						</select>
+ 					</div>
+ 					@else
+ 					<input type="hidden" value="{{$aInstitute->id}}" name="instituteid">
+ 					@endif
  					<div class="form-group col-sm-4">
  						<label for="name">Class Name :</label>
  						<input type="text" class="form-control" id="name" name="name">
