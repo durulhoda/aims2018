@@ -20,6 +20,9 @@
 					<thead>
 						<tr>
 							<th>Sl No.</th>
+							@if($roleid==1)
+							<th>Institute Name</th>
+							@endif
 							<th>Group</th>
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
@@ -30,9 +33,13 @@
 						</tr>
 					</thead>
 					 <tbody id="datalist">
+					 	<?php $id=0; ?>
 						@foreach($result as $aObj)
 						<tr>
-							<td>{{$aObj->id}}</td>
+							<td>{{++$id}}</td>
+							@if($roleid==1)
+							<td>{{$aObj->instituteName}}</td>
+							@endif
 							<td>{{$aObj->name}}</td>
 							@if($permission[4]==1)
 							<td> 

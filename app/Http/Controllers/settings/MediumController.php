@@ -26,8 +26,21 @@ class MediumController extends Controller
         }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
-        $result=Medium::all();
-        return view('settings.medium.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
+        $roleid=$rh->getRoleId();
+        if($roleid==1){
+            $result=\DB::table('mediums')
+            ->join('institute', 'mediums.instituteid', '=', 'institute.id')
+            ->select('mediums.*','institute.name AS instituteName')
+            ->get();
+        }else{
+            $instituteId=$rh->getInstituteId($rh->getRoleId());
+            $result=\DB::table('mediums')
+            ->join('institute', 'mediums.instituteid', '=', 'institute.id')
+            ->select('mediums.*','institute.name AS instituteName')
+            ->where('instituteid',$instituteId)
+            ->get();
+        }
+        return view('settings.medium.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission,'roleid'=>$roleid]);
     }
     public function create()
     {
@@ -44,16 +57,38 @@ class MediumController extends Controller
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         if($permission[2]==1){
-         return view('settings.medium.create',['sidebarMenu'=>$sidebarMenu]);
+            $roleid=$rh->getRoleId();
+            if($roleid==1){
+                $instituteList=\DB::table('institute')
+                ->select('id','name')
+                ->get();
+                return view('settings.medium.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'instituteList'=>$instituteList]);
+            }else{
+                $aInstitute=\DB::table('institute')
+                ->select('id','name')
+                ->where('userid',$rh->getUserId())
+                ->first();
+                return view('settings.medium.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
+             }
         }else{
             return redirect('medium');
         }
     }
     public function store(Request $request)
     {
-        $aBean=new Medium();
-        $aBean->name=$request->name;
-        $aBean->save();
+        $aMedium=new Medium();
+        $aMedium->name=$request->name;
+        $aMedium->instituteid=$request->instituteid;
+        $hasItem=\DB::table('mediums')
+        ->select('mediums.*')
+        ->where('instituteid',$aMedium->instituteid)
+        ->where('name',$aMedium->name)
+        ->exists();
+         if(!$hasItem){
+            $aMedium->save();
+        }else{
+            // This item already assign
+        }
         return redirect('medium');
     }
     public function edit($id)
@@ -72,7 +107,19 @@ class MediumController extends Controller
         $permission=$rh->getPermission($menuid);
         if($permission[4]==1){
          $aMedium=Medium::findOrfail($id);
-         return view('settings.medium.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aMedium]);
+         $roleid=$rh->getRoleId();
+         if($roleid==1){
+                $instituteList=\DB::table('institute')
+                ->select('id','name')
+                ->get();
+                return view('settings.medium.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aMedium,'roleid'=>$roleid,'instituteList'=>$instituteList]);
+              }else{
+                $aInstitute=\DB::table('institute')
+                ->select('id','name')
+                ->where('userid',$rh->getUserId())
+                ->first();
+                return view('settings.medium.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aMedium,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
+              }
         }else{
             return redirect('medium');
         }
@@ -80,9 +127,19 @@ class MediumController extends Controller
 
     public function update(Request $request, $id)
     {
-        $aBean=Medium::findOrfail($id);
-        $aBean->name=$request->name;
-        $aBean->update();
+        $aMedium=Medium::findOrfail($id);
+        $aMedium->name=$request->name;
+        $aMedium->instituteid=$request->instituteid;
+        $hasItem=\DB::table('mediums')
+        ->select('mediums.*')
+        ->where('instituteid',$aMedium->instituteid)
+        ->where('name',$aMedium->name)
+        ->exists();
+         if(!$hasItem){
+            $aMedium->update();
+        }else{
+            // This item already assign
+        }
         return redirect('medium');
     }
 }

@@ -13,10 +13,8 @@ class CreateVprogramGroupTable extends Migration
      */
     public function up()
     {
-        Schema::create('vprogram_group', function (Blueprint $table) {
+        Schema::create('vprogramgroup', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('instituteid')->length(20);
-            // $table->integer('sessionid')->length(20);
             $table->integer('programid')->length(20);
             $table->integer('groupid')->length(20);
             $table->integer('status')->length(5)->default(0);
@@ -31,6 +29,6 @@ class CreateVprogramGroupTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vprogram_group');
+        Schema::dropIfExists('vprogramgroup');
     }
 }

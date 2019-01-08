@@ -224,4 +224,35 @@ public function editRolePower(Request $request){
        }
       echo  $output;
   }
+  public function getValue(Request $request){
+      $option=$request->option;
+      $instituteid=$request->instituteid;
+      $methodid=$request->methodid;
+      if($option="programgroup"){
+          if($methodid==1){
+              $this->getProgram($instituteid);
+          }elseif($methodid==2){
+              $this->getGroup($instituteid);
+          }
+      }
+  }
+  private function getProgram($instituteid){
+      $sql="SELECT * FROM `programs` WHERE `instituteid`=?";
+      $result=\DB::select($sql,[$instituteid]);
+      $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  private function getGroup($instituteid){
+      $sql="SELECT * FROM `groups` WHERE `instituteid`=?";
+      $result=\DB::select($sql,[$instituteid]);
+      $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
 }
+

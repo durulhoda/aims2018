@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class ProgramLevel extends Model
 {
 	protected $table="programlevels";
-    protected $fillable = ['name','status'];
+    protected $fillable = ['instituteid','name','status'];
 }

@@ -32,9 +32,10 @@
 						</tr>
 					</thead>
 					 <tbody id="datalist">
+					 	<?php $id=0; ?>
 						@foreach($result as $aObj)
 						<tr>
-							<td>{{$aObj->id}}</td>
+							<td>{{++$id}}</td>
 							<td>{{$aObj->name}}</td>
 							<td>{{$aObj->startTime}}</td>
 							<td>{{$aObj->endTime}}</td>

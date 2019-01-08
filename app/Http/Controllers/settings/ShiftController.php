@@ -26,12 +26,25 @@ class ShiftController extends Controller
         }
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
-		$result=Shift::all();
-		foreach ($result as $aBean) {
+        $roleid=$rh->getRoleId();
+        if($roleid==1){
+            $result=\DB::table('shifts')
+            ->join('institute', 'shifts.instituteid', '=', 'institute.id')
+            ->select('shifts.*','institute.name AS instituteName')
+            ->get();
+        }else{
+            $instituteId=$rh->getInstituteId($rh->getRoleId());
+            $result=\DB::table('shifts')
+            ->join('institute', 'shifts.instituteid', '=', 'institute.id')
+            ->select('shifts.*','institute.name AS instituteName')
+            ->where('instituteid',$instituteId)
+            ->get();
+        }
+        foreach ($result as $aBean) {
 			$aBean->startTime=date("g:i a", strtotime($aBean->startTime));
 			$aBean->endTime=date("g:i a", strtotime($aBean->endTime));
 		}
-		return view('settings.shift.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
+        return view('settings.shift.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission,'roleid'=>$roleid]);
 	}
 	public function create(){
 		$rh=new RoleHelper();
@@ -47,21 +60,45 @@ class ShiftController extends Controller
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
-			return view('settings.shift.create',['sidebarMenu'=>$sidebarMenu]);
+			$roleid=$rh->getRoleId();
+            if($roleid==1){
+                $instituteList=\DB::table('institute')
+                ->select('id','name')
+                ->get();
+                return view('settings.shift.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'instituteList'=>$instituteList]);
+            }else{
+                $aInstitute=\DB::table('institute')
+                ->select('id','name')
+                ->where('userid',$rh->getUserId())
+                ->first();
+                return view('settings.shift.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
+             }
 		}else{
 			return redirect('shift');
 		}
 		
 	}
 	public function store(Request $request){
-		$aBean=new Shift();
-		$aBean->name=$request->name;
-		$aBean->startTime=$request->startTime;
-		$aBean->endTime=$request->endTime;
-		$aBean->startTime=date("H:i", strtotime($aBean->startTime));
-		$aBean->endTime=date("H:i", strtotime($aBean->endTime));
-		echo $aBean->endTime;
-		$aBean->save();
+		$aShift=new Shift();
+		$aShift->instituteid=$request->instituteid;
+		$aShift->name=$request->name;
+		$aShift->startTime=$request->startTime;
+		$aShift->endTime=$request->endTime;
+		$aShift->startTime=date("H:i", strtotime($aShift->startTime));
+		$aShift->endTime=date("H:i", strtotime($aShift->endTime));
+		// echo $aShift->endTime;
+		$hasItem=\DB::table('shifts')
+        ->select('shifts.*')
+        ->where('instituteid',$aShift->instituteid)
+        ->where('name',$aShift->name)
+        ->where('startTime',$aShift->startTime)
+        ->where('endTime',$aShift->startTime)
+        ->exists();
+         if(!$hasItem){
+            $aShift->save();
+        }else{
+            // This item already assign
+        }
 		return redirect('shift');
 	}
 	public function edit($id)
@@ -79,10 +116,22 @@ class ShiftController extends Controller
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
 		if($permission[4]==1){
-			$aBean=Shift::findOrfail($id);
-			$aBean->startTime=date("g:i a", strtotime($aBean->startTime));
-			$aBean->endTime=date("g:i a", strtotime($aBean->endTime));
-			return view('settings.shift.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
+			$aShift=Shift::findOrfail($id);
+			$aShift->startTime=date("g:i a", strtotime($aShift->startTime));
+			$aShift->endTime=date("g:i a", strtotime($aShift->endTime));
+			$roleid=$rh->getRoleId();
+           if($roleid==1){
+                $instituteList=\DB::table('institute')
+                ->select('id','name')
+                ->get();
+                return view('settings.shift.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aShift,'roleid'=>$roleid,'instituteList'=>$instituteList]);
+              }else{
+                $aInstitute=\DB::table('institute')
+                ->select('id','name')
+                ->where('userid',$rh->getUserId())
+                ->first();
+                return view('settings.shift.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aShift,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
+              }
 		}else{
 			return redirect('shift');
 		}
@@ -90,13 +139,24 @@ class ShiftController extends Controller
 	}
 	public function update(Request $request, $id)
 	{
-		$aBean=Shift::findOrfail($id);
-		$aBean->name=$request->name;
-		$aBean->startTime=$request->startTime;
-		$aBean->endTime=$request->endTime;
-		$aBean->startTime=date("H:i", strtotime($aBean->startTime));
-		$aBean->endTime=date("H:i", strtotime($aBean->endTime));
-		$aBean->update();
+		$aShift=Shift::findOrfail($id);
+		$aShift->name=$request->name;
+		$aShift->startTime=$request->startTime;
+		$aShift->endTime=$request->endTime;
+		$aShift->startTime=date("H:i", strtotime($aShift->startTime));
+		$aShift->endTime=date("H:i", strtotime($aShift->endTime));
+		$hasItem=\DB::table('shifts')
+        ->select('shifts.*')
+        ->where('instituteid',$aShift->instituteid)
+        ->where('name',$aShift->name)
+        ->where('startTime',$aShift->startTime)
+        ->where('endTime',$aShift->startTime)
+        ->exists();
+         if(!$hasItem){
+            $aShift->update();
+        }else{
+            // This item already assign
+        }
 		return redirect('shift');
 	}
 }

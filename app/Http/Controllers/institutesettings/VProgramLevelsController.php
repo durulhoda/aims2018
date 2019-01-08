@@ -30,9 +30,9 @@ class VProgramLevelsController extends Controller
     $permission=$rh->getPermission($menuid);
     if($rh->getRoleId()==1){
         $vprogramlevelList=\DB::table('vprogramlevels')
-        ->join('institute', 'vprogramlevels.instituteid', '=', 'institute.id')
         ->join('programs', 'vprogramlevels.programid', '=', 'programs.id')
         ->join('programlevels', 'vprogramlevels.programlevelid', '=', 'programlevels.id')
+        ->join('institute', 'programs.instituteid', '=', 'institute.id')
         ->select('vprogramlevels.id','institute.name AS instituteName','programs.name AS programName','programlevels.name AS levelName')
         ->orderByRaw('id')
         ->get();

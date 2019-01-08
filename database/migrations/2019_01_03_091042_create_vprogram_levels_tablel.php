@@ -15,8 +15,6 @@ class CreateVprogramLevelsTablel extends Migration
     {
         Schema::create('vprogramlevels', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('instituteid')->length(20);
-            // $table->integer('sessionid')->length(20);
             $table->integer('programid')->length(20);
             $table->integer('programlevelid')->length(20);
             $table->integer('status')->length(5)->default(0);

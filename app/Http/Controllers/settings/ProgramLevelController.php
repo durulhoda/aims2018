@@ -27,8 +27,21 @@ public function index()
   }
   $sidebarMenu=$rh->getMenu();
   $permission=$rh->getPermission($menuid);
-  $result=ProgramLevel::all();
-  return view('settings.programLevel.index',compact('sidebarMenu','result','permission'));
+  $roleid=$rh->getRoleId();
+  if($roleid==1){
+    $result=\DB::table('programlevels')
+      ->join('institute', 'programlevels.instituteid', '=', 'institute.id')
+      ->select('programlevels.*','institute.name AS instituteName')
+      ->get();
+  }else{
+    $instituteId=$rh->getInstituteId($rh->getRoleId());
+    $result=\DB::table('programlevels')
+      ->join('institute', 'programlevels.instituteid', '=', 'institute.id')
+      ->select('programlevels.*','institute.name AS instituteName')
+      ->where('instituteid',$instituteId)
+      ->get();
+  }
+  return view('settings.programLevel.index',compact('sidebarMenu','result','permission','roleid'));
 }
 public function create()
 {
@@ -45,7 +58,18 @@ public function create()
   $sidebarMenu=$rh->getMenu();
   $permission=$rh->getPermission($menuid);
   if($permission[2]==1){
-     return view('settings.programLevel.create',['sidebarMenu'=>$sidebarMenu]);
+      if($rh->getRoleId()==1){
+          $instituteList=\DB::table('institute')
+          ->select('id','name')
+          ->get();
+          return view('settings.programLevel.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
+          }else{
+          $aInstitute=\DB::table('institute')
+          ->select('id','name')
+          ->where('userid',$rh->getUserId())
+          ->first();
+          return view('settings.programLevel.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
+        }
  }else{
      return redirect('programLevel');
  }
@@ -55,9 +79,19 @@ public function create()
 
 public function store(Request $request)
 {
-    $aBean=new ProgramLevel();
-    $aBean->name=$request->name;
-    $aBean->save();
+    $aProgramLevel=new ProgramLevel();
+    $aProgramLevel->instituteid=$request->instituteid;
+    $aProgramLevel->name=$request->name;
+    $hasItem=\DB::table('programlevels')
+      ->select('programlevels.*')
+      ->where('instituteid',$aProgramLevel->instituteid)
+      ->where('name',$aProgramLevel->name)
+      ->exists();
+       if(!$hasItem){
+          $aProgramLevel->save();
+      }else{
+          // This item already assign
+      }
     return redirect('programLevel');
 }
 
@@ -75,9 +109,20 @@ if($hasMenu==false){
 }
 $sidebarMenu=$rh->getMenu();
 $permission=$rh->getPermission($menuid);
-$aBean=ProgramLevel::findOrfail($id);
 if($permission[4]==1){
-    return view('settings.programLevel.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean]);
+    $aProgramLevel=ProgramLevel::findOrfail($id);
+       if($rh->getRoleId()==1){
+            $instituteList=\DB::table('institute')
+            ->select('id','name')
+            ->get();
+            return view('settings.programLevel.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aProgramLevel,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
+          }else{
+            $aInstitute=\DB::table('institute')
+            ->select('id','name')
+            ->where('userid',$rh->getUserId())
+            ->first();
+            return view('settings.programLevel.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aProgramLevel,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
+        }
 }else{
     return redirect('programLevel');
 }
@@ -86,9 +131,19 @@ if($permission[4]==1){
 
 public function update(Request $request,$id)
 {
-    $aBean = ProgramLevel::findOrfail($id);
-    $aBean->name=$request->name;
-    $aBean->update();
+    $aProgramLevel = ProgramLevel::findOrfail($id);
+    $aProgramLevel->instituteid=$request->instituteid;
+    $aProgramLevel->name=$request->name;
+    $hasItem=\DB::table('programlevels')
+      ->select('programlevels.*')
+      ->where('instituteid',$aProgramLevel->instituteid)
+      ->where('name',$aProgramLevel->name)
+      ->exists();
+       if(!$hasItem){
+          $aProgramLevel->update();
+      }else{
+          // This item already assign
+      }
     return redirect('programLevel');
 }
 }

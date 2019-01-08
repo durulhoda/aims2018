@@ -194,6 +194,26 @@ function actionTo(){
 	var roleto=$("#roleid").val();
 	quotaActionBetweenRole(rolefrom,roleto);
 }
-
+function getCommonChange(option){
+	var instituteid=$("#instituteid").val();
+	if(option=="programgroup"){
+		getValue(instituteid,option,"#programid",1);
+		getValue(instituteid,option,"#groupid",2);
+	}elseif(option=="levelprogram"){
+		getValue(instituteid,option,"#programid",1);
+		getValue(instituteid,option,"#groupid",2);
+	}
+}
+function getValue(instituteid,option,output,methodid){
+	$.ajax({
+		type:'get',
+		url: "/getValue",
+		dataType: "html",
+		data: {'instituteid':instituteid,'option':option,'methodid':methodid},
+		success: function( result ) {
+			$(output).empty().append(result);
+		}
+	});
+}
 
 

@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class VProgramGroup extends Model
 {
-    protected $table="vprogram_group";
-	protected $fillable = ['instituteid','sessionid','programid','groupid','status'];
+    protected $table="vprogramgroup";
+	protected $fillable = ['programid','groupid','status'];
 }

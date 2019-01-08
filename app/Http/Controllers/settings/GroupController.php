@@ -26,10 +26,21 @@ class GroupController extends Controller
 		}
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
-		$result=\DB::table('groups')
-		->select('groups.*')
-		->get();
-		return view('settings.group.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission]);
+		$roleid=$rh->getRoleId();
+		if($roleid==1){
+			$result=\DB::table('groups')
+			->join('institute', 'groups.instituteid', '=', 'institute.id')
+			->select('groups.*','institute.name AS instituteName')
+			->get();
+		}else{
+			$instituteId=$rh->getInstituteId($rh->getRoleId());
+			$result=\DB::table('groups')
+			->join('institute', 'groups.instituteid', '=', 'institute.id')
+			->select('groups.*','institute.name AS instituteName')
+			->where('instituteid',$instituteId)
+			->get();
+		}
+		return view('settings.group.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission,'roleid'=>$roleid]);
 	}
 	public function create(){
 		$rh=new RoleHelper();
@@ -45,7 +56,19 @@ class GroupController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
-			return view('settings.group.create',['sidebarMenu'=>$sidebarMenu]);
+			$roleid=$rh->getRoleId();
+			if($roleid==1){
+		        $instituteList=\DB::table('institute')
+		        ->select('id','name')
+		        ->get();
+		        return view('settings.group.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'instituteList'=>$instituteList]);
+	      	}else{
+		        $aInstitute=\DB::table('institute')
+		        ->select('id','name')
+		        ->where('userid',$rh->getUserId())
+		        ->first();
+		        return view('settings.group.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
+	     	 }
 		}else{
 			return redirect('group');
 		}
@@ -54,7 +77,17 @@ class GroupController extends Controller
 	public function store(Request $request){
 		$aGroup=new Group();
 		$aGroup->name=$request->name;
-		$aGroup->save();
+		$aGroup->instituteid=$request->instituteid;
+		$hasItem=\DB::table('groups')
+	    ->select('groups.*')
+	    ->where('instituteid',$aGroup->instituteid)
+	    ->where('name',$aGroup->name)
+	    ->exists();
+	     if(!$hasItem){
+       		$aGroup->save();
+	    }else{
+	        // This item already assign
+	    }
 		return redirect('group');
 	}
 	public function edit($id)
@@ -73,7 +106,19 @@ class GroupController extends Controller
 		$permission=$rh->getPermission($menuid);
 		if($permission[4]==1){
 			$aGroup=Group::findOrfail($id);
-			return view('settings.group.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aGroup]);
+		   	$roleid=$rh->getRoleId();
+			if($roleid==1){
+		        $instituteList=\DB::table('institute')
+		        ->select('id','name')
+		        ->get();
+		        return view('settings.group.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aGroup,'roleid'=>$roleid,'instituteList'=>$instituteList]);
+		      }else{
+		        $aInstitute=\DB::table('institute')
+		        ->select('id','name')
+		        ->where('userid',$rh->getUserId())
+		        ->first();
+		        return view('settings.group.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aGroup,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
+		      }
 		}else{
 			return redirect('group');
 		}
@@ -83,7 +128,17 @@ class GroupController extends Controller
 	{
 		$aGroup=Group::findOrfail($id);
 		$aGroup->name=$request->name;
-		$aGroup->update();
+		$aGroup->instituteid=$request->instituteid;
+		$hasItem=\DB::table('groups')
+	    ->select('groups.*')
+	    ->where('instituteid',$aGroup->instituteid)
+	    ->where('name',$aGroup->name)
+	    ->exists();
+	     if(!$hasItem){
+       		$aGroup->update();
+	    }else{
+	        // This item already assign
+	    }
 		return redirect('group');
 	}
 }

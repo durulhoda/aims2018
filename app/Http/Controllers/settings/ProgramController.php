@@ -107,7 +107,7 @@ class ProgramController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
     	if($permission[4]==1){
-	    	 $aProgram=Program::findOrfail($id);
+	    	$aProgram=Program::findOrfail($id);
 		   if($rh->getRoleId()==1){
 		        $instituteList=\DB::table('institute')
 		        ->select('id','name')

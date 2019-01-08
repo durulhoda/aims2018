@@ -15,6 +15,7 @@ class CreateProgramlevelsTable extends Migration
     {
         Schema::create('programlevels', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('instituteid')->length(20);
             $table->string('name',255);
             $table->integer('status')->length(5)->default(0);
             $table->timestamps();
