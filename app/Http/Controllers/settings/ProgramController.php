@@ -28,18 +28,12 @@ class ProgramController extends Controller
 		}
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
+		$aProgram= new Program();
 		if($rh->getRoleId()==1){
-			$result=\DB::table('programs')
-			->join('institute', 'programs.instituteid', '=', 'institute.id')
-			->select('programs.id','institute.name AS instituteName','programs.name')
-			->get();
+			$result=$aProgram->getAllPrograms();
 		}else{
-			$instituteId=$rh->getInstituteId($rh->getRoleId());
-			$result=\DB::table('programs')
-			->join('institute', 'programs.instituteid', '=', 'institute.id')
-			->select('programs.id','institute.name AS instituteName','programs.name')
-			->where('instituteid',$instituteId)
-			->get();
+			$aInstitute=$rh->getInstitute();
+			$result=$aProgram->getAllPrograms($aInstitute->id);
 		}
 		return view('settings.program.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission,'roleid'=>$rh->getRoleId()]);
 	}
@@ -59,15 +53,10 @@ class ProgramController extends Controller
 		$permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
 			if($rh->getRoleId()==1){
-	        $instituteList=\DB::table('institute')
-	        ->select('id','name')
-	        ->get();
+	        $instituteList=$rh->getInstituteList();
 	        return view('settings.program.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
 	      	}else{
-	        $aInstitute=\DB::table('institute')
-	        ->select('id','name')
-	        ->where('userid',$rh->getUserId())
-	        ->first();
+	        $aInstitute=$rh->getInstitute();
 	        return view('settings.program.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
 	     	 }
 		}else{
@@ -109,15 +98,10 @@ class ProgramController extends Controller
     	if($permission[4]==1){
 	    	$aProgram=Program::findOrfail($id);
 		   if($rh->getRoleId()==1){
-		        $instituteList=\DB::table('institute')
-		        ->select('id','name')
-		        ->get();
+		        $instituteList=$rh->getInstituteList();
 		        return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aProgram,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
 		      }else{
-		        $aInstitute=\DB::table('institute')
-		        ->select('id','name')
-		        ->where('userid',$rh->getUserId())
-		        ->first();
+		        $aInstitute=$rh->getInstitute();
 		        return view('settings.program.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aProgram,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
 		      }
     	}else{

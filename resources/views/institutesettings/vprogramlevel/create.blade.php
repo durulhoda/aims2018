@@ -19,7 +19,7 @@
  					@if($roleid==1)
  					<div class="col-xs-10 col-sm-4">
  						<label class="control-label" for="instituteid">Institute  &nbsp; </label>
- 						<select name="instituteid" required="1" class="form-control" id="instituteid">
+ 						<select onchange="getCommonChange('levelprogram')" name="instituteid" required="1" class="form-control" id="instituteid">
  							<option value="">Select</option>
  							@foreach($instituteList as $aObj)
  								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
@@ -29,20 +29,20 @@
  					@else
  					<input type="hidden" value="{{$aInstitute->id}}" name="instituteid">
  					@endif
- 					<div class="col-xs-10 col-sm-4">
- 						<label class="control-label" for="programid">Class  &nbsp; </label>
- 						<select name="programid" required="1" class="form-control" id="programid">
- 							<option value="">Select</option>
- 							@foreach($programList as $aObj)
- 								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
- 							@endforeach
- 						</select>
- 					</div>
  					<div class="form-group col-sm-4">
  						<label class="control-label" for="programlevelid">Program Level  &nbsp; </label>
  						<select name="programlevelid" required="1" class="form-control" id="programlevelid">
  							<option value="">Select</option>
  							@foreach($levelList as $aObj)
+ 								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
+ 							@endforeach
+ 						</select>
+ 					</div>
+ 					<div class="col-xs-10 col-sm-4">
+ 						<label class="control-label" for="programid">Class  &nbsp; </label>
+ 						<select name="programid" required="1" class="form-control" id="programid">
+ 							<option value="">Select</option>
+ 							@foreach($programList as $aObj)
  								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
  							@endforeach
  						</select>

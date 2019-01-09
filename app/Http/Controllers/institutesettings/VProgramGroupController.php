@@ -28,24 +28,12 @@ class VProgramGroupController extends Controller
 		}
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
+		$aVProgramGroup=new VProgramGroup();
 		if($rh->getRoleId()==1){
-			$vprogramGroupList=\DB::table('vprogramgroup')
-			->join('programs', 'vprogramgroup.programid', '=', 'programs.id')
-			->join('institute', 'programs.instituteid', '=', 'institute.id')
-			->join('groups', 'vprogramgroup.groupid', '=', 'groups.id')
-			->select('vprogramgroup.id','institute.name AS instituteName','programs.name AS programName','groups.name AS groupName')
-			->orderByRaw('id')
-			->get();
+			$vprogramGroupList=$aVProgramGroup->getAllProgramGroup();
 		}else{
-			$instituteId=$rh->getInstituteId($rh->getRoleId());
-			$vprogramGroupList=\DB::table('vprogramgroup')
-			->join('programs', 'vprogramgroup.programid', '=', 'programs.id')
-			->join('groups', 'vprogramgroup.groupid', '=', 'groups.id')
-			->join('institute', 'programs.instituteid', '=', 'institute.id')
-			->select('vprogramgroup.id','institute.name AS instituteName','programs.name AS programName','groups.name AS groupName')
-			->orderByRaw('id')
-			->where('programs.instituteid',$instituteId)
-			->get();
+			$aInstitute=$rh->getInstitute();
+			$vprogramGroupList=$aVProgramGroup->getAllProgramGroup($aInstitute->id);
 		}
 		return view('institutesettings.vprogramgroup.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'vprogramGroupList'=>$vprogramGroupList]);
 	}
@@ -64,22 +52,19 @@ class VProgramGroupController extends Controller
 		$permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
 			if($rh->getRoleId()==1){
-				$instituteList=\DB::table('institute')
-				->select('id','name')
-				->get();
+				$instituteList=$rh->getInstituteList();
 				$programList=array();
 				$groupList=array();
 				return view('institutesettings.vprogramgroup.create',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'groupList'=>$groupList,'instituteList'=>$instituteList,'roleid'=>$rh->getRoleId()]);
 			}else{
-				$instituteId=$rh->getInstituteId($rh->getRoleId());
 				$aInstitute=$rh->getInstitute();
 				$programList=\DB::table('programs')
 				->select('id','name')
-				->where('programs.instituteid',$instituteId)
+				->where('programs.instituteid',$aInstitute->id)
 				->get();
 				$groupList=\DB::table('groups')
 				->select('id','name')
-				->where('groups.instituteid',$instituteId)
+				->where('groups.instituteid',$aInstitute->id)
 				->get();
 				return view('institutesettings.vprogramgroup.create',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'groupList'=>$groupList,'aInstitute'=>$aInstitute,'roleid'=>$rh->getRoleId()]);
 			}
@@ -117,19 +102,17 @@ class VProgramGroupController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		if($permission[4]==1){
-			$aInstitute=$rh->getInstitute();
-			$programList=\DB::select("SELECT * FROM `programs` WHERE `instituteid`=?",[$aInstitute->id]);
-			$groupList=\DB::select("SELECT * FROM `groups` WHERE `instituteid`=?",[$aInstitute->id]);
 			$aVProgramGroup=\DB::select("SELECT vprogramgroup.*,programs.instituteid FROM `vprogramgroup` 
 INNER JOIN programs ON vprogramgroup.programid=programs.id
 INNER JOIN groups ON vprogramgroup.groupid=groups.id
 WHERE vprogramgroup.id=?",[$id])[0];
+			$programList=\DB::select("SELECT * FROM `programs` WHERE `instituteid`=?",[$aVProgramGroup->instituteid]);
+			$groupList=\DB::select("SELECT * FROM `groups` WHERE `instituteid`=?",[$aVProgramGroup->instituteid]);
 			if($rh->getRoleId()==1){
-				$instituteList=\DB::table('institute')
-				->select('id','name')
-				->get();
+				$instituteList=$rh->getInstituteList();
 				return view('institutesettings.vprogramgroup.edit',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'groupList'=>$groupList,'instituteList'=>$instituteList,'bean'=>$aVProgramGroup,'roleid'=>$rh->getRoleId()]);
 			}else{
+				$aInstitute=$rh->getInstitute();
 				return view('institutesettings.vprogramgroup.edit',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'groupList'=>$groupList,'aInstitute'=>$aInstitute,'bean'=>$aVProgramGroup,'roleid'=>$rh->getRoleId()]);
 			}
 		}else{

@@ -24,18 +24,12 @@ class SessionController extends Controller
     }
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
+    $aSession=new Session();
     if($rh->getRoleId()==1){
-       $sessionList=\DB::table('sessions')
-       ->join('institute', 'sessions.instituteid', '=', 'institute.id')
-       ->select('sessions.id','institute.name AS instituteName','sessions.name')
-       ->get();
+       $sessionList=$aSession->getAllSession();
     }else{
-       $instituteId=$rh->getInstituteId($rh->getRoleId());
-       $sessionList=$sessionList=\DB::table('sessions')
-       ->join('institute', 'sessions.instituteid', '=', 'institute.id')
-       ->select('sessions.id','institute.name AS instituteName','sessions.name')
-       ->where('instituteid',$instituteId)
-       ->get();
+       $aInstitute=$rh->getInstitute();
+       $sessionList=$aSession->getAllSession($aInstitute->id);
     }
     return view('settings.session.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$sessionList,'roleid'=>$rh->getRoleId()]);
   }
@@ -54,15 +48,10 @@ class SessionController extends Controller
     $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
       if($rh->getRoleId()==1){
-        $instituteList=\DB::table('institute')
-        ->select('id','name')
-        ->get();
+        $instituteList=$rh->getInstituteList();
         return view('settings.session.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
       }else{
-        $aInstitute=\DB::table('institute')
-        ->select('id','name')
-        ->where('userid',$rh->getUserId())
-        ->first();
+        $aInstitute=$rh->getInstitute();
         return view('settings.session.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
       }
     }else{
@@ -104,15 +93,10 @@ public function edit($id)
   if($permission[4]==1){
    $aSession=Session::findOrfail($id);
    if($rh->getRoleId()==1){
-        $instituteList=\DB::table('institute')
-        ->select('id','name')
-        ->get();
+         $instituteList=$rh->getInstituteList();
         return view('settings.session.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aSession,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList]);
       }else{
-        $aInstitute=\DB::table('institute')
-        ->select('id','name')
-        ->where('userid',$rh->getUserId())
-        ->first();
+        $aInstitute=$rh->getInstitute();
         return view('settings.session.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aSession,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute]);
       }
  }else{

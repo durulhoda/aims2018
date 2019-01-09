@@ -71,21 +71,37 @@ class AdmissionProgramController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		if($permission[2]==1){
-			$sessionList=Session::all();
-			$programList=Program::all();
-			$groupList=Group::all();
-			$mediumList=Medium::all();
-			$shiftList=Shift::all();
 			if($rh->getRoleId()==1){
-				$instituteList=\DB::table('institute')
-				->select('id','name')
-				->get();
+				$instituteList=$rh->getInstituteList();
+				$sessionList=array();
+				$programList=array();
+				$groupList=array();
+				$mediumList=array();
+				$shiftList=array();
 				return view('institutesettings.admissionprogram.create',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList]);
 			}else{
-				$aInstitute=\DB::table('institute')
+				$aInstitute=$rh->getInstitute();
+				$sessionList=\DB::table('sessions')
 				->select('id','name')
-				->where('userid',$rh->getUserId())
-				->first();
+				->where('sessions.instituteid',$aInstitute->id)
+				->get();
+				$programList=\DB::table('programs')
+				->select('id','name')
+				->where('programs.instituteid',$aInstitute->id)
+				->get();
+				// $groupList=\DB::table('groups')
+				// ->select('id','name')
+				// ->where('groups.instituteid',$aInstitute->id)
+				// ->get();
+				$groupList=array();
+				$mediumList=\DB::table('mediums')
+				->select('id','name')
+				->where('mediums.instituteid',$aInstitute->id)
+				->get();
+				$shiftList=\DB::table('shifts')
+				->select('id','name')
+				->where('shifts.instituteid',$aInstitute->id)
+				->get();
 				return view('institutesettings.admissionprogram.create',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList]);
 			}
 		}else{

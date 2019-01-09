@@ -27,18 +27,12 @@ class MediumController extends Controller
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $roleid=$rh->getRoleId();
+        $aMedium=new Medium();
         if($roleid==1){
-            $result=\DB::table('mediums')
-            ->join('institute', 'mediums.instituteid', '=', 'institute.id')
-            ->select('mediums.*','institute.name AS instituteName')
-            ->get();
+            $result=$aMedium->getAllMedium();
         }else{
-            $instituteId=$rh->getInstituteId($rh->getRoleId());
-            $result=\DB::table('mediums')
-            ->join('institute', 'mediums.instituteid', '=', 'institute.id')
-            ->select('mediums.*','institute.name AS instituteName')
-            ->where('instituteid',$instituteId)
-            ->get();
+            $aInstitute=$rh->getInstitute();
+            $result=$aMedium->getAllMedium($aInstitute->id);
         }
         return view('settings.medium.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission,'roleid'=>$roleid]);
     }
@@ -59,15 +53,10 @@ class MediumController extends Controller
         if($permission[2]==1){
             $roleid=$rh->getRoleId();
             if($roleid==1){
-                $instituteList=\DB::table('institute')
-                ->select('id','name')
-                ->get();
+                 $instituteList=$rh->getInstituteList();
                 return view('settings.medium.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'instituteList'=>$instituteList]);
             }else{
-                $aInstitute=\DB::table('institute')
-                ->select('id','name')
-                ->where('userid',$rh->getUserId())
-                ->first();
+                $aInstitute=$rh->getInstitute();
                 return view('settings.medium.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
              }
         }else{
@@ -109,15 +98,10 @@ class MediumController extends Controller
          $aMedium=Medium::findOrfail($id);
          $roleid=$rh->getRoleId();
          if($roleid==1){
-                $instituteList=\DB::table('institute')
-                ->select('id','name')
-                ->get();
+                $instituteList=$rh->getInstituteList();
                 return view('settings.medium.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aMedium,'roleid'=>$roleid,'instituteList'=>$instituteList]);
               }else{
-                $aInstitute=\DB::table('institute')
-                ->select('id','name')
-                ->where('userid',$rh->getUserId())
-                ->first();
+                $aInstitute=$rh->getInstitute();
                 return view('settings.medium.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aMedium,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
               }
         }else{

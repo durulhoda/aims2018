@@ -27,18 +27,12 @@ class GroupController extends Controller
 		$sidebarMenu=$rh->getMenu();
 		$permission=$rh->getPermission($menuid);
 		$roleid=$rh->getRoleId();
+		$aGroup=new Group();
 		if($roleid==1){
-			$result=\DB::table('groups')
-			->join('institute', 'groups.instituteid', '=', 'institute.id')
-			->select('groups.*','institute.name AS instituteName')
-			->get();
+			$result=$aGroup->getAllGroup();
 		}else{
-			$instituteId=$rh->getInstituteId($rh->getRoleId());
-			$result=\DB::table('groups')
-			->join('institute', 'groups.instituteid', '=', 'institute.id')
-			->select('groups.*','institute.name AS instituteName')
-			->where('instituteid',$instituteId)
-			->get();
+			$aInstitute=$rh->getInstitute();
+			$result=$aGroup->getAllGroup($aInstitute->id);
 		}
 		return view('settings.group.index',['sidebarMenu'=>$sidebarMenu,'result'=>$result,'permission'=>$permission,'roleid'=>$roleid]);
 	}
@@ -58,15 +52,10 @@ class GroupController extends Controller
 		if($permission[2]==1){
 			$roleid=$rh->getRoleId();
 			if($roleid==1){
-		        $instituteList=\DB::table('institute')
-		        ->select('id','name')
-		        ->get();
+		        $instituteList=$rh->getInstituteList();
 		        return view('settings.group.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'instituteList'=>$instituteList]);
 	      	}else{
-		        $aInstitute=\DB::table('institute')
-		        ->select('id','name')
-		        ->where('userid',$rh->getUserId())
-		        ->first();
+		        $aInstitute=$rh->getInstitute();
 		        return view('settings.group.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
 	     	 }
 		}else{
@@ -108,15 +97,10 @@ class GroupController extends Controller
 			$aGroup=Group::findOrfail($id);
 		   	$roleid=$rh->getRoleId();
 			if($roleid==1){
-		        $instituteList=\DB::table('institute')
-		        ->select('id','name')
-		        ->get();
+		       $instituteList=$rh->getInstituteList();
 		        return view('settings.group.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aGroup,'roleid'=>$roleid,'instituteList'=>$instituteList]);
 		      }else{
-		        $aInstitute=\DB::table('institute')
-		        ->select('id','name')
-		        ->where('userid',$rh->getUserId())
-		        ->first();
+		        $aInstitute=$rh->getInstitute();
 		        return view('settings.group.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aGroup,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
 		      }
 		}else{

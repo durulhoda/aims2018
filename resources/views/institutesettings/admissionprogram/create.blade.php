@@ -19,7 +19,7 @@
  					@if($roleid==1)
  					<div class="col-xs-10 col-sm-4">
  						<label class="control-label" for="instituteid">Institute  &nbsp; </label>
- 						<select name="instituteid" required="1" class="form-control" id="instituteid">
+ 						<select onchange="getCommonChange('admissionprogram')" name="instituteid" required="1" class="form-control" id="instituteid">
  							<option value="">Select</option>
  							@foreach($instituteList as $aObj)
  								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
@@ -27,7 +27,7 @@
  						</select>
  					</div>
  					@else
- 					<input type="hidden" value="{{$aInstitute->id}}" name="instituteid">
+ 					<input type="hidden" value="{{$aInstitute->id}}" name="instituteid" id="instituteid">
  					@endif
  					<div class="col-xs-10 col-sm-4">
  						<label class="control-label" for="sessionid">Session  &nbsp; </label>

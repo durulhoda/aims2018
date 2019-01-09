@@ -27,18 +27,12 @@ class ShiftController extends Controller
         $sidebarMenu=$rh->getMenu();
         $permission=$rh->getPermission($menuid);
         $roleid=$rh->getRoleId();
+        $aShift=new Shift();
         if($roleid==1){
-            $result=\DB::table('shifts')
-            ->join('institute', 'shifts.instituteid', '=', 'institute.id')
-            ->select('shifts.*','institute.name AS instituteName')
-            ->get();
+            $result=$aShift->getAllShifts();
         }else{
-            $instituteId=$rh->getInstituteId($rh->getRoleId());
-            $result=\DB::table('shifts')
-            ->join('institute', 'shifts.instituteid', '=', 'institute.id')
-            ->select('shifts.*','institute.name AS instituteName')
-            ->where('instituteid',$instituteId)
-            ->get();
+            $aInstitute=$rh->getInstitute();
+            $result=$aShift->getAllShifts($aInstitute->id);
         }
         foreach ($result as $aBean) {
 			$aBean->startTime=date("g:i a", strtotime($aBean->startTime));
@@ -62,15 +56,10 @@ class ShiftController extends Controller
 		if($permission[2]==1){
 			$roleid=$rh->getRoleId();
             if($roleid==1){
-                $instituteList=\DB::table('institute')
-                ->select('id','name')
-                ->get();
+                $instituteList=$rh->getInstituteList();
                 return view('settings.shift.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'instituteList'=>$instituteList]);
             }else{
-                $aInstitute=\DB::table('institute')
-                ->select('id','name')
-                ->where('userid',$rh->getUserId())
-                ->first();
+                 $aInstitute=$rh->getInstitute();
                 return view('settings.shift.create',['sidebarMenu'=>$sidebarMenu,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
              }
 		}else{
@@ -121,15 +110,10 @@ class ShiftController extends Controller
 			$aShift->endTime=date("g:i a", strtotime($aShift->endTime));
 			$roleid=$rh->getRoleId();
            if($roleid==1){
-                $instituteList=\DB::table('institute')
-                ->select('id','name')
-                ->get();
+                $instituteList=$rh->getInstituteList();
                 return view('settings.shift.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aShift,'roleid'=>$roleid,'instituteList'=>$instituteList]);
               }else{
-                $aInstitute=\DB::table('institute')
-                ->select('id','name')
-                ->where('userid',$rh->getUserId())
-                ->first();
+                $aInstitute=$rh->getInstitute();
                 return view('settings.shift.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aShift,'roleid'=>$roleid,'aInstitute'=>$aInstitute]);
               }
 		}else{

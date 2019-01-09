@@ -28,24 +28,12 @@ class VProgramLevelsController extends Controller
     }
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
+    $aVProgramLevel=new VProgramLevel();
     if($rh->getRoleId()==1){
-        $vprogramlevelList=\DB::table('vprogramlevels')
-        ->join('programs', 'vprogramlevels.programid', '=', 'programs.id')
-        ->join('programlevels', 'vprogramlevels.programlevelid', '=', 'programlevels.id')
-        ->join('institute', 'programs.instituteid', '=', 'institute.id')
-        ->select('vprogramlevels.id','institute.name AS instituteName','programs.name AS programName','programlevels.name AS levelName')
-        ->orderByRaw('id')
-        ->get();
+        $vprogramlevelList=$aVProgramLevel->getAllProgramLevel();
     }else{
-        $instituteId=$rh->getInstituteId($rh->getRoleId());
-        $vprogramlevelList=\DB::table('vprogramlevels')
-        ->join('institute', 'vprogramlevels.instituteid', '=', 'institute.id')
-        ->join('programs', 'vprogramlevels.programid', '=', 'programs.id')
-        ->join('programlevels', 'vprogramlevels.programlevelid', '=', 'programlevels.id')
-        ->select('vprogramlevels.id','institute.name AS instituteName','programs.name AS programName','programlevels.name AS levelName')
-        ->orderByRaw('id')
-        ->where('instituteid',$instituteId)
-        ->get();
+        $aInstitute=$rh->getInstitute();
+        $vprogramlevelList=$aVProgramLevel->getAllProgramLevel($aInstitute->id);
     }
     return view('institutesettings.vprogramlevel.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'vprogramlevelList'=>$vprogramlevelList]);
 }
@@ -63,18 +51,21 @@ public function create(){
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
-        $programList=Program::all();
-        $levelList=ProgramLevel::all();
         if($rh->getRoleId()==1){
-           $instituteList=\DB::table('institute')
-           ->select('id','name')
-           ->get();
-           return view('institutesettings.vprogramlevel.create',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'levelList'=>$levelList,'instituteList'=>$instituteList,'roleid'=>$rh->getRoleId()]);
+            $instituteList=$rh->getInstituteList();
+            $programList=array();
+            $levelList=array();
+            return view('institutesettings.vprogramlevel.create',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'levelList'=>$levelList,'instituteList'=>$instituteList,'roleid'=>$rh->getRoleId()]);
        }else{
-           $aInstitute=\DB::table('institute')
-           ->select('id','name')
-           ->where('userid',$rh->getUserId())
-           ->first();
+            $aInstitute=$rh->getInstitute();
+            $programList=\DB::table('programs')
+            ->select('id','name')
+            ->where('programs.instituteid',$aInstitute->id)
+            ->get();
+            $levelList=\DB::table('programlevels')
+            ->select('id','name')
+            ->where('programlevels.instituteid',$aInstitute->id)
+            ->get();
            return view('institutesettings.vprogramlevel.create',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'levelList'=>$levelList,'aInstitute'=>$aInstitute,'roleid'=>$rh->getRoleId()]);
        }
    }else{
@@ -83,13 +74,12 @@ public function create(){
 }
 public function store(Request $request){
     $aVProgramLevel=new VProgramLevel();
-    $aVProgramLevel->instituteid=$request->instituteid;
     $aVProgramLevel->programid=$request->programid;
     $aVProgramLevel->programlevelid=$request->programlevelid;
     $hasItem=\DB::table('vprogramlevels')
         ->select('vprogramlevels.*')
-        ->where('instituteid',$aVProgramLevel->instituteid)
         ->where('programid',$aVProgramLevel->programid)
+        ->where('programlevelid',$aVProgramLevel->programlevelid)
         ->exists();
     if(!$hasItem){
         $msg="Level is assign successfuly";
@@ -113,19 +103,17 @@ public function edit($id){
     $sidebarMenu=$rh->getMenu();
     $permission=$rh->getPermission($menuid);
     if($permission[4]==1){
-        $programList=Program::all();
-        $levelList=ProgramLevel::all();
-        $aVProgramLevel=VProgramLevel::findOrfail($id);
+        $aVProgramLevel=\DB::select("SELECT vprogramlevels.*,programs.instituteid FROM `vprogramlevels` 
+INNER JOIN programlevels ON vprogramlevels.programlevelid=programlevels.id
+INNER JOIN programs ON vprogramlevels.programid=programs.id
+WHERE vprogramlevels.id=?",[$id])[0];
+        $programList=\DB::select("SELECT * FROM `programs` WHERE `instituteid`=?",[$aVProgramLevel->instituteid]);
+        $levelList=\DB::select("SELECT * FROM `programlevels` WHERE `instituteid`=?",[$aVProgramLevel->instituteid]);
         if($rh->getRoleId()==1){
-           $instituteList=\DB::table('institute')
-           ->select('id','name')
-           ->get();
+           $instituteList=$rh->getInstituteList();
            return view('institutesettings.vprogramlevel.edit',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'levelList'=>$levelList,'instituteList'=>$instituteList,'bean'=>$aVProgramLevel,'roleid'=>$rh->getRoleId()]);
        }else{
-           $aInstitute=\DB::table('institute')
-           ->select('id','name')
-           ->where('userid',$rh->getUserId())
-            ->first();
+           $aInstitute=$rh->getInstitute();
            return view('institutesettings.vprogramlevel.edit',['sidebarMenu'=>$sidebarMenu,'programList'=>$programList,'levelList'=>$levelList,'aInstitute'=>$aInstitute,'bean'=>$aVProgramLevel,'roleid'=>$rh->getRoleId()]);
        }
    }else{
@@ -134,12 +122,10 @@ public function edit($id){
 }
 public function update(Request $request, $id){
     $aVProgramLevel=VProgramLevel::findOrfail($id);
-    $aVProgramLevel->instituteid=$request->instituteid;
     $aVProgramLevel->programid=$request->programid;
     $aVProgramLevel->programlevelid=$request->programlevelid;
     $hasItem=\DB::table('vprogramlevels')
         ->select('vprogramlevels.*')
-        ->where('instituteid',$aVProgramLevel->instituteid)
         ->where('programid',$aVProgramLevel->programid)
         ->where('programlevelid',$aVProgramLevel->programlevelid)
         ->exists();

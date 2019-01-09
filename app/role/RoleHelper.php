@@ -30,6 +30,12 @@ public function getRoleId(){
   WHERE users.id=?',[$this->getUserId()])[0];
  return $aRole->id;
 }
+public function getInstituteList(){
+  $result=\DB::table('institute')
+          ->select('id','name')
+          ->get();
+          return $result;
+}
 public function getInstitute(){
    $sql="SELECT institute.id,institute.name FROM `user_role`
 INNER JOIN roles on user_role.roleid=roles.id

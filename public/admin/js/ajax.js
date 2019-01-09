@@ -195,16 +195,21 @@ function actionTo(){
 	quotaActionBetweenRole(rolefrom,roleto);
 }
 function getCommonChange(option){
-	var instituteid=$("#instituteid").val();
 	if(option=="programgroup"){
-		getValue(instituteid,option,"#programid",1);
-		getValue(instituteid,option,"#groupid",2);
-	}elseif(option=="levelprogram"){
-		getValue(instituteid,option,"#programid",1);
-		getValue(instituteid,option,"#groupid",2);
+		getValue(option,"#programid",1);
+		getValue(option,"#groupid",2);
+	}else if(option=="levelprogram"){
+		getValue(option,"#programid",1);
+		getValue(option,"#programlevelid",2);
+	}else if(option=="admissionprogram"){
+		getValue(option,"#sessionid",1);
+		getValue(option,"#programid",2);
+		getValue(option,"#mediumid",3);
+		getValue(option,"#shiftid",4);
 	}
 }
-function getValue(instituteid,option,output,methodid){
+function getValue(option,output,methodid){
+	var instituteid=$("#instituteid").val();
 	$.ajax({
 		type:'get',
 		url: "/getValue",

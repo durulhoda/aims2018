@@ -234,7 +234,32 @@ public function editRolePower(Request $request){
           }elseif($methodid==2){
               $this->getGroup($instituteid);
           }
+      }elseif ($option=="levelprogram") {
+            if($methodid==1){
+              $this->getProgram($instituteid);
+            }elseif($methodid==2){
+                $this->getLevel($instituteid);
+            }
+      }elseif ($option=="admissionprogram") {
+            if($methodid==1){
+              $this->getSession($instituteid);
+            }elseif($methodid==2){
+                $this->getProgram($instituteid);
+            }elseif ($methodid==3) {
+                 $this->getMedium($instituteid);
+            }elseif ($methodid==4) {
+                $this->getShift($instituteid);
+            }
       }
+  }
+  private function getSession($instituteid){
+      $sql="SELECT * FROM `sessions` WHERE `instituteid`=?";
+      $result=\DB::select($sql,[$instituteid]);
+      $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
   }
   private function getProgram($instituteid){
       $sql="SELECT * FROM `programs` WHERE `instituteid`=?";
@@ -247,6 +272,34 @@ public function editRolePower(Request $request){
   }
   private function getGroup($instituteid){
       $sql="SELECT * FROM `groups` WHERE `instituteid`=?";
+      $result=\DB::select($sql,[$instituteid]);
+      $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  private function getLevel($instituteid){
+      $sql="SELECT * FROM `programlevels` WHERE `instituteid`=?";
+      $result=\DB::select($sql,[$instituteid]);
+      $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+   
+  private function getMedium($instituteid){
+      $sql="SELECT * FROM `mediums` WHERE `instituteid`=?";
+      $result=\DB::select($sql,[$instituteid]);
+      $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  private function getShift($instituteid){
+      $sql="SELECT * FROM `shifts` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
       $output="<option value=''>Select</option>";
       foreach($result as $x){
