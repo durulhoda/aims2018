@@ -194,27 +194,32 @@ function actionTo(){
 	var roleto=$("#roleid").val();
 	quotaActionBetweenRole(rolefrom,roleto);
 }
-function getCommonChange(option){
+function getCommonChange(thisref,option){
+	var id=thisref.getAttribute('id');
 	if(option=="programgroup"){
-		getValue(option,"#programid",1);
-		getValue(option,"#groupid",2);
+		getValue(id,option,"#programid",1);
+		getValue(id,option,"#groupid",2);
 	}else if(option=="levelprogram"){
-		getValue(option,"#programid",1);
-		getValue(option,"#programlevelid",2);
+		getValue(id,option,"#programid",1);
+		getValue(id,option,"#programlevelid",2);
 	}else if(option=="admissionprogram"){
-		getValue(option,"#sessionid",1);
-		getValue(option,"#programid",2);
-		getValue(option,"#mediumid",3);
-		getValue(option,"#shiftid",4);
+		getValue(id,option,"#sessionid",1);
+		getValue(id,option,"#programid",2);
+		getValue(id,option,"#groupid",3);
+		getValue(id,option,"#mediumid",4);
+		getValue(id,option,"#shiftid",5);
+	}else if(option=="programtogroup"){
+		getValue(id,option,"#groupid",1);
 	}
 }
-function getValue(option,output,methodid){
+function getValue(id,option,output,methodid){
+	var idvalue=$("#"+id).val();
 	var instituteid=$("#instituteid").val();
 	$.ajax({
 		type:'get',
 		url: "/getValue",
 		dataType: "html",
-		data: {'instituteid':instituteid,'option':option,'methodid':methodid},
+		data: {'instituteid':instituteid,'idvalue':idvalue,'option':option,'methodid':methodid},
 		success: function( result ) {
 			$(output).empty().append(result);
 		}

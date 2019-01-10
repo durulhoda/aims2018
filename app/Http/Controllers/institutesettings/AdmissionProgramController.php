@@ -147,21 +147,31 @@ class AdmissionProgramController extends Controller
 		$permission=$rh->getPermission($menuid);
 		if($permission[4]==1){
 			$aAdmissionProgram=AdmissionProgram::findOrfail($id);
-			$sessionList=Session::all();
-			$programList=Program::all();
-			$groupList=Group::all();
-			$mediumList=Medium::all();
-			$shiftList=Shift::all();
+			$sessionList=\DB::table('sessions')
+			->select('id','name')
+			->where('sessions.instituteid',$aAdmissionProgram->instituteid)
+			->get();
+			$programList=\DB::table('programs')
+			->select('id','name')
+			->where('programs.instituteid',$aAdmissionProgram->instituteid)
+			->get();
+			$groupList=\DB::table('groups')
+			->select('id','name')
+			->where('groups.instituteid',$aAdmissionProgram->instituteid)
+			->get();
+			$mediumList=\DB::table('mediums')
+			->select('id','name')
+			->where('mediums.instituteid',$aAdmissionProgram->instituteid)
+			->get();
+			$shiftList=\DB::table('shifts')
+			->select('id','name')
+			->where('shifts.instituteid',$aAdmissionProgram->instituteid)
+			->get();
 			if($rh->getRoleId()==1){
-				$instituteList=\DB::table('institute')
-				->select('id','name')
-				->get();
+				$instituteList=$rh->getInstituteList();
 				return view('institutesettings.admissionprogram.edit',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList,'bean'=>$aAdmissionProgram]);
 			}else{
-				$aInstitute=\DB::table('institute')
-				->select('id','name')
-				->where('userid',$rh->getUserId())
-				->first();
+				$aInstitute=$rh->getInstitute();
 				return view('institutesettings.admissionprogram.edit',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList,'bean'=>$aAdmissionProgram]);
 			}
 		}else{

@@ -227,28 +227,35 @@ public function editRolePower(Request $request){
   public function getValue(Request $request){
       $option=$request->option;
       $instituteid=$request->instituteid;
+      $idvalue=$request->idvalue;
       $methodid=$request->methodid;
-      if($option="programgroup"){
+      if($option=="programgroup"){
           if($methodid==1){
-              $this->getProgram($instituteid);
+              $this->getProgram($idvalue);
           }elseif($methodid==2){
-              $this->getGroup($instituteid);
+              $this->getGroup($idvalue);
           }
       }elseif ($option=="levelprogram") {
             if($methodid==1){
-              $this->getProgram($instituteid);
+              $this->getProgram($idvalue);
             }elseif($methodid==2){
-                $this->getLevel($instituteid);
+                $this->getLevel($idvalue);
             }
       }elseif ($option=="admissionprogram") {
             if($methodid==1){
-              $this->getSession($instituteid);
+              $this->getSession($idvalue);
             }elseif($methodid==2){
-                $this->getProgram($instituteid);
+                $this->getProgram($idvalue);
             }elseif ($methodid==3) {
-                 $this->getMedium($instituteid);
+                 $this->getGroupOnProgram($instituteid,0);
             }elseif ($methodid==4) {
-                $this->getShift($instituteid);
+                 $this->getMedium($idvalue);
+            }elseif ($methodid==5) {
+                $this->getShift($idvalue);
+            }
+      }elseif($option=="programtogroup"){
+          if($methodid==1){
+              $this->getGroupOnProgram($instituteid,$idvalue);
             }
       }
   }
@@ -301,6 +308,18 @@ public function editRolePower(Request $request){
   private function getShift($instituteid){
       $sql="SELECT * FROM `shifts` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
+      $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  private function getGroupOnProgram($instituteid,$programid){
+    $sql="SELECT groups.* FROM `vprogramgroup`
+INNER JOIN programs ON vprogramgroup.programid=programs.id
+INNER JOIN groups ON vprogramgroup.groupid=groups.id
+WHERE programs.instituteid=?  AND vprogramgroup.programid=?";
+ $result=\DB::select($sql,[$instituteid,$programid]);
       $output="<option value=''>Select</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";

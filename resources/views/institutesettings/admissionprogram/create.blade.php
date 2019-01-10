@@ -19,7 +19,7 @@
  					@if($roleid==1)
  					<div class="col-xs-10 col-sm-4">
  						<label class="control-label" for="instituteid">Institute  &nbsp; </label>
- 						<select onchange="getCommonChange('admissionprogram')" name="instituteid" required="1" class="form-control" id="instituteid">
+ 						<select onchange="getCommonChange(this,'admissionprogram')" name="instituteid" required="1" class="form-control" id="instituteid">
  							<option value="">Select</option>
  							@foreach($instituteList as $aObj)
  								<option value="{{$aObj->id}}">{{$aObj->name}}</option>
@@ -40,7 +40,7 @@
  					</div>
  					<div class="col-xs-10 col-sm-4">
  						<label class="control-label" for="programid">Class  &nbsp; </label>
- 						<select name="programid" required="1" class="form-control" id="programid">
+ 						<select onchange="getCommonChange(this,'programtogroup')" name="programid" required="1" class="form-control" id="programid">
  							<option value="">Select</option>
  							@foreach($programList as $aObj)
  								<option value="{{$aObj->id}}">{{$aObj->name}}</option>

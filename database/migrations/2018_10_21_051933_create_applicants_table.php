@@ -15,9 +15,10 @@ class CreateApplicantsTable extends Migration
     {
         Schema::create('applicants', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('programofferid')->length(20);
-            $table->string('name');
-             $table->integer('status')->length(5)->default(0);
+            $table->string('name',50);
+            $table->string('pictureurl',50);
+            $table->string('signatueurl',50);
+            $table->integer('status')->length(5)->default(0);
             $table->timestamps();
         });
     }

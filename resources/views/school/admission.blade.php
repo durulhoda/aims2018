@@ -7,62 +7,10 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <form class="form-horizontal" id="regForm" action="demo.html" method="post">
-                            <div class="formsegment">
-                                <input type="hidden" value="{{$instituteId}}" name="instituteid">
-                                <div class="form-group row">
-                                    <label class="col-sm-2 control-label" for="sessionid">Session</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="sessionid">
-                                            <option value="">SELECT</option>
-                                            @foreach($sessionList as $aObj)
-                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
-                                             @endforeach
-                                        </select>
-                                    </div>
-                                    <label class="col-sm-2 control-label" for="programid">Class</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="programid">
-                                            <option value="">SELECT</option>
-                                             @foreach($programList as $aObj)
-                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
-                                             @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 control-label" for="groupid">Group</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="groupid">
-                                            <option value="">SELECT</option>
-                                             @foreach($groupList as $aObj)
-                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
-                                             @endforeach
-                                        </select>
-                                    </div>
-                                    <label class="col-sm-2 control-label" for="mediumid">Medium</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="mediumid">
-                                            <option value="">SELECT</option>
-                                            @foreach($mediumList as $aObj)
-                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
-                                             @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 control-label" for="shiftid">Shift</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="shiftid">
-                                            <option value="">SELECT</option>
-                                             @foreach($shiftList as $aObj)
-                                            <option value="{{$aObj->id}}">{{$aObj->name}}</option>
-                                             @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="formsegment">
+                        <form action="{{URL::to('admission')}}"  method="post" class="form-horizontal" id="regForm">
+                            {{csrf_field()}}
+                          <!-- akjsfgakjsfgakjsfgk -->
+<!--                             <div class="formsegment">
                                 <div class="form-group row">
                                     <label class="col-md-2 control-label" for="name">Name</label>
                                     <div class="col-md-4">
@@ -93,7 +41,7 @@
                                         <input type="password" class="form-control" placeholder="password" id="password">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="formsegment">
                                 <div class="form-group row">
                                     <label class="col-sm-2 control-label" for="devisionid">Division</label>
@@ -122,10 +70,10 @@
                                     <div class="col-sm-4">
                                         <select class="form-control" name="sessionid">
                                             <option value="">SELECT</option>
-                                            <option value="">2</option>
-                                            <option value="">3</option>
-                                            <option value="">4</option>
-                                            <option value="">5</option>
+                                            <option value="1">2</option>
+                                            <option value="2">3</option>
+                                            <option value="3">4</option>
+                                            <option value="4">5</option>
                                         </select>
                                     </div>
                                     <label class="col-sm-2 control-label" for="postofficeid">Post Office</label>
@@ -162,13 +110,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-2 control-label" for="name">Picture</label>
+                                    <label class="col-md-2 control-label" for="pictureurl">Picture</label>
                                     <div class="col-md-4">
-                                        <input type="file" class="form-control-file">
+                                        <input type="file" class="form-control-file" id="pictureurl" name="pictureurl">
                                     </div>
-                                    <label class="col-md-2 control-label" for="">Signature</label>
+                                    <label class="col-md-2 control-label" for="signatureurl">Signature</label>
                                     <div class="col-md-4">
-                                        <input type="file" class="form-control-file">
+                                        <input type="file" class="form-control-file" name="signatureurl" id="signatureurl">
                                     </div>
                                 </div>
                             </div>

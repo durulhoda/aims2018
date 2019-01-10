@@ -28,6 +28,7 @@
 							<th>Group</th>
 							<th>Medium</th>
 							<th>Shift</th>
+							<th>Admission Status</th>
 							@if($permission[4]==1)
 							<th width="10px">Edit</th>
 							@endif
@@ -49,6 +50,7 @@
 							<td>{{$aObj->groupName}}</td>
 							<td>{{$aObj->mediumName}}</td>
 							<td>{{$aObj->shiftName}}</td>
+							<td><input type="checkbox" name=""></td>
 							@if($permission[4]==1)
 							<td> 
 								<a href="{{URL::to('/admissionprogram')}}/{{$aObj->id}}/{{'edit'}}" class="tooltip-success" data-rel="tooltip" title="Edit">
