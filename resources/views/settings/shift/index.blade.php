@@ -20,6 +20,9 @@
 					<thead>
 						<tr>
 							<th>Sl No.</th>
+							@if($roleid==1)
+							<th>Institute Name</th>
+							@endif
 							<th>Shift</th>
 							<th>Start Time</th>
 							<th>End Time</th>
@@ -36,6 +39,9 @@
 						@foreach($result as $aObj)
 						<tr>
 							<td>{{++$id}}</td>
+							@if($roleid==1)
+							<td>{{$aObj->instituteName}}</td>
+							@endif
 							<td>{{$aObj->name}}</td>
 							<td>{{$aObj->startTime}}</td>
 							<td>{{$aObj->endTime}}</td>

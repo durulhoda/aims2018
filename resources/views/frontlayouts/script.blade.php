@@ -7,6 +7,7 @@
     <script src="{{asset('fontend/assets/js/jquery.steps.min.js')}}"></script>
     <script src="{{asset('fontend/assets/js/studentReg.js')}}"></script>
     <script src="{{asset('fontend/assets/js/script.js')}}"></script>
+    <script src="{{asset('fontend/assets/js/ajax.js')}}"></script>
     <script>
         $(document).ready(function() {
             $("#mmmenu").mmenu();

@@ -48,7 +48,7 @@
  						</select>
  					</div>
  					<div class="form-group col-sm-4">
- 						<label class="control-label" for="groupid">Program Level  &nbsp; </label>
+ 						<label class="control-label" for="groupid">Group  &nbsp; </label>
  						<select name="groupid" required="1" class="form-control" id="groupid">
  							<option value="">Select</option>
  							@foreach($groupList as $aObj)

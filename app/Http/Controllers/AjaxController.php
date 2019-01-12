@@ -241,6 +241,18 @@ public function editRolePower(Request $request){
             }elseif($methodid==2){
                 $this->getLevel($idvalue);
             }
+      }elseif ($option=="programofferview") {
+            if($methodid==1){
+              $this->getSession($idvalue);
+            }elseif($methodid==2){
+                $this->getProgram($idvalue);
+            }elseif ($methodid==3) {
+                 $this->getGroupOnProgram($instituteid,0);
+            }elseif ($methodid==4) {
+                 $this->getMedium($idvalue);
+            }elseif ($methodid==5) {
+                $this->getShift($idvalue);
+            }
       }elseif ($option=="admissionprogram") {
             if($methodid==1){
               $this->getSession($idvalue);
@@ -257,8 +269,19 @@ public function editRolePower(Request $request){
           if($methodid==1){
               $this->getGroupOnProgram($instituteid,$idvalue);
             }
+      }elseif($option=="admissionsessiontoall"){
+        if($methodid==1){
+            $this->getProgramOnSession($instituteid,$idvalue);
+         }elseif($methodid==2){
+            $this->getGroupOnProgramAdmission($instituteid,$idvalue,0);
+         }elseif($methodid==3){
+            $this->getMediumOnSession($instituteid,$idvalue);
+         }elseif($methodid==4){
+            $this->getShiftOnSession($instituteid,$idvalue);
+         }
       }
   }
+
   private function getSession($instituteid){
       $sql="SELECT * FROM `sessions` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
@@ -314,6 +337,7 @@ public function editRolePower(Request $request){
       }
       echo  $output;
   }
+// For admissionprogram And ProgramOffer  View
   private function getGroupOnProgram($instituteid,$programid){
     $sql="SELECT groups.* FROM `vprogramgroup`
 INNER JOIN programs ON vprogramgroup.programid=programs.id
@@ -325,6 +349,61 @@ WHERE programs.instituteid=?  AND vprogramgroup.programid=?";
         $output.="<option value='$x->id'>$x->name</option>";
       }
       echo  $output;
+  }
+// For Admission Form View 
+  private function getProgramOnSession($instituteid,$sessionid){
+    $sql="SELECT programs.* FROM(SELECT * FROM `programoffer`
+WHERE instituteid =? AND sessionid=? GROUP BY programid) AS t1
+INNER JOIN programs ON t1.programid=programs.id";
+    $result=\DB::select($sql,[$instituteid,$sessionid]);
+     $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  private function getGroupOnProgramAdmission($instituteid,$sessionid,$programid){
+      $sql="SELECT * FROM(SELECT * FROM `programoffer`
+WHERE instituteid =? AND sessionid=? AND programid=? GROUP BY groupid) AS t1
+INNER JOIN groups ON t1.groupid=groups.id";
+      $result=\DB::select($sql,[$instituteid,$sessionid,$programid]);
+     $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  private function getMediumOnSession($instituteid,$sessionid){
+    $sql="SELECT mediums.* FROM(SELECT * FROM `programoffer`
+WHERE instituteid =? AND sessionid=? GROUP BY mediumid) AS t1
+INNER JOIN mediums ON t1.mediumid=mediums.id";
+    $result=\DB::select($sql,[$instituteid,$sessionid]);
+     $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  private function getShiftOnSession($instituteid,$sessionid){
+    $sql="SELECT shifts.* FROM(SELECT * FROM `programoffer`
+WHERE instituteid =? AND sessionid=? GROUP BY shiftid) AS t1
+INNER JOIN shifts ON t1.shiftid=shifts.id";
+    $result=\DB::select($sql,[$instituteid,$sessionid]);
+     $output="<option value=''>Select</option>";
+      foreach($result as $x){
+        $output.="<option value='$x->id'>$x->name</option>";
+      }
+      echo  $output;
+  }
+  public function getValueWithSession(Request $request){
+      $option=$request->option;
+      $instituteid=$request->instituteid;
+      $sessionid=$request->sessionid;
+      $idvalue=$request->idvalue;
+      $methodid=$request->methodid;
+      if($option=="programofferviewtogroup"){
+           $this->getGroupOnProgramAdmission($instituteid,$sessionid,$idvalue);
+      }
   }
 }
 

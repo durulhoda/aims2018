@@ -94,6 +94,7 @@ Route::get('/actionForParentRole/','AjaxController@actionForParentRole');
 Route::get('/actionForQuota/','AjaxController@actionForQuota');
 Route::get('/quotaActionBetweenRole/','AjaxController@quotaActionBetweenRole');
 Route::get('/getValue/','AjaxController@getValue');
+Route::get('/getValueWithSession/','AjaxController@getValueWithSession');
 // Api Controllers
 Route::get('aimsapi/read/','AimsApiController@read');
 Route::post('aimsapi/insert/','AimsApiController@insert');

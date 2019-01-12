@@ -1,150 +1,201 @@
 <?php
 
 namespace App\Http\Controllers\settings;
-use App\role\RoleHelper;
-use App\settings\ProgramLevel;
-use App\settings\Program;
-use App\settings\Medium;
-use App\settings\Shift;
-use App\settings\Group;
-use App\settings\Session;
-use App\settings\ProgramOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\role\RoleHelper;
+use App\settings\ProgramOffer;
+use App\institutesettings\Institute;
+use App\settings\Session;
+use App\settings\Program;
+use App\settings\Group;
+use App\settings\Medium;
+use App\settings\Shift;
 class ProgramOfferController extends Controller
 {
-  public function __construct()
-{
+  public function __construct(){
     $this->middleware('auth');
-}
+  }
   public function index(){
     $rh=new RoleHelper();
-        $aMenu=$rh->getMenuId('programoffer');
-        if($aMenu==null){
-            return redirect('error');
-        }
-        $menuid=$aMenu->id;
-        $hasMenu=$rh->hasMenu($menuid);
-        if($hasMenu==false){
-            return redirect('error');
-        }
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
-    $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.name as groupName,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
-      INNER JOIN sessions ON programoffer.sessionid=sessions.id
-      INNER JOIN programs ON programoffer.programid=programs.id
-      INNER JOIN groups ON programs.groupid=groups.id
-      INNER JOIN programlevels ON groups.programLevelid=programlevels.id
-      INNER JOIN mediums ON programoffer.mediumid=mediums.id
-      INNER JOIN shifts ON programoffer.shiftid=shifts.id');
-    return view('settings.programoffer.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$result]);
+    $aMenu=$rh->getMenuId('programoffer');
+    if($aMenu==null){
+      return redirect('error');
+    }
+    $menuid=$aMenu->id;
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+      return redirect('error');
+    }
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($rh->getRoleId()==1){
+      $programofferList=\DB::table('programoffer')
+      ->join('institute', 'programoffer.instituteid', '=', 'institute.id')
+      ->join('sessions', 'programoffer.sessionid', '=', 'sessions.id')
+      ->join('programs', 'programoffer.programid', '=', 'programs.id')
+      ->join('groups', 'programoffer.groupid', '=', 'groups.id')
+      ->join('mediums', 'programoffer.mediumid', '=', 'mediums.id')
+      ->join('shifts', 'programoffer.shiftid', '=', 'shifts.id')
+      ->select('programoffer.id','institute.name AS instituteName','sessions.name AS sessionName','programs.name AS programName','groups.name AS groupName','mediums.name AS mediumName','shifts.name AS shiftName')
+      ->orderByRaw('id')
+      ->get();
+    }else{
+      $instituteId=$rh->getInstituteId($rh->getRoleId());
+      $programofferList=\DB::table('programoffer')
+      ->join('institute', 'programoffer.instituteid', '=', 'institute.id')
+      ->join('sessions', 'programoffer.sessionid', '=', 'sessions.id')
+      ->join('programs', 'programoffer.programid', '=', 'programs.id')
+      ->join('groups', 'programoffer.groupid', '=', 'groups.id')
+      ->join('mediums', 'programoffer.mediumid', '=', 'mediums.id')
+      ->join('shifts', 'programoffer.shiftid', '=', 'shifts.id')
+      ->select('programoffer.id','institute.name AS instituteName','sessions.name AS sessionName','programs.name AS programName','groups.name AS groupName','mediums.name AS mediumName','shifts.name AS shiftName')
+      ->orderByRaw('id')
+      ->where('programoffer.instituteid',$instituteId)
+      ->get();
+    }
+    return view('settings.programoffer.index',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'result'=>$programofferList,'roleid'=>$rh->getRoleId()]);
   }
   public function create(){
     $rh=new RoleHelper();
-        $aMenu=$rh->getMenuId('programoffer');
-        if($aMenu==null){
-            return redirect('error');
-        }
-        $menuid=$aMenu->id;
-        $hasMenu=$rh->hasMenu($menuid);
-        if($hasMenu==false){
-            return redirect('error');
-        }
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
+    $aMenu=$rh->getMenuId('programoffer');
+    if($aMenu==null){
+      return redirect('error');
+    }
+    $menuid=$aMenu->id;
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+      return redirect('error');
+    }
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
     if($permission[2]==1){
-        $sessions=Session::all();
-        $levels=ProgramLevel::all();
-        $mediums=Medium::all();
-        $shifts=Shift::all();
-        $msg="";
-        return view('settings.programoffer.create',['sidebarMenu'=>$sidebarMenu,'sessions'=>$sessions,'levels'=>$levels,'mediums'=>$mediums,'shifts'=>$shifts]);
+      if($rh->getRoleId()==1){
+        $instituteList=$rh->getInstituteList();
+        $sessionList=array();
+        $programList=array();
+        $groupList=array();
+        $mediumList=array();
+        $shiftList=array();
+        return view('settings.programoffer.create',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList]);
+      }else{
+        $aInstitute=$rh->getInstitute();
+        $sessionList=\DB::table('sessions')
+        ->select('id','name')
+        ->where('sessions.instituteid',$aInstitute->id)
+        ->get();
+        $programList=\DB::table('programs')
+        ->select('id','name')
+        ->where('programs.instituteid',$aInstitute->id)
+        ->get();
+       
+        $groupList=array();
+        $mediumList=\DB::table('mediums')
+        ->select('id','name')
+        ->where('mediums.instituteid',$aInstitute->id)
+        ->get();
+        $shiftList=\DB::table('shifts')
+        ->select('id','name')
+        ->where('shifts.instituteid',$aInstitute->id)
+        ->get();
+        return view('settings.programoffer.create',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList]);
+      }
     }else{
       return redirect('programoffer');
     }
-    
   }
   public function store(Request $request){
-    $aBean=new ProgramOffer();
-    $aBean->sessionid=$request->sessionid;
-    $aBean->programid=$request->programid;
-    $aBean->mediumid=$request->mediumid;
-    $aBean->shiftid=$request->shiftid;
-    $aBean->applicantSeat=$request->applicantSeat;
-    $aBean->quota=$request->quota;
-    $sql="select * from programoffer where sessionid=? and programid=? and mediumid=? and shiftid=?";
-    $isItemExit=\DB::select($sql,[$aBean->sessionid,$aBean->programlevelid,$aBean->programid,$aBean->mediumid,$aBean->groupid,$aBean->shiftid]);
-    if(!$isItemExit){
-      $aBean->save();
+    $aProgramOffer=new ProgramOffer();
+    $aProgramOffer->instituteid=$request->instituteid;
+    $aProgramOffer->sessionid=$request->sessionid;
+    $aProgramOffer->programid=$request->programid;
+    $aProgramOffer->groupid=$request->groupid;
+    $aProgramOffer->mediumid=$request->mediumid;
+    $aProgramOffer->shiftid=$request->shiftid;
+    $hasItem=\DB::table('programoffer')
+    ->select('programoffer.*')
+    ->where('instituteid',$aProgramOffer->instituteid)
+    ->where('sessionid',$aProgramOffer->sessionid)
+    ->where('programid',$aProgramOffer->programid)
+    ->where('groupid',$aProgramOffer->groupid)
+    ->where('mediumid',$aProgramOffer->mediumid)
+    ->where('shiftid',$aProgramOffer->shiftid)
+    ->exists();
+    if(!$hasItem){
+      $aProgramOffer->save();
     }else{
-     $msg="This Offer Is Already Created";
-     return redirect('programoffer/create')->with('msg',$msg);
-   }
-   return redirect('programoffer');
- }
- public function edit($id)
- {
+        // This item already assign
+    }
+    return redirect('programoffer');
+  }
+  public function edit($id){
     $rh=new RoleHelper();
-        $aMenu=$rh->getMenuId('programoffer');
-        if($aMenu==null){
-            return redirect('error');
-        }
-        $menuid=$aMenu->id;
-        $hasMenu=$rh->hasMenu($menuid);
-        if($hasMenu==false){
-            return redirect('error');
-        }
-        $sidebarMenu=$rh->getMenu();
-        $permission=$rh->getPermission($menuid);
-   if($permission[4]==1){
-       $result=\DB::select('SELECT programoffer.*,sessions.name as sessionName,programs.name AS programName,groups.id as groupid,groups.name as groupName,programlevels.id As programLevelid,programlevels.name As levelName,mediums.name As mediumName,shifts.name AS shiftName FROM `programoffer`
-    INNER JOIN sessions ON programoffer.sessionid=sessions.id
-    INNER JOIN programs ON programoffer.programid=programs.id
-    INNER JOIN groups ON programs.groupid=groups.id
-    INNER JOIN programlevels ON groups.programLevelid=programlevels.id
-    INNER JOIN mediums ON programoffer.mediumid=mediums.id
-    INNER JOIN shifts ON programoffer.shiftid=shifts.id
-    where programoffer.id=?',[$id]);
-   $aBean=$result[0];
-
-   $sessions=Session::all();
-   $levels=ProgramLevel::all();
-   $groups=\DB::select('SELECT groups.* FROM groups where programLevelid=?',[$aBean->programLevelid]);
-   $programs=\DB::select('SELECT programs.* FROM programs where groupid=?',[$aBean->groupid]);
-   $mediums=Medium::all();
-    $shifts=Shift::all();
-   return view('settings.programoffer.edit',['sidebarMenu'=>$sidebarMenu,'bean'=>$aBean,'sessions'=>$sessions,'levels'=>$levels,'groups'=>$groups,'programs'=>$programs,'mediums'=>$mediums,'shifts'=>$shifts]);
-   }else{
+    $aMenu=$rh->getMenuId('programoffer');
+    if($aMenu==null){
+      return redirect('error');
+    }
+    $menuid=$aMenu->id;
+    $hasMenu=$rh->hasMenu($menuid);
+    if($hasMenu==false){
+      return redirect('error');
+    }
+    $sidebarMenu=$rh->getMenu();
+    $permission=$rh->getPermission($menuid);
+    if($permission[4]==1){
+      $aProgramOffer=ProgramOffer::findOrfail($id);
+      $sessionList=\DB::table('sessions')
+      ->select('id','name')
+      ->where('sessions.instituteid',$aProgramOffer->instituteid)
+      ->get();
+      $programList=\DB::table('programs')
+      ->select('id','name')
+      ->where('programs.instituteid',$aProgramOffer->instituteid)
+      ->get();
+      $groupList=\DB::table('groups')
+      ->select('id','name')
+      ->where('groups.instituteid',$aProgramOffer->instituteid)
+      ->get();
+      $mediumList=\DB::table('mediums')
+      ->select('id','name')
+      ->where('mediums.instituteid',$aProgramOffer->instituteid)
+      ->get();
+      $shiftList=\DB::table('shifts')
+      ->select('id','name')
+      ->where('shifts.instituteid',$aProgramOffer->instituteid)
+      ->get();
+      if($rh->getRoleId()==1){
+        $instituteList=$rh->getInstituteList();
+        return view('settings.programoffer.edit',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'instituteList'=>$instituteList,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList,'bean'=>$aProgramOffer]);
+      }else{
+        $aInstitute=$rh->getInstitute();
+        return view('settings.programoffer.edit',['sidebarMenu'=>$sidebarMenu,'permission'=>$permission,'roleid'=>$rh->getRoleId(),'aInstitute'=>$aInstitute,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList,'bean'=>$aProgramOffer]);
+      }
+    }else{
       return redirect('programoffer');
-   }
-  
- }
- public function update(Request $request, $id)
- {
-  $sql="select * from programoffer where sessionid=? and programid=? and mediumid=? and shiftid=? and id=?";
-  $isSameItem=\DB::select($sql,[$request->sessionid,$request->programid,$request->mediumid,$request->shiftid,$id]);
-  $aBean=ProgramOffer::findOrfail($id);
-  $aBean->sessionid=$request->sessionid;
-  $aBean->programid=$request->programid;
-  $aBean->mediumid=$request->mediumid;
-  $aBean->shiftid=$request->shiftid;
-  $aBean->applicantSeat=$request->applicantSeat;
-  $aBean->quota=$request->quota;
-  if($isSameItem){
-    $aBean->update();
-  }else{
-    $sql="select * from programoffer where sessionid=? and programid=? and mediumid=? and shiftid=?";
-    $isItemExit=\DB::select($sql,[$request->sessionid,$request->programid,$request->mediumid,$request->shiftid]);
-    if(!$isItemExit){
-     $aBean->update();
-   }else{
-     $msg="This Offer Is Already Exist";
-     return redirect('programoffer/'.$id.'/edit')->with('msg',$msg);
-   }
- }
-
- return redirect('programoffer');
-}
-
+    }
+  }
+  public function update(Request $request, $id){
+    $aProgramOffer=ProgramOffer::findOrfail($id);
+    $aProgramOffer->instituteid=$request->instituteid;
+    $aProgramOffer->sessionid=$request->sessionid;
+    $aProgramOffer->programid=$request->programid;
+    $aProgramOffer->groupid=$request->groupid;
+    $aProgramOffer->mediumid=$request->mediumid;
+    $aProgramOffer->shiftid=$request->shiftid;
+    $hasItem=\DB::table('admissionprogram')
+    ->select('admissionprogram.*')
+    ->where('instituteid',$aProgramOffer->instituteid)
+    ->where('sessionid',$aProgramOffer->sessionid)
+    ->where('programid',$aProgramOffer->programid)
+    ->where('groupid',$aProgramOffer->groupid)
+    ->where('mediumid',$aProgramOffer->mediumid)
+    ->where('shiftid',$aProgramOffer->shiftid)
+    ->exists();
+    if(!$hasItem){
+      $aProgramOffer->update();
+    }else{
+        // This item already assign
+    }
+    return redirect('programoffer');
+  }
 }

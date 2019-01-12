@@ -15,13 +15,13 @@ class CreateProgramofferTable extends Migration
     {
         Schema::create('programoffer', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('sessionid')->length(11);
-            $table->integer('programid')->length(11);
-            $table->integer('mediumid')->length(11);
-            $table->integer('shiftid')->length(11);
-            $table->integer('applicantSeat')->length(11);
-            $table->integer('quota')->length(11);
-             $table->integer('status')->length(5)->default(0);
+            $table->integer('instituteid')->length(20);
+            $table->integer('sessionid')->length(20);
+            $table->integer('programid')->length(20);
+            $table->integer('groupid')->length(20);
+            $table->integer('mediumid')->length(20);
+            $table->integer('shiftid')->length(20);
+            $table->integer('status')->length(5)->default(0);
             $table->timestamps();
         });
     }

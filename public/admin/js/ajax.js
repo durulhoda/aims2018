@@ -202,6 +202,12 @@ function getCommonChange(thisref,option){
 	}else if(option=="levelprogram"){
 		getValue(id,option,"#programid",1);
 		getValue(id,option,"#programlevelid",2);
+	}else if(option=="programofferview"){
+		getValue(id,option,"#sessionid",1);
+		getValue(id,option,"#programid",2);
+		getValue(id,option,"#groupid",3);
+		getValue(id,option,"#mediumid",4);
+		getValue(id,option,"#shiftid",5);
 	}else if(option=="admissionprogram"){
 		getValue(id,option,"#sessionid",1);
 		getValue(id,option,"#programid",2);
@@ -210,6 +216,8 @@ function getCommonChange(thisref,option){
 		getValue(id,option,"#shiftid",5);
 	}else if(option=="programtogroup"){
 		getValue(id,option,"#groupid",1);
+	}else if(option=="admissionprogramtogroup"){
+		console.log(id);
 	}
 }
 function getValue(id,option,output,methodid){
