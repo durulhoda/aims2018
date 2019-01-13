@@ -93,8 +93,14 @@ Route::get('/createRolePower/','AjaxController@createRolePower');
 Route::get('/actionForParentRole/','AjaxController@actionForParentRole');
 Route::get('/actionForQuota/','AjaxController@actionForQuota');
 Route::get('/quotaActionBetweenRole/','AjaxController@quotaActionBetweenRole');
+
 Route::get('/getValue/','AjaxController@getValue');
 Route::get('/getValueWithSession/','AjaxController@getValueWithSession');
+// School Ajax Controller
+Route::get('/getValue2/','SchollAjaxController@getValue');
+Route::get('/getValueWithIstitute/','SchollAjaxController@getValueWithIstitute');
+Route::get('/getValueWithSession2/','SchollAjaxController@getValueWithSession');
+
 // Api Controllers
 Route::get('aimsapi/read/','AimsApiController@read');
 Route::post('aimsapi/insert/','AimsApiController@insert');

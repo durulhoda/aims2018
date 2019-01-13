@@ -14,7 +14,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 control-label" for="sessionid">Session</label>
                             <div class="col-sm-4">
-                                <select onchange="getCommonChange(this,'admissionsessiontoall')" class="form-control" name="sessionid" id="sessionid">
+                                <select onchange="getChange(this,'admissionsessiontoall')" class="form-control" name="sessionid" id="sessionid">
                                     <option value="">SELECT</option>
                                     @foreach($sessionList as $aObj)
                                     <option value="{{$aObj->id}}">{{$aObj->name}}</option>
@@ -23,7 +23,7 @@
                             </div>
                             <label class="col-sm-2 control-label" for="programid">Class</label>
                             <div class="col-sm-4">
-                                <select onchange="getCommonChangeWithSession(this,'programofferviewtogroup')" class="form-control" name="programid" id="programid">
+                                <select onchange="getChange(this,'programofferviewtogroup')" class="form-control" name="programid" id="programid">
                                     <option value="">SELECT</option>
                                     @foreach($programList as $aObj)
                                     <option value="{{$aObj->id}}">{{$aObj->name}}</option>
@@ -71,20 +71,20 @@
                             </div>
                             <label class="col-md-2 control-label" for="phone">Phone</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" placeholder="Phone" id="phone">
+                                <input type="text" class="form-control" placeholder="Phone" id="phone" name="phone">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2 control-label" for="fatherName">Father Name</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" placeholder="Father Name" id="fatherName" name="fathername">
+                                <input type="text" class="form-control" placeholder="Father Name" id="fatherName" name="fatherName">
                             </div>
                             <label class="col-md-2 control-label" for="motherName">Mother Name</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" placeholder="Mother Name" id="motherName">
+                                <input type="text" class="form-control" placeholder="Mother Name" id="motherName" name="motherName">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label class="col-md-2 control-label" for="email">Email</label>
                             <div class="col-md-4">
                                 <input type="email" class="form-control" placeholder="Email" id="email">
@@ -93,73 +93,56 @@
                             <div class="col-md-4">
                                 <input type="password" class="form-control" placeholder="password" id="password">
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="formsegment">
                         <div class="form-group row">
                             <label class="col-sm-2 control-label" for="devisionid">Division</label>
                             <div class="col-sm-4">
-                                <select class="form-control" name="sessionid">
+                                <select onchange="getChange(this,'divisionToDistrict')" class="form-control" name="divisionid" id="divisionid">
                                     <option value="">SELECT</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                    <option value="">4</option>
-                                    <option value="">5</option>
+                                     @foreach($divisionList as $aObj)
+                                     <option value="{{$aObj->id}}">{{$aObj->name}}</option>
+                                     @endforeach
                                 </select>
                             </div>
                             <label class="col-sm-2 control-label" for="districtid">District</label>
                             <div class="col-sm-4">
-                                <select class="form-control" name="programid">
+                                <select onchange="getChange(this,'districtToThana')" class="form-control" name="districtid" id="districtid">
                                     <option value="">SELECT</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 control-label" for="thanaid">Thana</label>
                             <div class="col-sm-4">
-                                <select class="form-control" name="sessionid">
+                                <select onchange="getChange(this,'thanaToPostoffice')" class="form-control" name="thanaid" id="thanaid">
                                     <option value="">SELECT</option>
-                                    <option value="1">2</option>
-                                    <option value="2">3</option>
-                                    <option value="3">4</option>
-                                    <option value="4">5</option>
                                 </select>
                             </div>
                             <label class="col-sm-2 control-label" for="postofficeid">Post Office</label>
                             <div class="col-sm-4">
-                                <select class="form-control" name="programid">
+                                <select class="form-control" name="postofficeid" id="postofficeid">
                                     <option value="">SELECT</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 control-label" for="unionid">Union</label>
+                            <label class="col-sm-2 control-label" for="localgovid">Union</label>
                             <div class="col-sm-4">
-                                <select class="form-control" name="sessionid">
+                                <select class="form-control" name="localgovid" id="localgovid">
                                     <option value="">SELECT</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                    <option value="">4</option>
-                                    <option value="">5</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2 control-label" for="presentaddress">Present Address</label>
                             <div class="col-md-4">
-                                <textarea onchange="txtChange(this)" class="form-control" rows="5" id="presentaddress"></textarea>
+                                <textarea onchange="txtChange(this)" class="form-control" rows="5" id="presentaddress" name="presentaddress"></textarea>
                             </div>
                             <label class="col-md-2 control-label" for="permanentaddress">Permanent Address <br /><span>Same As Present Address</span>&nbsp;<input id="peraddress" onclick="check(this)" type="checkbox"></label>
                             <div class="col-md-4">
-                                <textarea class="form-control" rows="5" id="permanentaddress"></textarea>
+                                <textarea class="form-control" rows="5" id="permanentaddress" name="permanentaddress"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">

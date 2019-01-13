@@ -285,7 +285,7 @@ public function editRolePower(Request $request){
   private function getSession($instituteid){
       $sql="SELECT * FROM `sessions` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
-      $output="<option value=''>Select</option>";
+      $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -294,7 +294,7 @@ public function editRolePower(Request $request){
   private function getProgram($instituteid){
       $sql="SELECT * FROM `programs` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
-      $output="<option value=''>Select</option>";
+      $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -303,7 +303,7 @@ public function editRolePower(Request $request){
   private function getGroup($instituteid){
       $sql="SELECT * FROM `groups` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
-      $output="<option value=''>Select</option>";
+      $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -312,7 +312,7 @@ public function editRolePower(Request $request){
   private function getLevel($instituteid){
       $sql="SELECT * FROM `programlevels` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
-      $output="<option value=''>Select</option>";
+      $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -322,7 +322,7 @@ public function editRolePower(Request $request){
   private function getMedium($instituteid){
       $sql="SELECT * FROM `mediums` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
-      $output="<option value=''>Select</option>";
+      $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -331,7 +331,7 @@ public function editRolePower(Request $request){
   private function getShift($instituteid){
       $sql="SELECT * FROM `shifts` WHERE `instituteid`=?";
       $result=\DB::select($sql,[$instituteid]);
-      $output="<option value=''>Select</option>";
+      $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -344,7 +344,7 @@ INNER JOIN programs ON vprogramgroup.programid=programs.id
 INNER JOIN groups ON vprogramgroup.groupid=groups.id
 WHERE programs.instituteid=?  AND vprogramgroup.programid=?";
  $result=\DB::select($sql,[$instituteid,$programid]);
-      $output="<option value=''>Select</option>";
+      $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -356,18 +356,19 @@ WHERE programs.instituteid=?  AND vprogramgroup.programid=?";
 WHERE instituteid =? AND sessionid=? GROUP BY programid) AS t1
 INNER JOIN programs ON t1.programid=programs.id";
     $result=\DB::select($sql,[$instituteid,$sessionid]);
-     $output="<option value=''>Select</option>";
+     $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
       echo  $output;
   }
+
   private function getGroupOnProgramAdmission($instituteid,$sessionid,$programid){
       $sql="SELECT * FROM(SELECT * FROM `programoffer`
 WHERE instituteid =? AND sessionid=? AND programid=? GROUP BY groupid) AS t1
 INNER JOIN groups ON t1.groupid=groups.id";
       $result=\DB::select($sql,[$instituteid,$sessionid,$programid]);
-     $output="<option value=''>Select</option>";
+     $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -378,7 +379,7 @@ INNER JOIN groups ON t1.groupid=groups.id";
 WHERE instituteid =? AND sessionid=? GROUP BY mediumid) AS t1
 INNER JOIN mediums ON t1.mediumid=mediums.id";
     $result=\DB::select($sql,[$instituteid,$sessionid]);
-     $output="<option value=''>Select</option>";
+     $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }
@@ -389,7 +390,7 @@ INNER JOIN mediums ON t1.mediumid=mediums.id";
 WHERE instituteid =? AND sessionid=? GROUP BY shiftid) AS t1
 INNER JOIN shifts ON t1.shiftid=shifts.id";
     $result=\DB::select($sql,[$instituteid,$sessionid]);
-     $output="<option value=''>Select</option>";
+     $output="<option value=''>SELECT</option>";
       foreach($result as $x){
         $output.="<option value='$x->id'>$x->name</option>";
       }

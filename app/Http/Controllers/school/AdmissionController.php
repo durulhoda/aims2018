@@ -4,6 +4,7 @@ namespace App\Http\Controllers\school;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\institutesettings\Division;
 use App\settings\Session;
 use App\settings\Program;
 use App\settings\Group;
@@ -14,6 +15,7 @@ class AdmissionController extends Controller
 {
     public function index(){
     	$instituteId=1;
+        $divisionList=Division::all();
     	$sessionList=\DB::select("select sessions.* from 
 (SELECT * FROM programoffer WHERE instituteid=? GROUP BY sessionid) AS t1
 INNER JOIN sessions ON t1.sessionid=sessions.id",[$instituteId]);
@@ -21,11 +23,29 @@ INNER JOIN sessions ON t1.sessionid=sessions.id",[$instituteId]);
     	$groupList=array();
         $mediumList=array();
         $shiftList=array();
-    	return view('school.admission',['instituteId'=>$instituteId,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList]);
+    	return view('school.admission',['instituteId'=>$instituteId,'divisionList'=>$divisionList,'sessionList'=>$sessionList,'programList'=>$programList,'groupList'=>$groupList,'mediumList'=>$mediumList,'shiftList'=>$shiftList]);
     }
     public function store(Request $request){
-        $aApplicant=new Applicant();
-    	$aApplicant->name=$request->name;
+        // dd($request);
+        // $aApplicant=new Applicant();
+     //    $request->instituteid;
+     //    $request->sessionid;
+     //    $request->programid;
+     //    $request->groupid;
+     //    $request->mediumid;
+     //    $request->shiftid;
+    //     $aApplicant->programofferid=$request->programofferid;
+     //    $aApplicant->name=$request->name;
+     //    $aApplicant->phone=$request->phone;
+     //    $aApplicant->fatherName=$request->fatherName;
+     //    $aApplicant->motherName=$request->motherName;
+     //    $aApplicant->divisionid=$request->divisionid;
+     //    $aApplicant->districtid=$request->districtid;
+     //    $aApplicant->thanaid=$request->thanaid;
+     //    $aApplicant->postofficeid=$request->postofficeid;
+     //    $aApplicant->localgovid=$request->localgovid;
+     //    $aApplicant->presentaddress=$request->presentaddress;
+     //    $aApplicant->permanentaddress=$request->permanentaddress;
         $upload_file_pictureurl = $request->pictureurl;
         $upload_file_signatureurl= $request->signatureurl;
         if($upload_file_pictureurl){
@@ -35,9 +55,10 @@ INNER JOIN sessions ON t1.sessionid=sessions.id",[$instituteId]);
             $unique_name="2019000001";
             $generated_file_name=$unique_name.'.'.$extention;
             $upload_file_pictureurl->move('admin/images/student',$generated_file_name);
-            dd("Ok");
             // $aApplicant->pictureurl=$generated_file_name;
+            dd($generated_file_name);
             // $aApplicant->save();
+            // dd("ok");
         }
     }
 }

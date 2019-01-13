@@ -49,9 +49,9 @@ function nextPrev(n) {
     var x = document.getElementsByClassName("formsegment");
     x[currentTab].style.display = "none";
     currentTab = currentTab + n;
-    console.log(n);
-    console.log("Current form segment :" + currentTab);
-    console.log("Total form segment :" + x.length);
+    // console.log(n);
+    // console.log("Current form segment :" + currentTab);
+    // console.log("Total form segment :" + x.length);
     if (currentTab >= x.length) {
         document.getElementById("regForm").submit();
         return false;
