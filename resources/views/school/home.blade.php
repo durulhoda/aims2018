@@ -1,4 +1,7 @@
 @extends('frontlayouts.main')
+@section('uniqueStyle')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+@endsection
 @section('content')
        <!-- Slider Section -->
         @include('frontlayouts.slider')
@@ -12,7 +15,7 @@
                                 <h4>Head master speech</h4>
                             </div>
                             <div class="pro-pic">
-                                <img src="img/dd7d898287506d05d7b6272e3c21215c.jpg" alt="">
+                                <img src="{{asset('fontend/assets/img/dd7d898287506d05d7b6272e3c21215c.jpg')}}" alt="">
                                 <div class="degination">
                                     <h3>Professor Dr. Md. Harun-Ur-Rashid Askari</h3>
                                 </div>
@@ -37,4 +40,23 @@
         </div>
         <!-- Aims-counter section start -->
          @include('frontlayouts.aimscounter')
+@endsection
+@section('uniqueScript')
+  <!-- for Home Pase -->
+   <script type="text/javascript">
+       $(document).ready(function (){
+         $('.slider').bxSlider({
+             mode: 'fade',
+             responsive: true,
+             infiniteLoop: true,
+             auto: true,
+             speed: 1000
+         });
+         $('.counter').counterUp({
+             delay: 10,
+             time: 1000
+         });
+ });
+
+   </script>
 @endsection

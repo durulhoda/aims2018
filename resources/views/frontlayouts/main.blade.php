@@ -3,6 +3,8 @@
 
 <head>
     @include('frontlayouts.head')
+    @yield('uniqueStyle')
+    @include('frontlayouts.stylebottom')
 </head>
 
 <body>
@@ -20,6 +22,7 @@
     </div>
   @include('frontlayouts.mobile')
   @include('frontlayouts.script')
+  @yield('uniqueScript')
 </body>
 
 </html>
