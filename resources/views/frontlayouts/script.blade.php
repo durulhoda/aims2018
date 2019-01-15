@@ -16,5 +16,4 @@
                 API.open();
             });
         });
-
     </script>

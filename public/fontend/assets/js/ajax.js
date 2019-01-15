@@ -12,6 +12,19 @@ function getChange(thisref,option){
 	}else if(option=="thanaToPostoffice"){
 		getValue(id,option,"#postofficeid",1);
 		getValue(id,option,"#localgovid",2);
+	}else if(option=="divisionToDistrict2"){
+		// For Permanent Address
+		getValue(id,option,"#districtid2",1);
+		getValue(0,option,"#thanaid2",2);
+		getValue(0,option,"#postofficeid2",3);
+		getValue(0,option,"#localgovid2",4);
+	}else if(option=="districtToThana2"){
+		getValue(id,option,"#thanaid2",1);
+		getValue(0,option,"#postofficeid2",2);
+		getValue(0,option,"#localgovid2",3);
+	}else if(option=="thanaToPostoffice2"){
+		getValue(id,option,"#postofficeid2",1);
+		getValue(id,option,"#localgovid2",2);
 	}else if(option=="admissionsessiontoall"){
 		getValueWithIstitute(id,option,"#programid",1);
 		getValueWithIstitute(id,option,"#groupid",2);

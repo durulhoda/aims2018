@@ -80,8 +80,8 @@
                             </div>                       
                         </div>
                         <div class="form-group row">
-                           <label class="col-md-2 control-label" for="fatherName">Father Name</label>
-                           <div class="col-md-4">
+                         <label class="col-md-2 control-label" for="fatherName">Father Name</label>
+                         <div class="col-md-4">
                             <input type="text" class="form-control" placeholder="Father Name" id="fatherName" name="fatherName">
                         </div>    
                         <label class="col-md-2 control-label" for="motherName">Mother Name</label>
@@ -170,6 +170,9 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-sm-4 control-label" for="districtid">District</label>
                                     <div class="col-sm-8">
                                         <select onchange="getChange(this,'districtToThana')" class="form-control" name="districtid" id="districtid">
@@ -184,6 +187,8 @@
                                             <option value="">SELECT</option>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-sm-4 control-label" for="postofficeid">Post Office</label>
                                     <div class="col-sm-8">
                                         <select class="form-control" name="postofficeid" id="postofficeid">
@@ -200,83 +205,89 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-4 control-label" for="presentaddress">Present Address</label>
+                                    <label class="col-md-4 control-label" for="address">Address</label>
                                     <div class="col-md-8">
-                                        <textarea onchange="txtChange(this)" class="form-control" rows="4" id="presentaddress" name="presentaddress"></textarea>
+                                        <textarea onchange="txtChange(this)" class="form-control" rows="4" id="address" name="address"></textarea>
                                     </div>
                                 </div>
                             </fieldset>
                         </div>
                         <div class="col-sm-6">
-                         <fieldset>
+                           <fieldset style="position: relative;">
+                            <div style="position: absolute;top: 5px;right: 5px;"><input id="isChecked" name="isChecked" onclick="check(this)" type="checkbox">&nbsp;&nbsp;<span>Same As Present Address</span></div>
                             <legend>Permanent Address</legend>
                             <div class="form-group row">
-                                <label class="col-sm-4 control-label" for="devisionid">Division</label>
+                                <label class="col-sm-4 control-label" for="devisionid2">Division</label>
                                 <div class="col-sm-8">
-                                    <select onchange="getChange(this,'divisionToDistrict')" class="form-control" name="divisionid" id="divisionid">
+                                    <select onchange="getChange(this,'divisionToDistrict2')" class="form-control" name="devisionid2" id="devisionid2">
                                         <option value="">SELECT</option>
                                         @foreach($divisionList as $aObj)
                                         <option value="{{$aObj->id}}">{{$aObj->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <label class="col-sm-4 control-label" for="districtid">District</label>
-                                <div class="col-sm-8">
-                                    <select onchange="getChange(this,'districtToThana')" class="form-control" name="districtid" id="districtid">
-                                        <option value="">SELECT</option>
-                                    </select>
-                                </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-4 control-label" for="thanaid">Thana</label>
-                                <div class="col-sm-8">
-                                    <select onchange="getChange(this,'thanaToPostoffice')" class="form-control" name="thanaid" id="thanaid">
-                                        <option value="">SELECT</option>
-                                    </select>
-                                </div>
-                                <label class="col-sm-4 control-label" for="postofficeid">Post Office</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="postofficeid" id="postofficeid">
-                                        <option value="">SELECT</option>
-                                    </select>
-                                </div>
+                               <label class="col-sm-4 control-label" for="districtid2">District</label>
+                               <div class="col-sm-8">
+                                <select onchange="getChange(this,'districtToThana2')" class="form-control" name="districtid2" id="districtid2">
+                                    <option value="">SELECT</option>
+                                </select>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 control-label" for="localgovid">Union</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="localgovid" id="localgovid">
-                                        <option value="">SELECT</option>
-                                    </select>
-                                </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 control-label" for="thanaid">Thana</label>
+                            <div class="col-sm-8">
+                                <select onchange="getChange(this,'thanaToPostoffice2')" class="form-control" name="thanaid2" id="thanaid2">
+                                    <option value="">SELECT</option>
+                                </select>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-4 control-label" for="permanentaddress">Address <br /><span>Same As Present Address</span>&nbsp;<input id="peraddress" onclick="check(this)" type="checkbox"></label>
-                                <div class="col-md-8">
-                                    <textarea class="form-control" rows="4" id="permanentaddress" name="permanentaddress"></textarea>
-                                </div>
-                            </div>
-                        </fieldset>
+                        </div>
+                        <div class="form-group row">
+                           <label class="col-sm-4 control-label" for="postofficeid2">Post Office</label>
+                           <div class="col-sm-8">
+                            <select class="form-control" name="postofficeid2" id="postofficeid2">
+                                <option value="">SELECT</option>
+                            </select>
+                        </div>    
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 control-label" for="pictureurl">Picture</label>
-                    <div class="col-md-4">
-                        <input type="file" class="form-control-file" id="pictureurl" name="pictureurl">
+                    <div class="form-group row">
+                        <label class="col-sm-4 control-label" for="localgovid2">Union</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="localgovid2" id="localgovid2">
+                                <option value="">SELECT</option>
+                            </select>
+                        </div>
                     </div>
-                    <label class="col-md-2 control-label" for="signatureurl">Signature</label>
-                    <div class="col-md-4">
-                        <input type="file" class="form-control-file" name="signatureurl" id="signatureurl">
+                    <div class="form-group row">
+                        <label class="col-md-4 control-label" for="address2">Address</label>
+                        <div class="col-md-8">
+                            <textarea class="form-control" rows="4" id="address2" name="address2"></textarea>
+                        </div>
                     </div>
-                </div>
+                </fieldset>
             </div>
-            <div class="form-group row">
-                <div class="offset-md-2 col-md-4">
-                    <button type="button" id="prevBtn" class="btn btn-info waves-effect waves-light" onclick="nextPrev(-1)">Previous</button>
-                    <button type="button" id="nextBtn" class="btn btn-info waves-effect waves-light" onclick="nextPrev(1)">Next</button>
-                </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 control-label" for="pictureurl">Picture</label>
+            <div class="col-md-4">
+                <input type="file" class="form-control-file" id="pictureurl" name="pictureurl">
             </div>
-        </form>
-    </div> <!-- col -->
+            <label class="col-md-2 control-label" for="signatureurl">Signature</label>
+            <div class="col-md-4">
+                <input type="file" class="form-control-file" name="signatureurl" id="signatureurl">
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="offset-md-2 col-md-4">
+            <button type="button" id="prevBtn" class="btn btn-info waves-effect waves-light" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" class="btn btn-info waves-effect waves-light" onclick="nextPrev(1)">Next</button>
+        </div>
+    </div>
+</form>
+</div> <!-- col -->
 </div> <!-- End row -->
 </div>
 </div>

@@ -1,28 +1,51 @@
-$(document).ready(function () {
-    $("#mmmenu").mmenu();
-    var API = $("#mmmenu").data("mmenu");
-    $("#mmmenu").click(function () {
-        API.open();
-    });
-});
-
 function txtChange(thisPointer) {
-    var peraddress = document.getElementById("peraddress");
+    var isChecked = document.getElementById("isChecked");
     var presentaddresstxt = thisPointer.value;
-    var permanentaddress = document.getElementById("permanentaddress");
-    if (peraddress.checked == true) {
+    var permanentaddress = document.getElementById("address2");
+    if (isChecked.checked == true) {
         permanentaddress.value = presentaddresstxt;
     }
 }
 
 function check(thisPointer) {
-    var presentaddress = document.getElementById("presentaddress");
+    // Present address field Id
+    var devisionid=document.getElementById("divisionid");
+    var districtid=document.getElementById("districtid");
+    var thanaid=document.getElementById("thanaid");
+    var postofficeid=document.getElementById("postofficeid");
+    var localgovid=document.getElementById("localgovid");
+    var presentaddress = document.getElementById("address");
+    // console.log(devisionid.options[devisionid.selectedIndex].text);
     var presentaddresstxt = presentaddress.value;
-    var permanentaddress = document.getElementById("permanentaddress");
+    // Permanent Address Field Id
+    var permanentaddress = document.getElementById("address2");
+    var devisionid2=document.getElementById("devisionid2");
+    var districtid2=document.getElementById("districtid2");
+    var thanaid2=document.getElementById("thanaid2");
+    var postofficeid2=document.getElementById("postofficeid2");
+    var localgovid2=document.getElementById("localgovid2");
     if (thisPointer.checked == true) {
+        devisionid2.disabled=true;
+        devisionid2.value=devisionid.value;
+        districtid2.disabled=true;
+        districtid2.value=districtid.value;
+        thanaid2.disabled=true;
+        thanaid2.value=thanaid.value;
+        postofficeid2.disabled=true;
+        postofficeid2.value=postofficeid2.value;
+        localgovid2.disabled=true;
+        localgovid2.value=localgovid.value;
+        console.log(localgovid.value);
         permanentaddress.value = presentaddresstxt;
+        permanentaddress.disabled=true;
     } else {
         permanentaddress.value = "";
+        permanentaddress.disabled=false;
+        devisionid2.disabled=false;
+        districtid2.disabled=false;
+        thanaid2.disabled=false;
+        postofficeid2.disabled=false;
+        localgovid2.disabled=false;
     }
 }
 

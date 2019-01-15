@@ -36,6 +36,30 @@ class SchollAjaxController extends Controller
 			}elseif ($methodid==2) {
 				$this->getlocalgov($idvalue);
 			}	
+		}elseif($option=="divisionToDistrict2"){
+			if($methodid==1){
+				$this->getDistrict($idvalue);
+			}elseif($methodid==2){
+				$this->getThana($idvalue);
+			}elseif($methodid==3){
+				$this->getPostOffice($idvalue);
+			}elseif($methodid==4){
+				$this->getlocalgov($idvalue);
+			}
+		}elseif($option=="districtToThana2"){
+			if($methodid==1){
+				$this->getThana($idvalue);
+			}elseif ($methodid==2) {
+				$this->getPostOffice($idvalue);
+			}elseif ($methodid==3) {
+				$this->getlocalgov($idvalue);
+			}	
+		}elseif($option=="thanaToPostoffice2"){
+			if($methodid==1){
+				$this->getPostOffice($idvalue);
+			}elseif ($methodid==2) {
+				$this->getlocalgov($idvalue);
+			}	
 		}
 	}
 	private function getDistrict($divisionid){
